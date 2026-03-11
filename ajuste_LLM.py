@@ -38,14 +38,8 @@ while True:
     response = ollama.chat(
         model="llama3.1",
         messages=[
-            {
-                "role": "system",
-                "content": "\n\nContext:\n" + context
-            },
-            {
-                "role": "user",
-                "content": query
-            }
+            {"role": "system", "content": context},
+            {"role": "user",   "content": query}
         ]
     )
 
