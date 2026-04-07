@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>EGEL Plus ISOFT 2026 — Guía Completa</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --bg2: #13161e;
+    --bg3: #1a1e2a;
+    --bg4: #222638;
+    --border: #2a2e3d;
+    --border2: #363b52;
+    --text: #e8eaf0;
+    --text2: #9ba3bb;
+    --text3: #5f6880;
+    --accent: #4f8ef7;
+    --accent2: #6fa8ff;
+    --green: #3ecf8e;
+    --amber: #f0a429;
+    --red: #f0574b;
+    --purple: #9b7ff4;
+    --teal: #2dd4bf;
+    --pink: #f472b6;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Sora', sans-serif;
+    --r: 10px;
+    --r2: 14px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: linear-gradient(135deg, #0d0f14 0%, #161b2e 50%, #0d1422 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 28px 20px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% -10%, rgba(79,142,247,.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(79,142,247,.15);
+    border: 1px solid rgba(79,142,247,.3);
+    color: var(--accent2);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .header h1 {
+    font-size: clamp(22px, 5vw, 36px);
+    font-weight: 700;
+    letter-spacing: -.02em;
+    color: #fff;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+  .header h1 span { color: var(--accent2); }
+  .header p {
+    font-size: 13px;
+    color: var(--text2);
+    margin-bottom: 20px;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 8px 16px;
+    text-align: center;
+  }
+  .stat-n { font-size: 18px; font-weight: 700; color: var(--accent2); }
+  .stat-l { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+
+  /* ── NAV ── */
+  .nav-wrap {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(13,15,20,.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .nav-wrap::-webkit-scrollbar { height: 2px; background: transparent; }
+  .nav-wrap::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  .nav-inner { display: inline-flex; gap: 6px; }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+    white-space: nowrap;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .nav-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* ── PAGES ── */
+  .page { display: none; padding: 20px 16px 40px; max-width: 860px; margin: 0 auto; }
+  .page.on { display: block; }
+
+  /* ── SECTIONS ── */
+  .section {
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    margin-bottom: 14px;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+  .section-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: 14px 18px;
+    cursor: pointer;
+    gap: 10px;
+    transition: background .15s;
+  }
+  .section-head:hover { background: var(--bg3); }
+  .section-head.open { background: var(--bg3); border-bottom: 1px solid var(--border); }
+  .section-title { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .section-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 5px; }
+  .tag {
+    font-size: 10px; font-weight: 600;
+    padding: 2px 8px; border-radius: 10px;
+    text-transform: uppercase; letter-spacing: .04em;
+  }
+  .t-hot { background: rgba(240,87,75,.15); color: #f0574b; border: 1px solid rgba(240,87,75,.25); }
+  .t-med { background: rgba(240,164,41,.15); color: #f0a429; border: 1px solid rgba(240,164,41,.25); }
+  .t-low { background: rgba(62,207,142,.15); color: #3ecf8e; border: 1px solid rgba(62,207,142,.25); }
+  .t-blue { background: rgba(79,142,247,.15); color: #4f8ef7; border: 1px solid rgba(79,142,247,.25); }
+  .chevron {
+    width: 18px; height: 18px; color: var(--text3);
+    transition: transform .25s; flex-shrink: 0; margin-top: 2px;
+  }
+  .section-head.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  .section-body.open { max-height: 9999px; }
+  .section-inner { padding: 18px; }
+
+  /* ── CONTENT BLOCKS ── */
+  .blk { margin-bottom: 18px; }
+  .blk:last-child { margin-bottom: 0; }
+  .blk-title {
+    font-size: 10px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: .1em;
+    color: var(--text3); margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .row {
+    padding: 9px 0 9px 14px;
+    border-left: 2px solid var(--border2);
+    margin-bottom: 6px;
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--text2);
+  }
+  .row b { color: var(--text); font-weight: 600; }
+  .row.hot { border-left-color: var(--red); background: rgba(240,87,75,.04); border-radius: 0 6px 6px 0; padding-right: 10px; }
+  .row.med { border-left-color: var(--amber); background: rgba(240,164,41,.04); border-radius: 0 6px 6px 0; padding-right: 10px; }
+  .row.gr { border-left-color: var(--green); background: rgba(62,207,142,.04); border-radius: 0 6px 6px 0; padding-right: 10px; }
+
+  /* ── ALERTS ── */
+  .alert {
+    border-radius: var(--r);
+    padding: 12px 16px;
+    font-size: 13px;
+    line-height: 1.65;
+    margin-top: 12px;
+    border: 1px solid;
+  }
+  .alert b { font-weight: 600; }
+  .a-red { background: rgba(240,87,75,.08); border-color: rgba(240,87,75,.25); color: #f5958e; }
+  .a-amber { background: rgba(240,164,41,.08); border-color: rgba(240,164,41,.25); color: #f5c56a; }
+  .a-blue { background: rgba(79,142,247,.08); border-color: rgba(79,142,247,.25); color: #89b8ff; }
+  .a-green { background: rgba(62,207,142,.08); border-color: rgba(62,207,142,.25); color: #6ce8b8; }
+
+  /* ── TABLE ── */
+  .tbl-wrap { overflow-x: auto; margin-top: 10px; border-radius: var(--r); border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th { background: var(--bg3); padding: 9px 12px; text-align: left; font-weight: 600; color: var(--text); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  td { padding: 8px 12px; color: var(--text2); border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: rgba(255,255,255,.02); }
+  td b { color: var(--text); font-weight: 600; }
+
+  /* ── FORMULA ── */
+  .formula {
+    font-family: var(--mono);
+    font-size: 12px;
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--r);
+    padding: 9px 14px;
+    color: var(--teal);
+    margin: 5px 0;
+  }
+
+  /* ── PROGRESS ── */
+  .prog-wrap { margin-bottom: 12px; }
+  .prog-label { display: flex; justify-content: space-between; font-size: 12px; color: var(--text2); margin-bottom: 5px; }
+  .prog-bar { height: 6px; background: var(--bg4); border-radius: 4px; overflow: hidden; }
+  .prog-fill { height: 100%; border-radius: 4px; }
+
+  /* ── QUIZ ── */
+  .quiz-wrap { margin-top: 6px; }
+  .q-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--r2);
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .q-num { font-size: 10px; font-weight: 600; color: var(--text3); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+  .q-text { font-size: 14px; color: var(--text); margin-bottom: 14px; line-height: 1.6; }
+  .q-text .ctx { font-size: 12px; color: var(--text2); font-style: italic; display: block; margin-bottom: 6px; background: var(--bg4); padding: 8px 10px; border-radius: 6px; border-left: 3px solid var(--border2); }
+  .opts { display: flex; flex-direction: column; gap: 7px; }
+  .opt {
+    display: flex; align-items: flex-start; gap: 10px;
+    background: var(--bg4); border: 1.5px solid var(--border);
+    border-radius: var(--r); padding: 10px 14px;
+    cursor: pointer; transition: all .18s;
+    font-size: 13px; color: var(--text2);
+  }
+  .opt:hover { border-color: var(--accent); color: var(--text); }
+  .opt.correct { background: rgba(62,207,142,.1); border-color: var(--green); color: var(--text); }
+  .opt.wrong { background: rgba(240,87,75,.1); border-color: var(--red); color: var(--text); }
+  .opt-letter {
+    font-family: var(--mono); font-size: 11px; font-weight: 600;
+    width: 20px; height: 20px; border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg); color: var(--text3); flex-shrink: 0; margin-top: 1px;
+    border: 1px solid var(--border2);
+  }
+  .opt.correct .opt-letter { background: var(--green); color: #0d1a12; border-color: var(--green); }
+  .opt.wrong .opt-letter { background: var(--red); color: #fff; border-color: var(--red); }
+  .q-explain {
+    display: none; margin-top: 12px;
+    background: rgba(79,142,247,.08); border: 1px solid rgba(79,142,247,.2);
+    border-radius: var(--r); padding: 11px 14px;
+    font-size: 12.5px; color: #a3c4ff; line-height: 1.65;
+  }
+  .q-explain.show { display: block; }
+  .q-score {
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: var(--r); padding: 12px 16px;
+    margin-bottom: 16px; font-size: 13px; color: var(--text2);
+  }
+  .q-score span { font-size: 18px; font-weight: 700; color: var(--accent2); }
+
+  /* ── FLASHCARD ── */
+  .flash-wrap { margin-top: 8px; }
+  .flash-card-outer { perspective: 1000px; margin-bottom: 16px; cursor: pointer; }
+  .flash-inner {
+    position: relative; height: 160px;
+    transform-style: preserve-3d; transition: transform .5s ease;
+    border-radius: var(--r2);
+  }
+  .flash-card-outer.flipped .flash-inner { transform: rotateY(180deg); }
+  .flash-front, .flash-back {
+    position: absolute; inset: 0;
+    backface-visibility: hidden;
+    border-radius: var(--r2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 20px; text-align: center;
+    border: 1px solid var(--border2);
+  }
+  .flash-front { background: var(--bg3); }
+  .flash-back { background: var(--bg4); transform: rotateY(180deg); }
+  .flash-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--text3); margin-bottom: 12px; }
+  .flash-q { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+  .flash-a { font-size: 13px; color: var(--text2); line-height: 1.6; }
+  .flash-nav { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 4px; }
+  .flash-btn {
+    background: var(--bg3); border: 1px solid var(--border2);
+    color: var(--text2); font-family: var(--sans); font-size: 12px;
+    padding: 8px 18px; border-radius: 20px; cursor: pointer;
+    transition: all .15s;
+  }
+  .flash-btn:hover { border-color: var(--accent); color: var(--accent2); }
+  .flash-counter { font-size: 12px; color: var(--text3); min-width: 60px; text-align: center; }
+
+  /* ── PAGE TITLE ── */
+  .pg-title {
+    font-size: 20px; font-weight: 700;
+    margin-bottom: 6px; color: var(--text);
+  }
+  .pg-sub {
+    font-size: 13px; color: var(--text2);
+    margin-bottom: 20px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; padding: 24px 16px;
+    font-size: 11px; color: var(--text3);
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-badge">CENEVAL · EGEL Plus ISOFT · 2026</div>
+  <h1>Guía Completa de<br><span>Ingeniería de Software</span></h1>
+  <p>Teoría profunda · Práctica tipo examen · Sin internet requerido</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-n">143</div><div class="stat-l">Reactivos ISOFT</div></div>
+    <div class="stat"><div class="stat-n">4</div><div class="stat-l">Áreas</div></div>
+    <div class="stat"><div class="stat-n">14</div><div class="stat-l">Subáreas</div></div>
+    <div class="stat"><div class="stat-n">100%</div><div class="stat-l">Offline</div></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <div class="nav-inner">
+    <button class="nav-btn on" onclick="go(0)">🗺 Inicio</button>
+    <button class="nav-btn" onclick="go(1)">📋 Área 1: Análisis</button>
+    <button class="nav-btn" onclick="go(2)">🏗 Área 2: Diseño</button>
+    <button class="nav-btn" onclick="go(3)">💻 Área 3: Desarrollo</button>
+    <button class="nav-btn" onclick="go(4)">📊 Área 4: Gestión</button>
+    <button class="nav-btn" onclick="go(5)">🃏 Flashcards</button>
+    <button class="nav-btn" onclick="go(6)">✅ Quiz Práctica</button>
+    <button class="nav-btn" onclick="go(7)">🔥 Top Temas</button>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 0: INICIO ════════════════════════ -->
+<div class="page on" id="p0">
+  <div class="pg-title">Mapa del examen</div>
+  <div class="pg-sub">Estructura oficial EGEL Plus ISOFT · Úsalo como punto de partida</div>
+
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Área 1 — Análisis de Sistemas (31 reactivos · 22%)</span><span style="color:var(--accent2)">22%</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:22%;background:var(--accent)"></div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Área 2 — Diseño de Sistemas (33 reactivos · 23%)</span><span style="color:var(--green)">23%</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:23%;background:var(--green)"></div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Área 3 — Desarrollo de Sistemas (49 reactivos · 34%)</span><span style="color:var(--red)">34%</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:34%;background:var(--red)"></div></div>
+  </div>
+  <div class="prog-wrap">
+    <div class="prog-label"><span>Área 4 — Gestión de Proyectos (30 reactivos · 21%)</span><span style="color:var(--amber)">21%</span></div>
+    <div class="prog-bar"><div class="prog-fill" style="width:21%;background:var(--amber)"></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head open" onclick="tog(this)">
+      <div><div class="section-title">¿Cómo funciona el examen EGEL Plus?</div></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body open"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Estructura total</div>
+        <div class="row hot"><b>203 reactivos totales:</b> 143 de Ingeniería de Software (Sección Disciplinar) + 60 de Comprensión Lectora y Redacción Indirecta (Sección Transversal).</div>
+        <div class="row"><b>Opción múltiple:</b> 4 opciones por pregunta, solo una correcta.</div>
+        <div class="row"><b>15% reactivos piloto:</b> no cuentan para calificación, pero no sabrás cuáles son.</div>
+        <div class="row"><b>Resultado:</b> No Satisfactorio / Satisfactorio / Sobresaliente (DSS).</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Tipos de preguntas — el examen es situacional</div>
+        <div class="row hot"><b>Tipo 1 — Escenario + identificar:</b> te dan un caso real y preguntan qué tipo de requerimiento/patrón/técnica es.</div>
+        <div class="row hot"><b>Tipo 2 — Escenario + qué harías:</b> situación de proyecto y debes elegir la acción correcta.</div>
+        <div class="row med"><b>Tipo 3 — Identificar el error:</b> te muestran un diseño/proceso incorrecto y preguntan qué viola.</div>
+        <div class="row"><b>Tipo 4 — Conceptual directa:</b> definición o característica. Menos frecuente.</div>
+      </div>
+      <div class="alert a-red"><b>⚠ Clave:</b> el EGEL casi NUNCA pregunta definiciones directas. Practica leyendo escenarios y eligiendo la respuesta más correcta. Dos opciones siempre parecen correctas — elige la MÁS correcta según la teoría oficial (Pressman, Sommerville, Scrum Guide).</div>
+      <div class="alert a-amber" style="margin-top:10px"><b>Para nivel Sobresaliente (DSS)</b> debes: interpretar requerimientos de calidad interna, distinguir completitud/correctitud/factibilidad, implementar gestión de riesgos, conocer métricas EVM, dominar los 5 niveles de CMMI, y aplicar correctamente todos los patrones GoF en contexto.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 1: ANÁLISIS ════════════════════════ -->
+<div class="page" id="p1">
+  <div class="pg-title">Área 1 · Análisis de Sistemas de Software</div>
+  <div class="pg-sub">3 subáreas · 31 reactivos · 22% del examen</div>
+
+  <!-- 1.1 -->
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">1.1 Tipos de requerimientos</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 Siempre sale</span><span class="tag t-blue">12 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Clasificación principal</div>
+        <div class="row hot"><b>Funcionales (RF):</b> describen QUÉ hace el sistema — funciones, comportamientos, entradas y salidas. Ej: "El sistema debe permitir iniciar sesión con usuario y contraseña."</div>
+        <div class="row hot"><b>No funcionales (RNF):</b> describen CÓMO lo hace — atributos de calidad. Ej: rendimiento, seguridad, disponibilidad, escalabilidad, usabilidad, portabilidad, mantenibilidad, confiabilidad.</div>
+        <div class="row"><b>Del negocio:</b> objetivos estratégicos de alto nivel de la organización. Ej: "Incrementar ventas 20% en 6 meses." Origen de todos los demás requerimientos.</div>
+        <div class="row"><b>De usuario:</b> qué necesita el usuario final, en su propio lenguaje. Origen de las historias de usuario y casos de uso.</div>
+        <div class="row"><b>Del sistema:</b> especificación técnica detallada derivada de los requerimientos de usuario. Nivel de implementación.</div>
+        <div class="row"><b>De dominio:</b> restricciones específicas del área de aplicación — regulatorias, físicas, legales. Ej: "Toda transacción bancaria debe tener pista de auditoría."</div>
+        <div class="row"><b>De restricción:</b> limitaciones del proyecto — tecnología obligatoria, presupuesto máximo, plazos, estándares a cumplir.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Tabla RF vs RNF — diferenciador crítico del examen</div>
+        <div class="tbl-wrap"><table>
+          <tr><th>Aspecto</th><th>Funcional (RF)</th><th>No Funcional (RNF)</th></tr>
+          <tr><td>Responde a</td><td>¿Qué hace?</td><td>¿Cómo lo hace?</td></tr>
+          <tr><td>Se verifica con</td><td>Casos de prueba funcionales</td><td>Pruebas de carga, rendimiento, seguridad</td></tr>
+          <tr><td>Documenta</td><td>Casos de uso, historias de usuario</td><td>SLAs, atributos de calidad, benchmarks</td></tr>
+          <tr><td>Ejemplo claro</td><td>"El sistema genera reportes PDF"</td><td>"El reporte se genera en menos de 2 segundos"</td></tr>
+          <tr><td>Subtipos de RNF</td><td>—</td><td>Rendimiento, Seguridad, Usabilidad, Disponibilidad, Escalabilidad, Portabilidad, Mantenibilidad</td></tr>
+        </table></div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta clásica:</b> "El cliente dice: el sistema debe responder en menos de 3 segundos y estar disponible el 99.9% del tiempo." → Ambos son requerimientos NO funcionales (rendimiento y disponibilidad respectivamente).</div>
+      <div class="alert a-amber"><b>Trampa:</b> "El sistema debe ser seguro" es RNF, pero "El sistema debe requerir autenticación de dos factores para acceder a datos sensibles" es un RF (es un comportamiento específico del sistema). La especificidad hace la diferencia.</div>
+    </div></div>
+  </div>
+
+  <!-- 1.2 -->
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">1.2 Técnicas de obtención, análisis, priorización y validación</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 Muy frecuente</span><span class="tag t-blue">9 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Técnicas de elicitación (obtención de requerimientos)</div>
+        <div class="row hot"><b>Entrevistas:</b> abiertas (exploración libre, respuestas amplias) vs. cerradas (respuestas específicas, cuestionario guiado). Mejor para stakeholders clave. Desventaja: consume mucho tiempo y depende de la comunicación verbal del usuario.</div>
+        <div class="row hot"><b>Talleres JAD (Joint Application Design):</b> sesión estructurada con clientes Y desarrolladores simultáneamente. Más eficiente que entrevistas individuales. Facilita consenso rápido. Moderador neutro dirige la sesión.</div>
+        <div class="row med"><b>Cuestionarios/Encuestas:</b> útiles para grandes grupos geográficamente dispersos. Respuestas estructuradas, fácil de analizar. No permite profundizar en respuestas.</div>
+        <div class="row med"><b>Observación / Etnografía:</b> el analista observa al usuario trabajando en su entorno real sin interrumpirlo. Detecta requerimientos implícitos que el usuario nunca verbalizaría. Ideal cuando el usuario tiene dificultad para articular sus necesidades.</div>
+        <div class="row"><b>Prototipado:</b> modelo rápido (paper, wireframe o funcional) para que el usuario valide antes de construir. Tipos: Desechable (se tira después de validar) y Evolutivo (se convierte en el sistema final). Reduce malentendidos dramáticamente.</div>
+        <div class="row"><b>Análisis de documentos:</b> revisar manuales, formularios, reportes, contratos, sistemas existentes. Útil cuando hay documentación previa del negocio.</div>
+        <div class="row"><b>Casos de uso:</b> técnica de modelado que describe interacciones actor-sistema. Sirve tanto para elicitar como para documentar.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Priorización — MoSCoW</div>
+        <div class="row hot"><b>Must have (M):</b> críticos — sin estos el producto falla. No negociables para el lanzamiento.</div>
+        <div class="row hot"><b>Should have (S):</b> importantes pero no críticos — alta prioridad pero pueden esperar si hay restricciones.</div>
+        <div class="row"><b>Could have (C):</b> deseables — se incluyen si hay tiempo y recursos. Primeros en cortar.</div>
+        <div class="row"><b>Won't have (W):</b> fuera del alcance actual — documentados para versiones futuras. No se trabajan ahora.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Validación vs. Verificación — confusión clásica del examen</div>
+        <div class="row hot"><b>Validación:</b> ¿estamos construyendo el sistema CORRECTO? → confirma que los requerimientos satisfacen las necesidades reales del cliente. Involucra al cliente. "¿Es esto lo que necesitas?"</div>
+        <div class="row hot"><b>Verificación:</b> ¿estamos construyendo el sistema CORRECTAMENTE? → confirma que el sistema cumple las especificaciones técnicas. Proceso interno del equipo. "¿Cumple las especificaciones?"</div>
+        <div class="row"><b>Técnicas de validación:</b> revisiones (walkthroughs e inspecciones formales), prototipado de validación, pruebas de aceptación, casos de prueba derivados de requerimientos.</div>
+        <div class="row"><b>Inspección formal vs. Walkthrough:</b> Inspección = proceso estructurado con roles definidos (moderador, lector, inspector, autor) y métricas. Walkthrough = revisión informal guiada por el autor.</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta clásica:</b> "El cliente revisa el prototipo y confirma que cubre sus necesidades. ¿Qué actividad se realizó?" → Validación. "El equipo de QA ejecuta casos de prueba contra las especificaciones. ¿Qué actividad es?" → Verificación.</div>
+    </div></div>
+  </div>
+
+  <!-- 1.3 -->
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">1.3 Técnicas de documentación de requerimientos</div>
+        <div class="section-tags"><span class="tag t-med">⚡ Frecuente</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">SRS — Especificación de Requerimientos de Software (IEEE 830)</div>
+        <div class="row hot"><b>Propósito:</b> documento maestro que captura TODOS los requerimientos del sistema. Base del contrato entre cliente y desarrollador.</div>
+        <div class="row hot"><b>Características obligatorias del SRS:</b> Completo (nada falta), Consistente (sin contradicciones), No ambiguo (una sola interpretación), Verificable (se puede probar), Trazable (origen rastreable), Modificable (fácil de actualizar), Correcto (refleja las necesidades reales).</div>
+        <div class="row"><b>Secciones típicas del SRS:</b> 1. Introducción (propósito, alcance, definiciones). 2. Descripción general (perspectiva, funciones, usuarios, restricciones). 3. Requerimientos específicos (funcionales, no funcionales, externos). 4. Apéndices (glosario, índice).</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">UML para documentar requerimientos</div>
+        <div class="row hot"><b>Diagrama de Casos de Uso:</b> muestra actores (entidades externas al sistema) y casos de uso (funcionalidades), con sus relaciones. Es el diagrama de requerimientos más usado en el EGEL.</div>
+        <div class="row hot"><b>Relación «include»:</b> el caso de uso base SIEMPRE incluye el caso incluido — es obligatorio. La flecha va del caso base al incluido. Ej: "Procesar pago" siempre incluye "Validar tarjeta".</div>
+        <div class="row hot"><b>Relación «extend»:</b> el caso extendido se ejecuta CONDICIONALMENTE bajo ciertas circunstancias. La flecha va del caso extendido al base. Ej: "Mostrar alerta de saldo insuficiente" extiende a "Procesar pago" solo si el saldo es insuficiente.</div>
+        <div class="row"><b>Generalización:</b> actor o caso de uso hijo hereda comportamiento del padre. Similar a herencia en OOP.</div>
+        <div class="row"><b>Diagrama de actividad:</b> flujo de trabajo con nodos de decisión (rombo), fork/join para concurrencia, swimlanes para actores. Modela procesos de negocio.</div>
+        <div class="row"><b>Diagrama de secuencia:</b> muestra interacciones entre objetos a lo largo del tiempo. Muestra mensajes, respuestas y ciclos de vida de objetos.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Historias de usuario (User Stories) — base del desarrollo ágil</div>
+        <div class="row hot"><b>Formato:</b> "Como [rol/tipo de usuario], quiero [acción/funcionalidad] para [beneficio/valor de negocio]."</div>
+        <div class="row"><b>Criterios de aceptación:</b> condiciones específicas que deben cumplirse para considerar la historia completa. Formato Given-When-Then (dado que... cuando... entonces...).</div>
+        <div class="row"><b>INVEST:</b> una buena historia de usuario debe ser: Independiente, Negociable, Valiosa, Estimable, Small (pequeña), Testeable.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Matriz de trazabilidad</div>
+        <div class="row"><b>Propósito:</b> vincula cada requerimiento con: casos de uso, módulos del sistema, casos de prueba. Permite rastrear el impacto de un cambio y garantizar que cada requerimiento tiene cobertura de prueba.</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Trampa include/extend:</b> "Autenticar usuario" aparece siempre que se accede al sistema → Include. "Bloquear cuenta tras 3 intentos fallidos" solo ocurre en condición específica → Extend. La dirección de la flecha también se invierte.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 2: DISEÑO ════════════════════════ -->
+<div class="page" id="p2">
+  <div class="pg-title">Área 2 · Diseño de Sistemas de Software</div>
+  <div class="pg-sub">3 subáreas · 33 reactivos · 23% del examen</div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">2.1 Diseño arquitectónico de software</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 Siempre sale</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Estilos arquitectónicos — dato un escenario, elige el correcto</div>
+        <div class="tbl-wrap"><table>
+          <tr><th>Estilo</th><th>Cuándo usarlo</th><th>Ventaja clave</th><th>Ejemplo real</th></tr>
+          <tr><td><b>Capas (Layered)</b></td><td>Separar presentación, lógica de negocio y datos. Sistemas empresariales.</td><td>Separación de responsabilidades; cada capa solo conoce a la inferior.</td><td>Aplicación web 3 capas, sistemas bancarios</td></tr>
+          <tr><td><b>MVC</b></td><td>Interfaces interactivas donde la UI cambia frecuentemente.</td><td>Separa datos (Model), presentación (View) y control (Controller).</td><td>Django, Ruby on Rails, Spring MVC</td></tr>
+          <tr><td><b>Microservicios</b></td><td>Alta escalabilidad, equipos independientes, despliegue continuo.</td><td>Cada servicio desplegable, escalable y actualizable de forma independiente.</td><td>Netflix, Amazon, Uber</td></tr>
+          <tr><td><b>SOA</b></td><td>Integración de sistemas heterogéneos empresariales grandes.</td><td>Servicios reutilizables y con contratos estándar (WSDL/SOAP).</td><td>ESBs, sistemas ERP integrados</td></tr>
+          <tr><td><b>Pipe &amp; Filter</b></td><td>Procesamiento secuencial de datos / transformaciones en cadena.</td><td>Filtros independientes y reutilizables; fácil agregar o quitar pasos.</td><td>Compiladores, comandos Unix (pipe |)</td></tr>
+          <tr><td><b>Evento-Driven</b></td><td>Sistemas reactivos, desacoplamiento, procesamiento asíncrono.</td><td>Componentes no se conocen entre sí; se comunican solo mediante eventos.</td><td>IoT, sistemas de bolsa, GUIs</td></tr>
+          <tr><td><b>Repositorio</b></td><td>Múltiples componentes comparten y modifican un almacén central de datos.</td><td>Consistencia de datos; componentes no necesitan comunicarse entre sí.</td><td>IDEs (AST compartido), herramientas CASE</td></tr>
+          <tr><td><b>Cliente-Servidor</b></td><td>Recursos centralizados accedidos por múltiples clientes.</td><td>Centralización del control y seguridad; escalado del servidor.</td><td>Web browsers, apps móviles con backend</td></tr>
+        </table></div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta clásica:</b> "Un sistema de análisis de código donde múltiples herramientas (depurador, refactorizador, linter) acceden y modifican la misma representación del código fuente." → Arquitectura de Repositorio.</div>
+      <div class="alert a-amber"><b>Microservicios vs SOA:</b> SOA usa un bus de servicio central (ESB) y servicios pesados con SOAP. Microservicios son más ligeros, usan REST/APIs, no tienen bus central, y cada servicio tiene su propia base de datos.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">2.2 Diseño de módulos, componentes y datos ⭐ MAYOR PESO</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 Crítico DSS</span><span class="tag t-blue">16 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Cohesión y acoplamiento — fundamentos del diseño modular</div>
+        <div class="row hot"><b>Cohesión (ALTA = BUENA):</b> grado en que las responsabilidades DENTRO de un módulo están relacionadas. Meta: cada módulo hace UNA cosa y la hace bien.</div>
+        <div class="row hot"><b>Tipos de cohesión (de mejor a peor):</b> Funcional (hace una sola función bien definida) → Secuencial (salida de uno es entrada del siguiente) → Comunicacional (operan sobre el mismo dato) → Procedimental (pasos en secuencia, sin relación fuerte) → Temporal (ejecutan en el mismo momento) → Lógica (actividades similares, selección externa) → Coincidental (sin relación alguna, la peor).</div>
+        <div class="row hot"><b>Acoplamiento (BAJO = BUENO):</b> grado de dependencia ENTRE módulos. Meta: módulos lo más independientes posible.</div>
+        <div class="row hot"><b>Tipos de acoplamiento (de mejor a peor):</b> Datos (solo pasan parámetros simples) → Sello (pasan estructuras de datos) → Control (un módulo controla flujo del otro) → Externo (comparten formato externo) → Común (comparten datos globales) → Contenido (uno accede al interior del otro, el peor).</div>
+        <div class="row gr"><b>Regla de oro:</b> Alta cohesión + Bajo acoplamiento = módulos mantenibles, reutilizables, testeables y fáciles de entender. Cada cambio tiene impacto mínimo.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Principios SOLID — cada uno puede aparecer en el examen</div>
+        <div class="row hot"><b>S — SRP (Single Responsibility Principle):</b> una clase debe tener UNA sola razón para cambiar, es decir, una sola responsabilidad. Si una clase maneja tanto la lógica de negocio como el acceso a BD como el envío de correos, viola SRP.</div>
+        <div class="row hot"><b>O — OCP (Open/Closed Principle):</b> una clase debe estar ABIERTA para extensión pero CERRADA para modificación. Agrega funcionalidad nueva mediante herencia o composición, no modificando el código existente.</div>
+        <div class="row hot"><b>L — LSP (Liskov Substitution Principle):</b> una subclase debe poder sustituir a su clase padre sin alterar el comportamiento correcto del programa. Si Pingüino hereda de Ave y Ave tiene volar(), pero Pingüino no puede volar, se viola LSP.</div>
+        <div class="row"><b>I — ISP (Interface Segregation Principle):</b> los clientes no deben verse obligados a depender de interfaces que no usan. Prefiere varias interfaces pequeñas y específicas a una interfaz grande y genérica.</div>
+        <div class="row"><b>D — DIP (Dependency Inversion Principle):</b> los módulos de alto nivel no deben depender de módulos de bajo nivel; ambos deben depender de abstracciones. Implementado mediante inyección de dependencias.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Patrones de diseño GoF — los más frecuentes en el EGEL</div>
+        <div class="tbl-wrap"><table>
+          <tr><th>Patrón</th><th>Categoría</th><th>Propósito</th><th>Señal en escenario</th></tr>
+          <tr><td><b>Singleton</b></td><td>Creacional</td><td>Garantiza que solo exista una instancia de la clase y proporciona un punto de acceso global.</td><td>"Solo debe haber una conexión a BD", "un único logger global"</td></tr>
+          <tr><td><b>Factory Method</b></td><td>Creacional</td><td>Define interfaz para crear un objeto pero deja a subclases decidir qué clase instanciar.</td><td>"Crear objetos sin especificar su clase exacta", "diferentes tipos de documentos"</td></tr>
+          <tr><td><b>Abstract Factory</b></td><td>Creacional</td><td>Proporciona interfaz para crear familias de objetos relacionados sin especificar clases concretas.</td><td>"UI para Windows y Mac con la misma interfaz", "familias de productos"</td></tr>
+          <tr><td><b>Builder</b></td><td>Creacional</td><td>Separa la construcción de un objeto complejo de su representación.</td><td>"Construir objetos complejos paso a paso", "múltiples configuraciones del mismo objeto"</td></tr>
+          <tr><td><b>Observer</b></td><td>Comportamiento</td><td>Define dependencia uno-a-muchos: cuando un objeto cambia de estado, todos sus dependientes son notificados automáticamente.</td><td>"Varios módulos deben saber cuando X cambia", "suscripción a eventos", "notificaciones"</td></tr>
+          <tr><td><b>Strategy</b></td><td>Comportamiento</td><td>Define familia de algoritmos intercambiables en tiempo de ejecución.</td><td>"Diferentes métodos de pago seleccionables", "algoritmos de ordenamiento intercambiables"</td></tr>
+          <tr><td><b>Command</b></td><td>Comportamiento</td><td>Encapsula una solicitud como objeto, permitiendo parametrizar clientes con operaciones y soportar undo/redo.</td><td>"Implementar deshacer/rehacer", "colas de operaciones", "historial de acciones"</td></tr>
+          <tr><td><b>Template Method</b></td><td>Comportamiento</td><td>Define el esqueleto de un algoritmo en la clase base; las subclases implementan los pasos variables.</td><td>"Proceso con pasos fijos pero algunos pasos variables por tipo"</td></tr>
+          <tr><td><b>Iterator</b></td><td>Comportamiento</td><td>Proporciona forma de acceder secuencialmente a elementos de una colección sin exponer su representación interna.</td><td>"Recorrer una colección sin conocer su estructura interna"</td></tr>
+          <tr><td><b>Adapter</b></td><td>Estructural</td><td>Convierte la interfaz de una clase en otra que el cliente espera. Hace que clases incompatibles trabajen juntas.</td><td>"Integrar librería de terceros con interfaz distinta", "compatibilidad entre sistemas legacy"</td></tr>
+          <tr><td><b>Facade</b></td><td>Estructural</td><td>Proporciona una interfaz simplificada para un conjunto complejo de subsistemas.</td><td>"API simple sobre un sistema complicado", "simplificar el acceso a un subsistema"</td></tr>
+          <tr><td><b>Decorator</b></td><td>Estructural</td><td>Agrega responsabilidades adicionales a un objeto dinámicamente, como alternativa a la herencia.</td><td>"Agregar descuentos o impuestos dinámicamente", "extender funcionalidad sin subclases"</td></tr>
+          <tr><td><b>Composite</b></td><td>Estructural</td><td>Compone objetos en estructuras de árbol para representar jerarquías parte-todo.</td><td>"Estructura de árbol de archivos y directorios", "menús anidados"</td></tr>
+          <tr><td><b>Proxy</b></td><td>Estructural</td><td>Proporciona un sustituto de otro objeto para controlar el acceso a él.</td><td>"Control de acceso a un recurso costoso", "caché", "acceso remoto"</td></tr>
+        </table></div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Normalización de bases de datos</div>
+        <div class="row hot"><b>1FN (Primera Forma Normal):</b> cada celda contiene UN solo valor atómico (no grupos repetitivos, no listas). Todos los atributos deben ser atómicos.</div>
+        <div class="row hot"><b>2FN:</b> está en 1FN + todos los atributos no clave dependen de la CLAVE COMPLETA (no de una parte de ella). Solo aplica cuando hay clave compuesta.</div>
+        <div class="row hot"><b>3FN:</b> está en 2FN + NO hay dependencias transitivas (atributo no clave que depende de otro atributo no clave). Elimina redundancias transitivas.</div>
+        <div class="row"><b>BCNF (Boyce-Codd):</b> versión más estricta de 3FN. Para toda dependencia funcional X→Y, X debe ser una superclave.</div>
+        <div class="row"><b>Modelo Entidad-Relación:</b> entidades, atributos (simple, compuesto, multivaluado, derivado), relaciones con cardinalidad (1:1, 1:N, N:M) y participación (total/parcial).</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Trampa SOLID:</b> "Para agregar una nueva forma de pago al sistema, el programador debe modificar la clase ProcessPayment existente." → Viola OCP (debería extender, no modificar). "La clase UserService maneja autenticación, envío de emails Y generación de reportes." → Viola SRP.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">2.3 Diseño de interfaces</div>
+        <div class="section-tags"><span class="tag t-med">⚡ Frecuente</span><span class="tag t-blue">7 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">10 heurísticos de usabilidad de Nielsen — memoriza todos</div>
+        <div class="row hot"><b>1. Visibilidad del estado del sistema:</b> el sistema siempre informa al usuario sobre qué está pasando (barras de progreso, mensajes de estado, confirmaciones).</div>
+        <div class="row hot"><b>2. Correspondencia con el mundo real:</b> usar lenguaje, conceptos y metáforas familiares al usuario, no jerga técnica interna.</div>
+        <div class="row"><b>3. Control y libertad del usuario:</b> permitir deshacer y rehacer acciones; salidas de emergencia claramente marcadas.</div>
+        <div class="row"><b>4. Consistencia y estándares:</b> las mismas palabras, situaciones y acciones siempre significan lo mismo en toda la aplicación.</div>
+        <div class="row"><b>5. Prevención de errores:</b> diseño que evite que el error ocurra antes que mostrar mensajes de error. Confirmaciones antes de acciones destructivas.</div>
+        <div class="row med"><b>6. Reconocimiento sobre recuerdo:</b> minimizar la carga de memoria del usuario. Opciones, objetos y acciones visibles en lugar de recordados.</div>
+        <div class="row"><b>7. Flexibilidad y eficiencia de uso:</b> atajos (aceleradores) para usuarios expertos sin entorpecer a novatos. Personalización.</div>
+        <div class="row"><b>8. Diseño estético y minimalista:</b> sin información irrelevante o raramente necesaria. Cada elemento extra compite con la información relevante.</div>
+        <div class="row"><b>9. Reconocer, diagnosticar y recuperarse de errores:</b> mensajes de error en lenguaje claro, que indiquen el problema y sugieran solución.</div>
+        <div class="row"><b>10. Ayuda y documentación:</b> aunque es mejor que el sistema no necesite documentación, debe estar disponible, orientada a tareas del usuario.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Wireframe vs. Mockup vs. Prototipo</div>
+        <div class="row"><b>Wireframe:</b> esqueleto de baja fidelidad. Solo estructura, sin colores ni imágenes. Rápido de crear. Para validar layout y flujo.</div>
+        <div class="row"><b>Mockup:</b> representación visual estática de alta fidelidad — colores reales, tipografía, imágenes. No es interactivo.</div>
+        <div class="row"><b>Prototipo:</b> mockup interactivo que simula navegación y flujos. Puede ser de baja fidelidad (papel) o alta fidelidad (Figma, InVision).</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta clásica:</b> "El sistema muestra un spinner solo 2 de cada 5 veces durante el procesamiento de solicitudes." → Viola heurístico 1 (Visibilidad del estado). "Los mensajes de error solo dicen 'Error 404' sin explicación." → Viola heurístico 9.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 3: DESARROLLO ════════════════════════ -->
+<div class="page" id="p3">
+  <div class="pg-title">Área 3 · Desarrollo de Sistemas de Software</div>
+  <div class="pg-sub">5 subáreas · 49 reactivos · 34% del examen — la más grande</div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">3.1 Lenguajes de desarrollo de software</div>
+        <div class="section-tags"><span class="tag t-med">⚡ Conceptual</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Clasificaciones de lenguajes</div>
+        <div class="row hot"><b>Compilado:</b> código fuente → compilador → código máquina nativo. Ejecución muy rápida. Error se detecta en compilación. Ejemplos: C, C++, Go, Rust.</div>
+        <div class="row hot"><b>Interpretado:</b> ejecutado línea a línea por intérprete en tiempo de ejecución. Más flexible y portable, pero más lento. Ejemplos: Python, Ruby, JavaScript (en browser).</div>
+        <div class="row hot"><b>Bytecode (intermedio):</b> código fuente → compilador → bytecode → máquina virtual lo interpreta. Portabilidad + rendimiento razonable. Ejemplos: Java (JVM), C# (.NET CLR). "Write Once, Run Anywhere".</div>
+        <div class="row"><b>Tipado estático:</b> tipos verificados en tiempo de compilación. Los errores de tipo se detectan antes de ejecutar. Java, C#, Swift, Kotlin, Go.</div>
+        <div class="row"><b>Tipado dinámico:</b> tipos verificados en tiempo de ejecución. Más flexible, menos verboso, pero errores en runtime. Python, JavaScript, Ruby, PHP.</div>
+        <div class="row"><b>Fuertemente tipado:</b> no hay conversiones implícitas peligrosas. Python (5 + "3" → TypeError). Débilmente tipado: JavaScript ("5" + 3 = "53", conversión implícita).</div>
+        <div class="row"><b>DSL (Domain-Specific Language):</b> SQL (consultas de datos), HTML (estructura web), CSS (estilos), MATLAB (cálculo numérico), R (estadística), LaTeX (documentos científicos).</div>
+        <div class="row"><b>Generaciones:</b> 1GL (código máquina) → 2GL (ensamblador) → 3GL (lenguajes de alto nivel: C, Java, Python) → 4GL (orientados a dominio: SQL, ABAP) → 5GL (IA, lógica: Prolog).</div>
+      </div>
+      <div class="alert a-amber"><b>Pregunta típica:</b> "Un lenguaje que verifica tipos en tiempo de compilación y genera código ejecutable directamente sin necesidad de una máquina virtual." → Compilado + tipado estático. Ejemplos: C, C++, Go.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">3.2 Paradigmas de programación</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 Siempre sale</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">OOP — Los 4 pilares fundamentales</div>
+        <div class="row hot"><b>Abstracción:</b> exponer solo lo esencial y ocultar los detalles de implementación. Una clase abstracta o interfaz define QUÉ hace sin decir CÓMO. El usuario del objeto no necesita conocer su implementación interna.</div>
+        <div class="row hot"><b>Encapsulamiento:</b> agrupar datos (atributos) y comportamientos (métodos) dentro de la clase, ocultando el estado interno. Acceso controlado mediante getters/setters y modificadores de acceso (private, protected, public). Protege la integridad de los datos.</div>
+        <div class="row hot"><b>Herencia:</b> una clase hija (subclase) reutiliza atributos y métodos de la clase padre (superclase). Establece relación "ES UN" (is-a). Permite polimorfismo. Tipos: simple, múltiple, multinivel.</div>
+        <div class="row hot"><b>Polimorfismo:</b> el mismo mensaje/nombre de método produce diferentes comportamientos según el tipo del objeto. Tipos: Sobrecarga (overloading: mismo nombre, diferentes parámetros) y Sobreescritura (overriding: subclase redefine método del padre).</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Comparativa completa de paradigmas</div>
+        <div class="tbl-wrap"><table>
+          <tr><th>Paradigma</th><th>Enfoque central</th><th>Características</th><th>Lenguajes típicos</th></tr>
+          <tr><td><b>Imperativo</b></td><td>Cómo hacerlo</td><td>Secuencia de instrucciones, variables mutables, control de flujo explícito</td><td>C, Pascal, BASIC</td></tr>
+          <tr><td><b>OOP</b></td><td>Modelar con objetos</td><td>Abstracción, encapsulamiento, herencia, polimorfismo. Estado y comportamiento juntos.</td><td>Java, C#, Python, Ruby</td></tr>
+          <tr><td><b>Funcional</b></td><td>Qué calcular</td><td>Funciones puras (misma entrada → misma salida), inmutabilidad, sin efectos secundarios, composición de funciones</td><td>Haskell, Erlang, Scala, Clojure</td></tr>
+          <tr><td><b>Lógico</b></td><td>Declarar hechos y reglas</td><td>El motor de inferencia determina cómo resolver. Se declara QUÉ es verdadero, no CÓMO calcularlo.</td><td>Prolog</td></tr>
+          <tr><td><b>Reactivo</b></td><td>Flujos de datos</td><td>Procesamiento asíncrono, propagación automática de cambios, observable/observer</td><td>RxJS, Project Reactor</td></tr>
+          <tr><td><b>Declarativo</b></td><td>Qué resultado obtener</td><td>Describe el objetivo, no los pasos. Superset del funcional y lógico.</td><td>SQL, HTML, CSS, Prolog</td></tr>
+        </table></div>
+      </div>
+      <div class="alert a-amber"><b>Funcional en el examen:</b> una función pura no depende de estado externo ni tiene efectos secundarios. Si un método modifica una variable global, accede a la BD o imprime en pantalla, tiene efectos secundarios → no es funcional puro. El examen puede darte código y preguntar si es funcional.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">3.3 Entornos de desarrollo</div>
+        <div class="section-tags"><span class="tag t-med">⚡ Frecuente</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Control de versiones — Git</div>
+        <div class="row hot"><b>Git (distribuido):</b> cada desarrollador tiene copia COMPLETA del repositorio e historial. Puede trabajar offline. Commits locales. Luego push al remoto.</div>
+        <div class="row"><b>SVN (centralizado):</b> servidor único central. Más simple, sin necesidad de push/pull separados. Desventaja: dependencia del servidor; sin internet, no hay commits.</div>
+        <div class="row hot"><b>Merge:</b> une dos ramas creando un commit de fusión. PRESERVA el historial completo de ambas ramas. Seguro para ramas compartidas. Historial no lineal.</div>
+        <div class="row hot"><b>Rebase:</b> mueve/reaplica commits de una rama encima de otra. REESCRIBE el historial. Produce historial lineal y limpio. NUNCA usar en ramas compartidas (main/develop) porque genera conflictos para otros.</div>
+        <div class="row"><b>GitFlow:</b> modelo de ramificación: main (producción), develop (integración), feature/* (nuevas funciones), release/* (preparación), hotfix/* (correcciones urgentes).</div>
+        <div class="row"><b>Pull Request / Merge Request:</b> mecanismo para revisar código antes de fusionarlo. Facilita code review y colaboración.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">CI/CD — Integración y Entrega/Despliegue Continuo</div>
+        <div class="row hot"><b>CI (Continuous Integration):</b> desarrolladores integran código frecuentemente (varias veces al día). Cada integración dispara build automático + pruebas. Detecta errores de integración temprano. Herramientas: Jenkins, GitHub Actions, GitLab CI.</div>
+        <div class="row hot"><b>CD — Continuous Delivery:</b> código siempre listo para desplegar a producción. El despliegue final es MANUAL (requiere aprobación humana).</div>
+        <div class="row hot"><b>CD — Continuous Deployment:</b> todo commit que pase las pruebas se despliega AUTOMÁTICAMENTE a producción. Sin intervención humana.</div>
+        <div class="row"><b>Pipeline CI/CD típico:</b> commit → build → pruebas unitarias → pruebas de integración → análisis estático de código → despliegue a staging → pruebas de aceptación → despliegue a producción.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Herramientas del entorno de desarrollo</div>
+        <div class="row"><b>IDE:</b> editor + compilador + depurador + gestor de proyectos. VS Code, IntelliJ IDEA, Eclipse, Xcode.</div>
+        <div class="row"><b>Gestión de dependencias:</b> npm (Node.js), pip (Python), Maven/Gradle (Java), Composer (PHP).</div>
+        <div class="row"><b>Contenedores (Docker):</b> encapsula la app y sus dependencias en un contenedor portable. "Funciona en mi máquina" se resuelve.</div>
+        <div class="row"><b>Orquestación (Kubernetes):</b> gestiona múltiples contenedores, escalado automático, balanceo de carga, recuperación de fallos.</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta merge vs rebase:</b> "El equipo trabaja en una rama feature y quiere integrar los últimos cambios de main manteniendo un historial limpio y lineal." → Rebase (feature sobre main). "Quieren preservar el historial completo de cuándo se integró cada feature." → Merge.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">3.4 Gestión de datos</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 ACID siempre sale</span><span class="tag t-blue">9 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Propiedades ACID — memoriza la definición exacta</div>
+        <div class="row hot"><b>Atomicidad:</b> la transacción es "todo o nada". Si cualquier operación dentro de la transacción falla, TODAS se revierten (ROLLBACK). No hay estados intermedios visibles.</div>
+        <div class="row hot"><b>Consistencia:</b> una transacción lleva la base de datos de un estado VÁLIDO a otro estado VÁLIDO. Todas las restricciones de integridad (llaves foráneas, unicidad, checks) se respetan antes y después.</div>
+        <div class="row hot"><b>Aislamiento (Isolation):</b> las transacciones concurrentes se ejecutan como si fueran secuenciales. Una transacción en progreso NO ve los cambios no confirmados de otra. Niveles: Read Uncommitted → Read Committed → Repeatable Read → Serializable.</div>
+        <div class="row hot"><b>Durabilidad:</b> una vez que la transacción se confirma (COMMIT), los cambios persisten PERMANENTEMENTE aunque el sistema falle inmediatamente después. Se logra mediante logs de transacciones y almacenamiento no volátil.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">SQL — sublenguajes clasificados</div>
+        <div class="row"><b>DDL (Data Definition Language):</b> define la estructura. CREATE TABLE, ALTER TABLE, DROP TABLE, CREATE INDEX, CREATE VIEW.</div>
+        <div class="row"><b>DML (Data Manipulation Language):</b> manipula datos. SELECT, INSERT, UPDATE, DELETE.</div>
+        <div class="row"><b>DCL (Data Control Language):</b> control de acceso. GRANT (dar permisos), REVOKE (quitar permisos).</div>
+        <div class="row"><b>TCL (Transaction Control Language):</b> control de transacciones. COMMIT (confirmar), ROLLBACK (revertir), SAVEPOINT (punto de retorno parcial).</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">SQL vs. NoSQL — cuándo usar cuál</div>
+        <div class="tbl-wrap"><table>
+          <tr><th></th><th>SQL (Relacional)</th><th>NoSQL</th></tr>
+          <tr><td><b>Modelo</b></td><td>Tablas con esquema fijo y estricto</td><td>Documentos, clave-valor, columnar, grafos</td></tr>
+          <tr><td><b>Escalado</b></td><td>Vertical (más RAM/CPU al servidor)</td><td>Horizontal (más nodos en el clúster)</td></tr>
+          <tr><td><b>Garantías</b></td><td>ACID estricto</td><td>BASE: Basically Available, Soft state, Eventually consistent</td></tr>
+          <tr><td><b>Esquema</b></td><td>Rígido, definido en diseño</td><td>Flexible, schemaless</td></tr>
+          <tr><td><b>Ideal para</b></td><td>Transacciones financieras, datos muy relacionados, reportes complejos</td><td>Big Data, alta velocidad, datos no estructurados, escala web</td></tr>
+          <tr><td><b>Ejemplos</b></td><td>MySQL, PostgreSQL, Oracle, SQL Server</td><td>MongoDB (docs), Redis (k-v), Cassandra (columnar), Neo4j (grafos)</td></tr>
+        </table></div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta clásica ACID:</b> "Un sistema bancario transfiere $500 de cuenta A a B. Si el sistema falla después de debitar A pero antes de acreditar B, ¿qué propiedad ACID garantiza que los $500 regresan a A?" → <b>Atomicidad</b>. "¿Qué propiedad garantiza que una vez confirmada la transferencia, no se pierde aunque el servidor se reinicie?" → <b>Durabilidad</b>.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">3.5 Plataformas de desarrollo</div>
+        <div class="section-tags"><span class="tag t-med">⚡ IaaS/PaaS/SaaS</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Modelos de servicio en nube</div>
+        <div class="row hot"><b>IaaS (Infrastructure as a Service):</b> el proveedor ofrece hardware virtualizado (servidores, redes, almacenamiento). Tú gestionas: SO, runtime, middleware, apps, datos. Control total. Más responsabilidad. Ejemplos: AWS EC2, Azure VMs, Google Compute Engine.</div>
+        <div class="row hot"><b>PaaS (Platform as a Service):</b> el proveedor ofrece plataforma completa (SO + runtime + middleware + herramientas de desarrollo). Tú solo despliegas tu aplicación y datos. Ejemplos: Heroku, Google App Engine, Azure App Service, AWS Elastic Beanstalk.</div>
+        <div class="row hot"><b>SaaS (Software as a Service):</b> el proveedor ofrece software listo para usar vía internet. Tú solo lo consumes. No gestionas nada del stack. Ejemplos: Gmail, Salesforce, Office 365, Slack, Zoom.</div>
+        <div class="row"><b>Regla de memoria:</b> IaaS = alquilas el edificio (estructura vacía). PaaS = alquilas una oficina equipada. SaaS = contratas un servicio completo.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Modelos de despliegue en nube</div>
+        <div class="row"><b>Pública:</b> recursos compartidos con otros clientes del proveedor. Más económica, menos control.</div>
+        <div class="row"><b>Privada:</b> infraestructura exclusiva para una organización. Mayor control y seguridad. Mayor costo.</div>
+        <div class="row"><b>Híbrida:</b> combinación de pública y privada. Datos sensibles en nube privada, cargas de trabajo variables en pública.</div>
+        <div class="row"><b>Comunitaria:</b> compartida entre organizaciones con necesidades similares (ej. sector salud).</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">APIs y estilos de comunicación</div>
+        <div class="row hot"><b>REST:</b> sin estado, recursos identificados por URLs, verbos HTTP (GET=leer, POST=crear, PUT=actualizar completo, PATCH=actualizar parcial, DELETE=eliminar). Respuesta JSON principalmente. Simple y ampliamente adoptado.</div>
+        <div class="row"><b>SOAP:</b> protocolo basado en XML, con WSDL para describir el servicio. Más rígido pero con soporte nativo para transacciones y seguridad. Común en sistemas legacy y servicios financieros.</div>
+        <div class="row"><b>GraphQL:</b> el cliente define exactamente qué datos necesita en la consulta. Evita over-fetching (recibir más datos de los necesarios) y under-fetching (necesitar múltiples requests).</div>
+        <div class="row"><b>WebSockets:</b> conexión bidireccional persistente entre cliente y servidor. Para comunicación en tiempo real: chat, notificaciones push, juegos online.</div>
+      </div>
+      <div class="alert a-amber"><b>IaaS vs PaaS en el examen:</b> "Un equipo quiere desplegar su app web sin preocuparse por configurar servidores ni instalar el runtime de Node.js." → PaaS. "Necesitan instalar un software especial de terceros que requiere acceso root al sistema operativo." → IaaS.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 4: GESTIÓN ════════════════════════ -->
+<div class="page" id="p4">
+  <div class="pg-title">Área 4 · Gestión de Proyectos de Software</div>
+  <div class="pg-sub">3 subáreas · 30 reactivos · 21% del examen</div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">4.1 Gestión de tiempos, costos, recursos humanos y riesgo</div>
+        <div class="section-tags"><span class="tag t-med">⚡ EVM + Riesgos</span><span class="tag t-blue">8 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">EVM — Gestión del Valor Ganado</div>
+        <div class="formula">PV (Planned Value) = Valor del trabajo que DEBERÍA estar terminado a fecha de hoy según el plan</div>
+        <div class="formula">EV (Earned Value) = Valor del trabajo que REALMENTE está terminado a fecha de hoy</div>
+        <div class="formula">AC (Actual Cost) = Costo REAL incurrido hasta hoy</div>
+        <div class="formula">SV (Schedule Variance) = EV - PV   →   negativo = retrasado, positivo = adelantado</div>
+        <div class="formula">CV (Cost Variance) = EV - AC   →   negativo = sobrecosto, positivo = bajo costo</div>
+        <div class="formula">SPI (Schedule Performance Index) = EV / PV   →   menor 1 = retrasado, mayor 1 = adelantado</div>
+        <div class="formula">CPI (Cost Performance Index) = EV / AC   →   menor 1 = sobrecosto, mayor 1 = bajo costo</div>
+        <div class="formula">EAC (Estimate at Completion) = BAC / CPI   →   proyección del costo total final</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Estimación de esfuerzo</div>
+        <div class="row"><b>Puntos de función:</b> mide el tamaño funcional del software basado en entradas, salidas, consultas, archivos e interfaces externas. Independiente del lenguaje.</div>
+        <div class="row"><b>Story Points (ágil):</b> unidad relativa de esfuerzo/complejidad estimada por el equipo mediante planning poker. No equivale a horas directamente.</div>
+        <div class="row"><b>COCOMO:</b> modelo de estimación de esfuerzo basado en líneas de código y factores de ajuste del proyecto.</div>
+        <div class="row"><b>Diagrama de Gantt:</b> representación visual del cronograma con barras horizontales que muestran duración de actividades en el tiempo.</div>
+        <div class="row"><b>Ruta crítica (CPM):</b> la secuencia de actividades más larga que determina la duración mínima del proyecto. Cualquier retraso en la ruta crítica retrasa el proyecto completo.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Gestión de riesgos — proceso completo</div>
+        <div class="row hot"><b>Proceso:</b> 1) Identificación (¿qué puede salir mal?) → 2) Análisis cualitativo (probabilidad × impacto = exposición al riesgo) → 3) Análisis cuantitativo (valor monetario esperado) → 4) Planificación de respuesta → 5) Implementación → 6) Monitoreo continuo.</div>
+        <div class="row hot"><b>Estrategias para amenazas (riesgos negativos):</b></div>
+        <div class="row"><b>Evitar:</b> eliminar la causa del riesgo cambiando el plan del proyecto.</div>
+        <div class="row"><b>Mitigar:</b> reducir la probabilidad y/o el impacto del riesgo.</div>
+        <div class="row"><b>Transferir:</b> trasladar el impacto a un tercero (seguro, subcontratación, garantías).</div>
+        <div class="row"><b>Aceptar activamente:</b> aceptar el riesgo y preparar un plan de contingencia.</div>
+        <div class="row"><b>Aceptar pasivamente:</b> aceptar el riesgo sin ninguna acción preventiva.</div>
+        <div class="row med"><b>Estrategias para oportunidades (riesgos positivos):</b> Explotar (asegurar que ocurra), Mejorar (aumentar probabilidad/impacto), Compartir (alianza con tercero), Aceptar.</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta EVM:</b> "El proyecto tiene SPI = 0.8 y CPI = 1.15. ¿Cuál es el estado del proyecto?" → Retrasado (SPI menor a 1) pero bajo presupuesto (CPI mayor a 1). "Si CPI = 0.75 y BAC = $100,000, ¿cuál es el EAC?" → 100,000 / 0.75 = $133,333.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">4.2 Calidad de software</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 ISO + pruebas</span><span class="tag t-blue">10 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">ISO/IEC 25010 (SQuaRE) — 8 características de calidad</div>
+        <div class="tbl-wrap"><table>
+          <tr><th>Característica</th><th>Subcaracterísticas clave</th></tr>
+          <tr><td><b>Funcionalidad</b></td><td>Completitud funcional, corrección funcional, idoneidad funcional</td></tr>
+          <tr><td><b>Eficiencia de desempeño</b></td><td>Comportamiento temporal (tiempo de respuesta), utilización de recursos, capacidad</td></tr>
+          <tr><td><b>Compatibilidad</b></td><td>Coexistencia (funciona con otros sin interferir), interoperabilidad (intercambia datos con otros)</td></tr>
+          <tr><td><b>Usabilidad</b></td><td>Capacidad de aprendizaje, operabilidad, protección contra errores de usuario, estética, accesibilidad</td></tr>
+          <tr><td><b>Confiabilidad</b></td><td>Madurez (frecuencia de fallos), disponibilidad, tolerancia a fallos, recuperabilidad</td></tr>
+          <tr><td><b>Seguridad</b></td><td>Confidencialidad, integridad, no repudio, autenticidad, responsabilidad</td></tr>
+          <tr><td><b>Mantenibilidad</b></td><td>Modularidad, reusabilidad, analizabilidad, modificabilidad, capacidad de prueba</td></tr>
+          <tr><td><b>Portabilidad</b></td><td>Adaptabilidad, instalabilidad, reemplazabilidad</td></tr>
+        </table></div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">CMMI — 5 niveles de madurez</div>
+        <div class="tbl-wrap"><table>
+          <tr><th>Nivel</th><th>Nombre</th><th>Descripción para identificar en el examen</th></tr>
+          <tr><td><b>1</b></td><td>Inicial</td><td>Procesos caóticos e impredecibles. El éxito depende del heroísmo individual. Sin procesos definidos.</td></tr>
+          <tr><td><b>2</b></td><td>Gestionado</td><td>Los proyectos se planifican, monitorean y controlan. Procesos reactivos a nivel de proyecto.</td></tr>
+          <tr><td><b>3</b></td><td>Definido</td><td>Procesos estándar documentados para toda la organización. Proactivo. Hay un conjunto de procesos organizacionales.</td></tr>
+          <tr><td><b>4</b></td><td>Cuantitativamente gestionado</td><td>Los procesos se controlan mediante métricas estadísticas y cuantitativas. Predictivo.</td></tr>
+          <tr><td><b>5</b></td><td>En optimización</td><td>Mejora continua e innovación sistemática basada en datos cuantitativos. Gestión del cambio.</td></tr>
+        </table></div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Tipos de pruebas — clasificación completa</div>
+        <div class="row hot"><b>Caja negra:</b> prueba el comportamiento externo sin conocer ni acceder al código interno. Basada en especificaciones y requerimientos. El probador no necesita saber programar. Técnicas: partición equivalente, análisis de valores límite, tablas de decisión.</div>
+        <div class="row hot"><b>Caja blanca:</b> prueba la estructura interna del código. Necesita acceso y conocimiento del código fuente. Mide cobertura: de sentencias (¿cuántas líneas se ejecutaron?), de ramas (¿todos los if/else?), de caminos (¿todos los flujos de ejecución?).</div>
+        <div class="row"><b>Caja gris:</b> combinación. Conocimiento parcial de la implementación interna. Común en pruebas de integración.</div>
+        <div class="row hot"><b>Niveles de prueba en orden:</b></div>
+        <div class="row"><b>1. Unitarias:</b> prueba un módulo/función/clase de forma aislada. Rápidas, muchas, automatizadas. Responsabilidad del desarrollador.</div>
+        <div class="row"><b>2. Integración:</b> prueba la interacción entre módulos integrados. Detecta problemas de interfaces y contratos entre componentes.</div>
+        <div class="row"><b>3. Sistema:</b> prueba el sistema completo contra sus especificaciones. Ambiente de pruebas similar a producción.</div>
+        <div class="row"><b>4. Aceptación (UAT):</b> el usuario final valida el sistema en su propio entorno. Determina si el sistema está listo para producción.</div>
+        <div class="row med"><b>Pruebas de regresión:</b> verificar que cambios recientes no rompieron funcionalidades existentes. Críticas en CI/CD.</div>
+        <div class="row"><b>Pruebas de rendimiento:</b> de carga (comportamiento bajo carga esperada), de estrés (comportamiento al superar límites), de escalabilidad (cómo escala con la carga).</div>
+        <div class="row"><b>TDD (Test-Driven Development):</b> 1) Escribir prueba que falla (Red) → 2) Escribir el código mínimo para que pase (Green) → 3) Refactorizar (Refactor). Ciclo Red-Green-Refactor.</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Pregunta clásica:</b> "Un tester diseña casos de prueba analizando únicamente los documentos de requerimientos del sistema sin ver el código." → Caja negra. "El desarrollador verifica que todos los caminos de ejecución posibles de la función se prueban." → Caja blanca (cobertura de caminos).</div>
+      <div class="alert a-amber"><b>Trampa CMMI:</b> nivel 2 = "los proyectos se gestionan" pero nivel 3 = "hay procesos estándar para TODA la organización". La diferencia es que en nivel 2 cada proyecto puede tener sus propios procesos; en nivel 3 hay un conjunto organizacional unificado.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div>
+        <div class="section-title">4.3 Metodologías de desarrollo ⭐ Scrum es clave</div>
+        <div class="section-tags"><span class="tag t-hot">🔥 Más reactivos</span><span class="tag t-blue">12 reactivos</span></div>
+      </div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="blk">
+        <div class="blk-title">Manifiesto Ágil — 4 valores y principio guía</div>
+        <div class="row hot"><b>Valor 1:</b> Individuos e interacciones SOBRE procesos y herramientas.</div>
+        <div class="row hot"><b>Valor 2:</b> Software funcionando SOBRE documentación exhaustiva.</div>
+        <div class="row hot"><b>Valor 3:</b> Colaboración con el cliente SOBRE negociación contractual.</div>
+        <div class="row hot"><b>Valor 4:</b> Respuesta al cambio SOBRE seguir un plan.</div>
+        <div class="row gr">Los ítems de la derecha tienen valor, pero se valoran más los de la izquierda.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Scrum — todos los detalles que puede preguntar el examen</div>
+        <div class="row hot"><b>Product Owner (PO):</b> representa al cliente y stakeholders. Dueño y responsable del Product Backlog. Prioriza ítems según valor de negocio. Toma decisiones de producto. Es UNA persona, no un comité.</div>
+        <div class="row hot"><b>Scrum Master (SM):</b> facilita el proceso Scrum. Elimina impedimentos. Protege al equipo de interrupciones externas. NO es jefe, NO asigna tareas, NO toma decisiones de producto ni técnicas. Es un servant-leader.</div>
+        <div class="row hot"><b>Equipo de Desarrollo:</b> autoorganizado y multifuncional (tiene todas las habilidades). Decide CÓMO hacer el trabajo. Tamaño óptimo: 3-9 personas. No hay roles internos (no hay "líder técnico" dentro del equipo Scrum).</div>
+        <div class="row hot"><b>Product Backlog:</b> lista ordenada y priorizada de TODO lo que el producto necesita. Gestionada por el PO. Siempre en evolución (refinamiento continuo). Cada ítem tiene descripción, criterios de aceptación y estimación.</div>
+        <div class="row hot"><b>Sprint Backlog:</b> conjunto de ítems del Product Backlog seleccionados para el sprint actual + plan del equipo para entregar el incremento. Es propiedad del equipo de desarrollo. Solo el equipo puede modificarlo durante el sprint.</div>
+        <div class="row hot"><b>Incremento:</b> suma de todos los ítems completados durante el sprint + todos los sprints anteriores. Debe ser Potencialmente Entregable (cumple la Definición de Done). No es opcional entregarlo; es el resultado del sprint.</div>
+        <div class="row hot"><b>Sprint:</b> iteración fija de 1-4 semanas (usualmente 2). El objetivo del sprint NO cambia durante su ejecución. Al finalizar debe haber un incremento potencialmente entregable.</div>
+        <div class="row hot"><b>Sprint Planning:</b> el equipo selecciona ítems del Product Backlog y planifica CÓMO entregar el incremento. Se establece el Sprint Goal. El PO aclara dudas. Timebox: 8 horas para sprint de 1 mes.</div>
+        <div class="row"><b>Daily Scrum:</b> 15 minutos, cada día, mismo lugar y hora. El equipo sincroniza y planifica las próximas 24 horas. Cada miembro responde: ¿qué hice ayer?, ¿qué haré hoy?, ¿hay impedimentos? El SM facilita pero NO dirige.</div>
+        <div class="row"><b>Sprint Review:</b> al final del sprint. El equipo muestra el incremento a los stakeholders. El PO revisa el Product Backlog. Feedback del cliente. Timebox: 4 horas para sprint de 1 mes.</div>
+        <div class="row"><b>Sprint Retrospectiva:</b> el equipo reflexiona sobre su propio proceso. ¿Qué salió bien? ¿Qué mejorar? ¿Cómo implementar mejoras? Solo el equipo Scrum (no stakeholders). Timebox: 3 horas para sprint de 1 mes.</div>
+        <div class="row"><b>Definition of Done (DoD):</b> criterios compartidos que definen cuándo un ítem está realmente terminado. Incluye: código escrito, revisado, probado, documentado, desplegado en staging, etc. El equipo lo define.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Cascada vs. Ágil — diferencias que el examen evalúa</div>
+        <div class="tbl-wrap"><table>
+          <tr><th></th><th>Cascada (Waterfall)</th><th>Ágil (Scrum/XP)</th></tr>
+          <tr><td><b>Requerimientos</b></td><td>Fijos desde el inicio, difíciles de cambiar</td><td>Bienvenidos en cualquier momento</td></tr>
+          <tr><td><b>Entregables</b></td><td>Un solo entregable al final</td><td>Incrementos funcionales cada sprint</td></tr>
+          <tr><td><b>Participación cliente</b></td><td>Al inicio y al final</td><td>Continua, en cada sprint</td></tr>
+          <tr><td><b>Documentación</b></td><td>Exhaustiva antes de implementar</td><td>Suficiente, justo a tiempo</td></tr>
+          <tr><td><b>Pruebas</b></td><td>Al final del desarrollo</td><td>Continuas, integradas al desarrollo</td></tr>
+          <tr><td><b>Ideal para</b></td><td>Req. estables, proyectos grandes y predecibles, infraestructura física</td><td>Req. cambiantes, innovación, equipos pequeños</td></tr>
+        </table></div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">Kanban vs. Scrum</div>
+        <div class="tbl-wrap"><table>
+          <tr><th></th><th>Scrum</th><th>Kanban</th></tr>
+          <tr><td><b>Iteraciones</b></td><td>Sprints de duración fija</td><td>Flujo continuo sin iteraciones</td></tr>
+          <tr><td><b>Roles</b></td><td>PO, Scrum Master, Dev Team</td><td>No prescribe roles específicos</td></tr>
+          <tr><td><b>Cambios</b></td><td>No durante el sprint activo</td><td>En cualquier momento</td></tr>
+          <tr><td><b>WIP</b></td><td>Gestionado por sprint</td><td>Límites de WIP explícitos por columna</td></tr>
+          <tr><td><b>Métricas</b></td><td>Velocity, burndown chart</td><td>Lead time, cycle time, throughput</td></tr>
+          <tr><td><b>Tablero</b></td><td>Se resetea cada sprint</td><td>Persiste continuamente</td></tr>
+        </table></div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">XP (Extreme Programming) — prácticas técnicas</div>
+        <div class="row"><b>Pair Programming:</b> dos programadores en una computadora. Uno codifica (driver), otro revisa en tiempo real (navigator). Mejora calidad y transfiere conocimiento.</div>
+        <div class="row"><b>TDD:</b> escribir la prueba antes que el código de producción. Red-Green-Refactor.</div>
+        <div class="row"><b>Refactoring:</b> mejorar el diseño interno sin cambiar el comportamiento externo. Elimina deuda técnica.</div>
+        <div class="row"><b>Integración continua:</b> integrar y construir varias veces al día.</div>
+        <div class="row"><b>Código colectivo:</b> cualquier desarrollador puede modificar cualquier parte del código. Nadie es "dueño" de un módulo.</div>
+        <div class="row"><b>Estándares de código:</b> convenciones compartidas para que el código sea legible por todo el equipo.</div>
+      </div>
+      <div class="blk">
+        <div class="blk-title">RUP (Rational Unified Process) — fases</div>
+        <div class="row"><b>Inicio:</b> definir alcance, casos de negocio, factibilidad. ¿Vale la pena hacer el proyecto?</div>
+        <div class="row"><b>Elaboración:</b> definir arquitectura base, reducir riesgos principales, refinar casos de uso.</div>
+        <div class="row"><b>Construcción:</b> desarrollar el software incrementalmente. Múltiples iteraciones.</div>
+        <div class="row"><b>Transición:</b> desplegar el producto al usuario final, entrenamiento, soporte inicial.</div>
+      </div>
+      <div class="alert a-red"><b>🔥 Trampa clásica Scrum:</b> "¿Quién asigna las tareas del Sprint Backlog a los desarrolladores?" → NADIE las asigna externamente. El equipo se autoorganiza y cada miembro elige las tareas. El Scrum Master NO asigna tareas. El PO NO asigna tareas.</div>
+      <div class="alert a-amber"><b>Otra trampa:</b> "¿Puede el PO cambiar el Sprint Backlog durante el sprint?" → NO. Solo el equipo puede modificar el Sprint Backlog durante el sprint. El PO puede actualizar el Product Backlog en cualquier momento, pero no el Sprint Backlog activo.</div>
+    </div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 5: FLASHCARDS ════════════════════════ -->
+<div class="page" id="p5">
+  <div class="pg-title">Flashcards de repaso</div>
+  <div class="pg-sub">Toca cada tarjeta para ver la respuesta · Navega con los botones</div>
+
+  <div class="flash-wrap">
+    <div class="flash-card-outer" id="fc" onclick="flipCard()">
+      <div class="flash-inner">
+        <div class="flash-front">
+          <div class="flash-label">Pregunta</div>
+          <div class="flash-q" id="fq">...</div>
+        </div>
+        <div class="flash-back">
+          <div class="flash-label">Respuesta</div>
+          <div class="flash-a" id="fa">...</div>
+        </div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button class="flash-btn" onclick="prevCard()">← Anterior</button>
+      <div class="flash-counter" id="fc-count">1 / 50</div>
+      <button class="flash-btn" onclick="nextCard()">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════ PAGE 6: QUIZ ════════════════════════ -->
+<div class="page" id="p6">
+  <div class="pg-title">Quiz de práctica tipo EGEL</div>
+  <div class="pg-sub">Reactivos situacionales · Toca una opción para ver si es correcta</div>
+  <div class="q-score"><span>Aciertos: <span id="score-n">0</span> / <span id="score-t">0</span></span><button class="flash-btn" onclick="resetQuiz()">Reiniciar quiz</button></div>
+  <div class="quiz-wrap" id="quiz-container"></div>
+</div>
+
+<!-- ════════════════════════ PAGE 7: TOP TEMAS ════════════════════════ -->
+<div class="page" id="p7">
+  <div class="pg-title">🔥 Lo más preguntado en el EGEL</div>
+  <div class="pg-sub">Basado en exámenes 2022–2025 y la guía oficial CENEVAL</div>
+
+  <div class="section">
+    <div class="section-head open" onclick="tog(this)">
+      <div><div class="section-title">Top 15 conceptos que siempre aparecen</div></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body open"><div class="section-inner">
+      <div class="row hot">1. <b>RF vs. RNF:</b> identificar el tipo de requerimiento dado un enunciado del cliente.</div>
+      <div class="row hot">2. <b>ACID completo:</b> saber exactamente qué propiedad aplica en cada escenario de falla de BD.</div>
+      <div class="row hot">3. <b>Scrum — roles, artefactos, ceremonias:</b> qué hace el PO vs SM, qué es el PB vs SB, cuándo ocurre cada evento.</div>
+      <div class="row hot">4. <b>Caja negra vs. caja blanca:</b> identificar la técnica según el acceso al código fuente.</div>
+      <div class="row hot">5. <b>Patrones GoF en contexto:</b> dado un problema, identificar Observer, Strategy, Singleton, Facade, Adapter.</div>
+      <div class="row hot">6. <b>Include vs. Extend en UML:</b> cuándo la relación es obligatoria (include) vs. condicional (extend).</div>
+      <div class="row hot">7. <b>Niveles CMMI:</b> identificar en qué nivel está una organización dada su descripción.</div>
+      <div class="row hot">8. <b>Validación vs. verificación:</b> ¿construimos el sistema correcto? vs. ¿lo construimos correctamente?</div>
+      <div class="row hot">9. <b>Cohesión alta + acoplamiento bajo:</b> identificar violaciones en un diseño de módulos dado.</div>
+      <div class="row hot">10. <b>MoSCoW:</b> clasificar requerimientos dados en Must/Should/Could/Won't.</div>
+      <div class="row hot">11. <b>Heurísticos de Nielsen:</b> dado un problema de UI, identificar cuál se viola.</div>
+      <div class="row hot">12. <b>ISO 25010:</b> dada una característica, identificar a qué categoría de la norma pertenece.</div>
+      <div class="row hot">13. <b>SPI y CPI:</b> interpretar si el proyecto está retrasado/adelantado y sobre/bajo presupuesto.</div>
+      <div class="row hot">14. <b>Git merge vs. rebase:</b> cuándo usar cada uno y sus consecuencias en el historial.</div>
+      <div class="row hot">15. <b>IaaS vs. PaaS vs. SaaS:</b> dado un escenario, identificar el modelo de servicio correcto.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div><div class="section-title">Las 10 trampas más comunes — errores que evitar</div></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="row hot"><b>Trampa 1:</b> Creer que el Scrum Master asigna o gestiona las tareas del equipo. El SM es facilitador y servant-leader, jamás jefe.</div>
+      <div class="row hot"><b>Trampa 2:</b> Clasificar "rendimiento" o "tiempo de respuesta" como requerimiento funcional. Son siempre NO funcionales.</div>
+      <div class="row hot"><b>Trampa 3:</b> Confundir COMMIT con Consistencia. COMMIT garantiza Durabilidad. La Consistencia es que las reglas de integridad se respetan antes y después.</div>
+      <div class="row hot"><b>Trampa 4:</b> Pensar que "alta cohesión" significa que los módulos están muy conectados entre sí. Cohesión es INTERNA al módulo. Acoplamiento es ENTRE módulos.</div>
+      <div class="row hot"><b>Trampa 5:</b> Confundir Extend con Include. Include = siempre, obligatorio. Extend = solo bajo condición, opcional.</div>
+      <div class="row hot"><b>Trampa 6:</b> En Cascada clásica, creer que se puede regresar libremente a fases anteriores. En la versión original NO hay retroceso formal planificado.</div>
+      <div class="row hot"><b>Trampa 7:</b> Confundir CMMI nivel 2 con nivel 3. Nivel 2 = cada proyecto gestionado. Nivel 3 = procesos ESTÁNDAR para toda la organización.</div>
+      <div class="row hot"><b>Trampa 8:</b> Confundir Factory Method con Abstract Factory. FM = una jerarquía, delega a subclase crear UN tipo. AF = familias de objetos relacionados.</div>
+      <div class="row hot"><b>Trampa 9:</b> Asumir que el PO puede modificar el Sprint Backlog durante el sprint. Solo el equipo de desarrollo puede hacerlo.</div>
+      <div class="row hot"><b>Trampa 10:</b> Confundir SPI < 1 con sobrecosto. SPI < 1 = retrasado (tiempo). CPI < 1 = sobrecosto (dinero). Son independientes.</div>
+    </div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-head" onclick="tog(this)">
+      <div><div class="section-title">Bibliografía oficial CENEVAL — de dónde salen los reactivos</div></div>
+      <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="section-body"><div class="section-inner">
+      <div class="row"><b>Pressman, R.S.</b> — Ingeniería de Software: Un enfoque práctico (7ª/8ª ed.) → fuente principal para pruebas, arquitectura, diseño modular, métricas.</div>
+      <div class="row"><b>Sommerville, I.</b> — Ingeniería del Software (9ª/10ª ed.) → requerimientos, metodologías, calidad, gestión de proyectos.</div>
+      <div class="row"><b>Larman, C.</b> — UML y Patrones → UML completo, patrones de diseño en contexto, proceso unificado.</div>
+      <div class="row"><b>Gamma, Helm, Johnson, Vlissides</b> — Design Patterns: Elements of Reusable OO Software (GoF) → los 23 patrones originales.</div>
+      <div class="row"><b>SWEBOK</b> (IEEE) — Software Engineering Body of Knowledge → marco de referencia para todas las áreas de ingeniería de software.</div>
+      <div class="row"><b>Schwaber & Sutherland</b> — The Scrum Guide (edición más reciente) → fuente oficial y definitiva de Scrum.</div>
+      <div class="row"><b>Fowler, M.</b> — Refactoring: Improving the Design of Existing Code → refactoring, deuda técnica, patrones de código limpio.</div>
+    </div></div>
+  </div>
+</div>
+
+<div class="footer">Guía EGEL Plus ISOFT 2026 · Generada para uso offline · Basada en temario oficial CENEVAL</div>
+
+<script>
+// ── NAVIGATION ──
+function go(i){
+  document.querySelectorAll('.page').forEach((p,j)=>p.classList.toggle('on',i===j));
+  document.querySelectorAll('.nav-btn').forEach((b,j)=>b.classList.toggle('on',i===j));
+  window.scrollTo(0,0);
+}
+function tog(h){
+  h.classList.toggle('open');
+  h.nextElementSibling.classList.toggle('open');
+}
+
+// ── FLASHCARDS ──
+const cards = [
+  {q:"¿Qué son los requerimientos funcionales?", a:"Describen QUÉ hace el sistema: sus funciones, comportamientos, entradas y salidas. Ejemplo: 'El sistema debe permitir al usuario iniciar sesión con correo y contraseña.'"},
+  {q:"¿Qué son los requerimientos no funcionales? Da 4 ejemplos.", a:"Atributos de CALIDAD que describen CÓMO lo hace. Ejemplos: 1) Rendimiento (tiempo de respuesta < 2s), 2) Seguridad (autenticación de dos factores), 3) Disponibilidad (99.9% uptime), 4) Usabilidad (aprendizaje en menos de 1 hora)."},
+  {q:"¿Cuál es la diferencia entre validación y verificación?", a:"VALIDACIÓN: ¿construimos el sistema CORRECTO? ¿Satisface las necesidades del cliente? (involucra al cliente). VERIFICACIÓN: ¿lo construimos CORRECTAMENTE? ¿Cumple las especificaciones técnicas? (proceso interno del equipo)."},
+  {q:"¿Qué es la relación Include en UML y cuándo se usa?", a:"Include indica que un caso de uso SIEMPRE incluye/ejecuta otro como parte obligatoria de su flujo. La flecha va del caso base al incluido. Ejemplo: 'Procesar pago' siempre incluye 'Validar tarjeta'."},
+  {q:"¿Qué es la relación Extend en UML y cuándo se usa?", a:"Extend indica que un caso de uso se ejecuta CONDICIONALMENTE, solo bajo ciertas circunstancias. La flecha va del caso extendido al base. Ejemplo: 'Mostrar alerta de saldo insuficiente' extiende 'Procesar pago' SOLO SI el saldo es insuficiente."},
+  {q:"¿Qué significa MoSCoW?", a:"Técnica de priorización: Must have (críticos, sin ellos el producto falla), Should have (importantes pero no críticos), Could have (deseables, primeros en cortar), Won't have (fuera del alcance ahora, para versiones futuras)."},
+  {q:"¿Cuáles son los estilos arquitectónicos principales y sus casos de uso?", a:"Capas (sistemas empresariales, separar responsabilidades), MVC (interfaces interactivas), Microservicios (alta escalabilidad), SOA (integración empresarial), Pipe&Filter (procesamiento secuencial de datos), Evento-Driven (sistemas reactivos asíncronos), Repositorio (múltiples componentes comparten datos centrales)."},
+  {q:"¿Cuál es la diferencia entre cohesión y acoplamiento?", a:"COHESIÓN (alta=buena): grado de relación de responsabilidades DENTRO de un módulo. Un módulo cohesivo hace una sola cosa. ACOPLAMIENTO (bajo=bueno): grado de dependencia ENTRE módulos distintos. Objetivo: alta cohesión + bajo acoplamiento."},
+  {q:"Explica los 5 principios SOLID", a:"S=SRP: una clase, una responsabilidad. O=OCP: abierto para extensión, cerrado para modificación. L=LSP: la subclase sustituye al padre sin romper el programa. I=ISP: interfaces pequeñas y específicas. D=DIP: depender de abstracciones, no de implementaciones concretas."},
+  {q:"¿Cuándo usas el patrón Observer?", a:"Cuando múltiples objetos deben ser notificados automáticamente cuando un objeto (subject) cambia de estado. Define relación uno-a-muchos. Ejemplo: múltiples módulos que deben actualizar la UI cuando cambian los datos del modelo. También usado en sistemas de eventos y suscripciones."},
+  {q:"¿Cuándo usas el patrón Strategy?", a:"Cuando necesitas una familia de algoritmos intercambiables en tiempo de ejecución. Encapsula cada algoritmo y los hace intercambiables. Ejemplo: diferentes métodos de ordenamiento, diferentes métodos de pago, diferentes algoritmos de compresión."},
+  {q:"¿Cuándo usas el patrón Facade?", a:"Cuando necesitas proporcionar una interfaz simplificada a un sistema complejo de subsistemas. El cliente interactúa con una sola clase en lugar de con múltiples subsistemas. Ejemplo: API simple sobre un sistema de terceros complejo, biblioteca de video/audio."},
+  {q:"¿Cuándo usas el patrón Singleton?", a:"Cuando necesitas garantizar que una clase tenga exactamente UNA instancia y proporcionar un punto de acceso global a ella. Ejemplo: un único gestor de configuración, un único pool de conexiones a BD, un único logger global."},
+  {q:"¿Cuándo usas el patrón Adapter?", a:"Cuando necesitas hacer que interfaces incompatibles trabajen juntas. Convierte la interfaz de una clase en otra que el cliente espera. Ejemplo: integrar una librería de terceros con una interfaz diferente, adaptar sistema legacy a nuevas interfaces."},
+  {q:"Explica las 4 propiedades ACID", a:"A=Atomicidad: todo o nada, si falla → ROLLBACK. C=Consistencia: pasa de estado válido a estado válido, respetando todas las restricciones. I=Isolation/Aislamiento: transacciones concurrentes no se ven entre sí. D=Durabilidad: tras COMMIT, los cambios persisten aunque el sistema falle."},
+  {q:"¿Qué garantía ACID aplica cuando un banco transfiere dinero y el sistema falla a la mitad?", a:"Atomicidad: la transacción es 'todo o nada'. Si falla después de debitar pero antes de acreditar, toda la operación se revierte (ROLLBACK). El dinero regresa a la cuenta origen como si nada hubiera ocurrido."},
+  {q:"¿Qué es la diferencia entre Git merge y rebase?", a:"MERGE: une dos ramas creando un commit de fusión, preserva el historial completo, no lineal. Seguro para ramas compartidas. REBASE: reaplica commits de una rama sobre otra, reescribe el historial, produce historial lineal y limpio. NUNCA hacer rebase en ramas compartidas (main/develop)."},
+  {q:"¿Cuál es la diferencia entre CI y CD?", a:"CI (Continuous Integration): integrar código frecuentemente, cada commit dispara build+pruebas automáticas. Continuous Delivery: el código siempre está listo para producción, el deploy es manual. Continuous Deployment: deploy automático a producción en cada commit que pase las pruebas."},
+  {q:"¿Cuál es la diferencia entre IaaS, PaaS y SaaS?", a:"IaaS: proveedor da infraestructura virtual (servidores, red), tú gestionas OS, runtime, apps. (AWS EC2). PaaS: proveedor da plataforma completa, tú solo despliegas tu app. (Heroku). SaaS: proveedor da software completo listo para usar, tú solo lo consumes. (Gmail, Salesforce)."},
+  {q:"¿Qué es caja negra y caja blanca en pruebas?", a:"CAJA NEGRA: prueba el comportamiento externo sin ver el código. Se basa en especificaciones. No requiere conocer programación. Técnicas: partición equivalente, valores límite. CAJA BLANCA: prueba la estructura interna del código. Requiere acceso y conocimiento del código. Mide cobertura de sentencias, ramas y caminos."},
+  {q:"¿Cuáles son los 4 niveles de prueba en orden?", a:"1) Unitarias (módulo individual, aislado, responsabilidad del dev), 2) Integración (interacción entre módulos), 3) Sistema (sistema completo vs. especificaciones, ambiente similar a producción), 4) Aceptación/UAT (usuario final valida en su entorno)."},
+  {q:"¿Qué es TDD y cuál es su ciclo?", a:"Test-Driven Development: escribir la prueba ANTES que el código. Ciclo Red-Green-Refactor: 1) Red = escribir prueba que falla, 2) Green = escribir código mínimo para que la prueba pase, 3) Refactor = mejorar el código manteniendo las pruebas verdes."},
+  {q:"¿Cuáles son los 5 niveles de CMMI?", a:"1=Inicial (caótico, heroísmo individual), 2=Gestionado (proyectos planificados y controlados), 3=Definido (procesos estándar para toda la organización), 4=Cuantitativamente gestionado (control estadístico), 5=En optimización (mejora continua sistemática)."},
+  {q:"¿Cuáles son las 8 características de calidad de ISO 25010?", a:"1) Funcionalidad, 2) Eficiencia de desempeño, 3) Compatibilidad, 4) Usabilidad, 5) Confiabilidad, 6) Seguridad, 7) Mantenibilidad, 8) Portabilidad. Mnemotecnia: FECUCSMP."},
+  {q:"¿Cuáles son los 3 roles de Scrum?", a:"1) Product Owner: representa al cliente, dueño del Product Backlog, prioriza por valor de negocio. 2) Scrum Master: facilita el proceso, elimina impedimentos, servant-leader (NO asigna tareas). 3) Equipo de Desarrollo: autoorganizado, multifuncional, decide CÓMO hacer el trabajo (3-9 personas)."},
+  {q:"¿Cuáles son los 3 artefactos de Scrum?", a:"1) Product Backlog: lista priorizada de TODO lo que necesita el producto (gestionado por PO, siempre cambia). 2) Sprint Backlog: ítems seleccionados para el sprint + plan del equipo (propiedad del equipo, solo el equipo lo modifica). 3) Incremento: suma de todo lo completado, potencialmente entregable."},
+  {q:"¿Cuáles son las 4 ceremonias de Scrum?", a:"1) Sprint Planning: seleccionar ítems y planificar el sprint (8h para sprint de 1 mes). 2) Daily Scrum: 15 min, sincronizar y planificar 24h. 3) Sprint Review: mostrar incremento a stakeholders (4h). 4) Sprint Retrospectiva: mejorar el proceso del equipo (3h). Solo el equipo Scrum."},
+  {q:"¿Cuáles son los 4 valores del Manifiesto Ágil?", a:"1) Individuos e interacciones SOBRE procesos y herramientas. 2) Software funcionando SOBRE documentación exhaustiva. 3) Colaboración con el cliente SOBRE negociación contractual. 4) Respuesta al cambio SOBRE seguir un plan. Los ítems de la derecha tienen valor, pero se valoran más los de la izquierda."},
+  {q:"¿Cuál es la fórmula del SPI y qué significa?", a:"SPI = EV / PV (Earned Value / Planned Value). SPI < 1 = proyecto RETRASADO (se ha hecho menos de lo planificado). SPI = 1 = en tiempo. SPI > 1 = adelantado. SPI mide desempeño de TIEMPO, no de costo."},
+  {q:"¿Cuál es la fórmula del CPI y qué significa?", a:"CPI = EV / AC (Earned Value / Actual Cost). CPI < 1 = SOBRECOSTO (se gastó más de lo que se avanzó en valor). CPI = 1 = en presupuesto. CPI > 1 = bajo presupuesto. CPI mide eficiencia del COSTO."},
+  {q:"¿Qué es la normalización en bases de datos? Explica 1FN, 2FN y 3FN.", a:"1FN: valores atómicos, sin grupos repetitivos. 2FN: en 1FN + atributos no clave dependen de la CLAVE COMPLETA (elimina dependencias parciales, solo aplica con clave compuesta). 3FN: en 2FN + sin dependencias transitivas (atributo no clave dependiendo de otro atributo no clave)."},
+  {q:"¿Cuáles son los 4 pilares del OOP?", a:"1) Abstracción: exponer solo lo esencial, ocultar implementación. 2) Encapsulamiento: ocultar estado interno, acceso mediante getters/setters. 3) Herencia: subclase reutiliza atributos/métodos del padre (relación 'ES UN'). 4) Polimorfismo: mismo método, diferente comportamiento según tipo (sobrecarga y sobreescritura)."},
+  {q:"¿Cuál es la diferencia entre Scrum y Kanban?", a:"Scrum: sprints fijos (1-4 sem), roles definidos (PO/SM/Dev), artefactos formales, no se cambia el sprint activo. Kanban: flujo continuo sin iteraciones, sin roles prescritos, tablero persiste, cambios en cualquier momento, límites de WIP explícitos por columna, métricas: lead time y cycle time."},
+  {q:"¿Cuáles son los 10 heurísticos de Nielsen?", a:"1)Visibilidad del estado, 2)Mundo real, 3)Control y libertad, 4)Consistencia, 5)Prevención de errores, 6)Reconocimiento sobre recuerdo, 7)Flexibilidad y eficiencia, 8)Diseño estético/minimalista, 9)Recuperación de errores, 10)Ayuda y documentación."},
+  {q:"¿Cuáles son las estrategias de respuesta a riesgos negativos (amenazas)?", a:"EVITAR: eliminar la causa del riesgo cambiando el plan. MITIGAR: reducir probabilidad y/o impacto. TRANSFERIR: trasladar a tercero (seguro, subcontratación). ACEPTAR ACTIVAMENTE: plan de contingencia listo. ACEPTAR PASIVAMENTE: sin acción, asumir consecuencias si ocurre."},
+  {q:"¿Cuál es la diferencia entre REST y SOAP?", a:"REST: sin estado, URLs para recursos, verbos HTTP (GET/POST/PUT/DELETE), JSON principalmente, simple y ligero. SOAP: protocolo XML, WSDL para describir servicio, más rígido y verboso, soporte nativo para transacciones y seguridad, común en sistemas legacy y servicios financieros."},
+  {q:"¿Qué es el Principio de Responsabilidad Única (SRP)?", a:"Una clase debe tener UNA sola razón para cambiar, es decir, una sola responsabilidad. Si una clase maneja autenticación Y envío de emails Y generación de reportes, viola SRP. Beneficio: clases más pequeñas, cohesivas, fáciles de probar y mantener."},
+  {q:"¿Cuándo usar arquitectura de microservicios vs. arquitectura en capas?", a:"MICROSERVICIOS: cuando se necesita escalado independiente por función, equipos autónomos, despliegue continuo, diferentes lenguajes/tecnologías por servicio (Netflix, Amazon). EN CAPAS: sistemas más simples, equipos pequeños, requisitos de rendimiento moderados, menor complejidad operacional."},
+  {q:"¿Qué es el patrón Command y cuándo se usa?", a:"Encapsula una solicitud/acción como un objeto, permitiendo: parametrizar clientes con diferentes operaciones, hacer colas de operaciones, implementar undo/redo. Ejemplo: editor de texto con historial de acciones, sistema de transacciones bancarias, cliente HTTP."},
+  {q:"¿Qué es el patrón Template Method?", a:"Define el ESQUELETO de un algoritmo en la clase base, dejando que las subclases implementen los pasos variables. La estructura del algoritmo es fija; los detalles de implementación son variables. Ejemplo: proceso de apertura de cuenta bancaria con pasos fijos pero validaciones variables por tipo de cuenta."},
+  {q:"¿Qué es el Principio Open/Closed (OCP)?", a:"Las clases deben estar ABIERTAS para extensión pero CERRADAS para modificación. Cuando necesites agregar funcionalidad nueva, EXTIENDE (herencia, composición, interfaces) en lugar de modificar el código existente. Beneficio: el código existente y probado no se toca, reduciendo riesgos."},
+  {q:"¿Qué es el LSP (Liskov Substitution Principle)?", a:"Una subclase debe poder sustituir a su clase padre en cualquier contexto sin alterar el comportamiento correcto del programa. Si Pato hereda de Ave y Ave.volar() existe, pero Pato no puede volar, viola LSP. Solución: reestructurar la jerarquía o usar interfaces más específicas."},
+  {q:"¿Qué es el Continuous Deployment vs. Continuous Delivery?", a:"Continuous DELIVERY: código siempre listo para ir a producción, pero el DEPLOY es MANUAL (requiere aprobación humana). Continuous DEPLOYMENT: todo commit que pase las pruebas se despliega AUTOMÁTICAMENTE a producción sin intervención humana."},
+  {q:"¿Qué hace el SRS y cuáles son sus características?", a:"El SRS (Software Requirements Specification, IEEE 830) es el documento maestro que captura TODOS los requerimientos del sistema. Debe ser: Completo, Consistente, No ambiguo, Verificable, Trazable, Modificable y Correcto. Es la base del contrato entre cliente y desarrollador."},
+  {q:"¿Qué es el Diagrama de Actividad en UML?", a:"Modela el flujo de trabajo de un proceso o caso de uso. Elementos: nodo inicial (círculo negro), actividades (rectángulos redondeados), nodos de decisión (rombos), fork/join (barras para concurrencia), nodo final. Los swimlanes dividen responsabilidades por actor."},
+  {q:"¿Qué son las pruebas de regresión?", a:"Pruebas que verifican que los cambios recientes (nuevas funcionalidades, correcciones de bugs) no han roto funcionalidades que ya funcionaban correctamente. Son críticas en CI/CD donde hay cambios frecuentes. Deben automatizarse para ejecutarse en cada commit."},
+  {q:"¿Qué es el Principio de Inversión de Dependencias (DIP)?", a:"Los módulos de alto nivel no deben depender de módulos de bajo nivel; ambos deben depender de ABSTRACCIONES (interfaces). Las abstracciones no deben depender de detalles; los detalles deben depender de abstracciones. Implementado mediante inyección de dependencias (DI)."},
+  {q:"¿Cuál es la diferencia entre overloading y overriding?", a:"OVERLOADING (sobrecarga): mismo nombre de método, diferentes parámetros (tipo, número o ambos), en la misma clase. Resuelto en tiempo de compilación. OVERRIDING (sobreescritura): la subclase redefine un método del padre con la misma firma. Resuelto en tiempo de ejecución (polimorfismo dinámico)."},
+  {q:"¿Qué es un lenguaje compilado vs. interpretado vs. bytecode?", a:"COMPILADO: código fuente → código máquina directamente. Muy rápido en ejecución (C, C++, Go). INTERPRETADO: ejecutado línea por línea por intérprete. Más lento pero flexible y portable (Python, Ruby). BYTECODE: compilado a código intermedio ejecutado por máquina virtual. Balance entre ambos (Java/JVM, C#/.NET)."},
+  {q:"¿Cuál es la diferencia entre tipado estático y dinámico?", a:"TIPADO ESTÁTICO: los tipos se verifican en COMPILACIÓN. Errores detectados antes de ejecutar. Más verboso. Java, C#, Swift, Kotlin, Go. TIPADO DINÁMICO: los tipos se verifican en EJECUCIÓN. Más flexible y conciso, pero errores en runtime. Python, JavaScript, Ruby, PHP."},
+  {q:"¿Qué es el modelo de proceso RUP y cuáles son sus fases?", a:"Rational Unified Process: iterativo e incremental, orientado a casos de uso, arquitectura céntrica. Fases: 1) Inicio (alcance y factibilidad), 2) Elaboración (arquitectura base, reducir riesgos), 3) Construcción (desarrollo iterativo del producto), 4) Transición (entrega, despliegue, entrenamiento)."}
+];
+
+let ci=0, flipped=false;
+function showCard(){
+  document.getElementById('fq').textContent=cards[ci].q;
+  document.getElementById('fa').textContent=cards[ci].a;
+  document.getElementById('fc-count').textContent=(ci+1)+' / '+cards.length;
+  document.getElementById('fc').classList.remove('flipped');
+  flipped=false;
+}
+function flipCard(){ document.getElementById('fc').classList.toggle('flipped'); flipped=!flipped; }
+function nextCard(){ ci=(ci+1)%cards.length; showCard(); }
+function prevCard(){ ci=(ci-1+cards.length)%cards.length; showCard(); }
+showCard();
+
+// ── QUIZ ──
+const questions = [
+  {q:"El gerente de una empresa dice: 'Necesitamos que el sistema esté disponible el 99.9% del tiempo y que procese 1,000 transacciones por segundo.' ¿Qué tipo de requerimientos son?",ctx:"",opts:["Funcionales, ya que describen el comportamiento del sistema","No funcionales, ya que describen atributos de calidad","De dominio, ya que son específicos del negocio","De restricción, ya que limitan el alcance"],ans:1,exp:"La disponibilidad (99.9% uptime) es un atributo de CONFIABILIDAD y el throughput (1,000 TPS) es un atributo de RENDIMIENTO/EFICIENCIA. Ambos son requerimientos NO funcionales. Los funcionales describen QUÉ hace el sistema, los no funcionales describen CÓMO lo hace (con qué calidad)."},
+  {q:"En el diagrama de casos de uso del sistema bancario, 'Procesar transferencia' siempre ejecuta 'Registrar en bitácora' sin excepción. ¿Qué relación UML representa esto?",ctx:"",opts:["Extend, porque 'Registrar bitácora' extiende el comportamiento","Include, porque siempre se ejecuta como parte del flujo","Generalización, porque uno hereda del otro","Dependencia, porque existe una relación entre ambos"],ans:1,exp:"Include indica que un caso de uso SIEMPRE incluye otro como parte obligatoria de su ejecución. Como 'Registrar en bitácora' ocurre SIN EXCEPCIÓN en cada transferencia, la relación es Include. La flecha va de 'Procesar transferencia' a 'Registrar en bitácora'."},
+  {q:"Un sistema bancario ejecuta una transferencia de $5,000. Después de debitar la cuenta origen, el servidor falla antes de acreditar la cuenta destino. ¿Qué propiedad ACID garantiza que los $5,000 regresan a la cuenta origen?",ctx:"",opts:["Consistencia, porque el estado de la BD debe ser válido","Durabilidad, porque los cambios deben persistir","Atomicidad, porque la transacción es todo o nada","Aislamiento, porque las transacciones no se mezclan"],ans:2,exp:"ATOMICIDAD garantiza que la transacción es 'todo o nada'. Si cualquier parte falla, TODA la transacción se revierte (ROLLBACK). Los $5,000 regresan automáticamente a la cuenta origen porque la operación se trata como una unidad indivisible."},
+  {q:"¿Cuál es el rol del Scrum Master en un equipo Scrum?",ctx:"",opts:["Asignar tareas diariamente a los desarrolladores según sus habilidades","Tomar decisiones sobre qué funcionalidades incluir en el producto","Facilitar el proceso, eliminar impedimentos y proteger al equipo","Gestionar el presupuesto y reportar el avance a la dirección"],ans:2,exp:"El Scrum Master es un FACILITADOR y servant-leader. Su rol es: facilitar las ceremonias Scrum, eliminar impedimentos que bloquean al equipo, proteger al equipo de interrupciones externas, y enseñar Scrum a la organización. NUNCA asigna tareas (el equipo se autoorganiza) ni toma decisiones de producto (eso es el PO)."},
+  {q:"Una empresa de software tiene procesos distintos en cada proyecto; los resultados dependen de las habilidades de personas clave y son impredecibles. ¿En qué nivel de CMMI se encuentra?",ctx:"",opts:["Nivel 2 — Gestionado","Nivel 1 — Inicial","Nivel 3 — Definido","Nivel 4 — Cuantitativamente gestionado"],ans:1,exp:"Nivel 1 (INICIAL) se caracteriza por procesos caóticos e impredecibles donde el éxito depende del heroísmo individual. No hay procesos formales ni estandarizados. Cada proyecto se hace 'como se puede'. Es el estado sin madurez de procesos."},
+  {q:"Una empresa quiere desplegar su aplicación web sin preocuparse por configurar servidores, instalar el sistema operativo ni gestionar el runtime de Python. Solo quieren subir su código y que funcione. ¿Qué modelo de servicio en nube necesitan?",ctx:"",opts:["IaaS, porque necesitan infraestructura virtualizada","SaaS, porque quieren software listo para usar","PaaS, porque solo gestionan su aplicación y datos","Nube híbrida, porque combina características de varios modelos"],ans:2,exp:"PaaS (Platform as a Service): el proveedor gestiona toda la plataforma (SO, runtime, middleware, herramientas). El cliente solo despliega su aplicación y datos. Ejemplos: Heroku, Google App Engine, Azure App Service. IaaS requeriría configurar el servidor manualmente; SaaS es software que se consume, no se despliega."},
+  {q:"La clase 'GestorPedidos' en el sistema e-commerce actualmente: 1) Valida los datos del pedido, 2) Guarda el pedido en la base de datos, 3) Envía email de confirmación, y 4) Genera la factura PDF. ¿Qué principio SOLID viola?",ctx:"",opts:["OCP: está cerrado para extensión","LSP: no puede sustituir a su clase padre","SRP: tiene múltiples responsabilidades","DIP: depende de implementaciones concretas"],ans:2,exp:"SRP (Single Responsibility Principle): una clase debe tener UNA sola razón para cambiar. GestorPedidos tiene 4 responsabilidades distintas: validación, persistencia, comunicación y generación de documentos. Cada una es una razón separada para cambiar. Solución: separar en clases ValidadorPedido, RepositorioPedido, ServicioEmail, GeneradorFactura."},
+  {q:"El equipo de pruebas diseña casos de prueba analizando únicamente los documentos de especificación de requerimientos, sin acceder en ningún momento al código fuente del sistema. ¿Qué técnica de pruebas están aplicando?",ctx:"",opts:["Pruebas de caja blanca con cobertura de ramas","Pruebas de integración con mocks","Pruebas de caja negra basadas en especificaciones","Pruebas unitarias con framework de pruebas"],ans:2,exp:"CAJA NEGRA: prueba el comportamiento externo del sistema sin conocer ni acceder a su implementación interna. Se basa exclusivamente en las especificaciones y requerimientos. El tester no necesita saber programar. Técnicas: partición equivalente, análisis de valores límite, tablas de decisión."},
+  {q:"El sistema de notificaciones necesita que cuando el precio de un producto cambia, múltiples módulos (carrito de compras, lista de deseos, alertas de usuario) sean actualizados automáticamente sin que el módulo de productos los conozca directamente. ¿Qué patrón de diseño aplica?",ctx:"",opts:["Strategy, para algoritmos intercambiables","Facade, para simplificar la interfaz","Singleton, para una sola instancia global","Observer, para notificación automática a dependientes"],ans:3,exp:"OBSERVER define una dependencia uno-a-muchos: cuando un objeto (Subject/Publisher) cambia de estado, todos sus observadores (Subscribers) son notificados y actualizados automáticamente. El módulo de productos no necesita conocer a los suscriptores; solo emite el evento. Perfecto para este escenario de desacoplamiento."},
+  {q:"El proyecto de desarrollo tiene: SPI = 0.85 y CPI = 1.10. ¿Cuál es el estado correcto del proyecto?",ctx:"",opts:["Retrasado y con sobrecosto","Adelantado y bajo presupuesto","Retrasado pero bajo presupuesto","En tiempo pero con sobrecosto"],ans:2,exp:"SPI = 0.85 < 1 → RETRASADO (se ha avanzado menos de lo planificado). CPI = 1.10 > 1 → BAJO PRESUPUESTO (se ha gastado menos de lo que se ha avanzado en valor). El proyecto está retrasado pero el equipo está siendo más eficiente con el presupuesto de lo planificado."},
+  {q:"Para un nuevo sistema de procesamiento de datos en pipeline, donde los datos pasan por múltiples etapas de transformación independientes (limpiar, normalizar, validar, enriquecer, exportar), ¿qué estilo arquitectónico es el más apropiado?",ctx:"",opts:["Arquitectura en capas (Layered)","Arquitectura de Repositorio (Blackboard)","Arquitectura Pipe and Filter","Arquitectura Cliente-Servidor"],ans:2,exp:"PIPE AND FILTER es ideal para procesamiento secuencial donde los datos fluyen a través de una cadena de transformaciones independientes. Cada 'filter' es un componente de procesamiento independiente y reutilizable; el 'pipe' conecta filtros transfiriendo datos. Ejemplos clásicos: compiladores, comandos Unix con pipe (|), ETL."},
+  {q:"Durante el desarrollo ágil, el cliente solicita agregar una funcionalidad urgente. El Sprint actual lleva 8 días y faltan 6 días para terminar. ¿Qué debe hacer el equipo Scrum según el marco de trabajo?",ctx:"",opts:["El Scrum Master agrega la tarea al Sprint Backlog inmediatamente","El equipo vota y si la mayoría acepta, se integra al sprint actual","El Product Owner negocia con el equipo si abandonar el sprint o esperar al siguiente","El desarrollador más disponible comienza a trabajar en ella"],ans:2,exp:"En Scrum, el objetivo del sprint NO cambia durante su ejecución. Si una nueva funcionalidad es urgente, el Product Owner tiene dos opciones: 1) Cancelar el sprint (raro y costoso) y replanificar, o 2) Agregar la funcionalidad al Product Backlog y negociar que entre en el siguiente sprint. La decisión involucra al PO, pero se discute con el equipo."},
+  {q:"Un sistema muestra el mensaje 'ERR_DB_CONN_TIMEOUT_0x5FA2' cuando la base de datos no está disponible. ¿Qué heurístico de usabilidad de Nielsen viola principalmente?",ctx:"",opts:["Heurístico 1: Visibilidad del estado del sistema","Heurístico 4: Consistencia y estándares","Heurístico 9: Reconocer, diagnosticar y recuperarse de errores","Heurístico 5: Prevención de errores"],ans:2,exp:"Heurístico 9: los mensajes de error deben expresarse en LENGUAJE CLARO (no códigos técnicos), indicar precisamente el PROBLEMA y sugerir una SOLUCIÓN constructiva. 'ERR_DB_CONN_TIMEOUT_0x5FA2' es incomprensible para el usuario. Debería decir algo como: 'No podemos conectar con el servidor. Por favor, verifica tu conexión a internet e intenta de nuevo.'"},
+  {q:"¿Cuál es la diferencia principal entre Continuous Delivery y Continuous Deployment?",ctx:"",opts:["Continuous Deployment requiere más pruebas automatizadas","En Continuous Delivery el deploy a producción es manual; en Continuous Deployment es automático","Continuous Delivery no incluye pruebas automatizadas","Son términos sinónimos para el mismo concepto"],ans:1,exp:"CONTINUOUS DELIVERY: el código siempre está listo y potencialmente desplegable, pero el despliegue a producción requiere APROBACIÓN MANUAL. CONTINUOUS DEPLOYMENT: todo commit que pase el pipeline de pruebas se despliega AUTOMÁTICAMENTE a producción sin intervención humana. CD (Delivery) da control manual; CD (Deployment) automatiza todo el proceso."},
+  {q:"¿Cuál de las siguientes opciones describe correctamente el principio de Encapsulamiento en OOP?",ctx:"",opts:["Una clase puede heredar métodos de múltiples clases padre","Los objetos de una subclase pueden usarse donde se espera la clase padre","El estado interno de un objeto se oculta y solo se accede mediante métodos públicos definidos","Una misma operación puede comportarse diferente según el tipo del objeto"],ans:2,exp:"ENCAPSULAMIENTO: agrupar datos (atributos) y comportamientos (métodos) dentro de la clase, ocultando el estado interno. Solo los métodos públicos (getters/setters y métodos de negocio) son accesibles desde fuera. Protege la integridad de los datos y permite cambiar la implementación interna sin afectar al código cliente. Las opciones A y D describen herencia y polimorfismo respectivamente."}
+];
+
+let scores={correct:0,total:0};
+function buildQuiz(){
+  const c=document.getElementById('quiz-container');
+  c.innerHTML='';
+  questions.forEach((q,qi)=>{
+    const letters=['A','B','C','D'];
+    const card=document.createElement('div');
+    card.className='q-card';
+    card.innerHTML=`<div class="q-num">Reactivo ${qi+1} de ${questions.length}</div>
+      <div class="q-text">${q.ctx?`<span class="ctx">${q.ctx}</span>`:''}${q.q}</div>
+      <div class="opts" id="opts-${qi}">${q.opts.map((o,oi)=>`<div class="opt" onclick="answerQ(${qi},${oi})" id="opt-${qi}-${oi}"><span class="opt-letter">${letters[oi]}</span><span>${o}</span></div>`).join('')}</div>
+      <div class="q-explain" id="exp-${qi}">💡 ${q.exp}</div>`;
+    c.appendChild(card);
+  });
+}
+function answerQ(qi,oi){
+  const opts=document.querySelectorAll(`#opts-${qi} .opt`);
+  opts.forEach(o=>o.onclick=null);
+  opts[questions[qi].ans].classList.add('correct');
+  if(oi!==questions[qi].ans) opts[oi].classList.add('wrong');
+  document.getElementById(`exp-${qi}`).classList.add('show');
+  scores.total++;
+  if(oi===questions[qi].ans) scores.correct++;
+  document.getElementById('score-n').textContent=scores.correct;
+  document.getElementById('score-t').textContent=scores.total;
+}
+function resetQuiz(){
+  scores={correct:0,total:0};
+  document.getElementById('score-n').textContent=0;
+  document.getElementById('score-t').textContent=0;
+  buildQuiz();
+}
+buildQuiz();
+</script>
+</body>
+</html>

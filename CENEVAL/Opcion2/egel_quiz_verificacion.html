@@ -1,0 +1,335 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans); }
+#app { padding: 1rem 0; }
+.header-area { margin-bottom: 1.5rem; }
+.header-area h2 { font-size: 18px; font-weight: 500; color: var(--color-text-primary); margin-bottom: 4px; }
+.header-area p { font-size: 14px; color: var(--color-text-secondary); }
+.topic-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 1.5rem; }
+.topic-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-secondary);
+  border-radius: var(--border-radius-lg);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.topic-card:hover { border-color: var(--color-border-primary); }
+.topic-card.active { border: 2px solid var(--color-border-info); }
+.topic-area { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.topic-name { font-size: 14px; font-weight: 500; color: var(--color-text-primary); }
+.topic-count { font-size: 12px; color: var(--color-text-secondary); margin-top: 3px; }
+
+.quiz-section { display: none; }
+.quiz-section.active { display: block; }
+
+.q-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; }
+.q-breadcrumb { font-size: 13px; color: var(--color-text-secondary); }
+.q-back { background: none; border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 6px 14px; font-size: 13px; color: var(--color-text-secondary); cursor: pointer; }
+.q-back:hover { background: var(--color-background-secondary); }
+
+.question-card {
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 20px;
+  margin-bottom: 1rem;
+}
+.q-num { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.q-text { font-size: 16px; color: var(--color-text-primary); line-height: 1.6; margin-bottom: 16px; }
+.q-hint { font-size: 13px; color: var(--color-text-secondary); font-style: italic; background: var(--color-background-secondary); padding: 8px 12px; border-radius: var(--border-radius-md); margin-bottom: 16px; display: none; }
+.q-hint.show { display: block; }
+.q-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 8px 18px; font-size: 13px; cursor: pointer; background: transparent; color: var(--color-text-primary); }
+.btn:hover { background: var(--color-background-secondary); }
+.btn-primary { background: var(--color-background-info); border-color: var(--color-border-info); color: var(--color-text-info); }
+.btn-primary:hover { opacity: 0.85; }
+
+.answer-card {
+  background: var(--color-background-secondary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-lg);
+  padding: 18px 20px;
+  margin-bottom: 1rem;
+  display: none;
+}
+.answer-card.show { display: block; }
+.answer-label { font-size: 11px; color: var(--color-text-tertiary); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+.answer-text { font-size: 14px; color: var(--color-text-primary); line-height: 1.7; }
+.answer-text strong { font-weight: 500; }
+
+.self-eval { margin-top: 14px; padding-top: 14px; border-top: 0.5px solid var(--color-border-tertiary); display: none; }
+.self-eval.show { display: block; }
+.self-eval p { font-size: 13px; color: var(--color-text-secondary); margin-bottom: 10px; }
+.eval-btns { display: flex; gap: 8px; }
+.eval-btn { border-radius: var(--border-radius-md); padding: 7px 16px; font-size: 13px; cursor: pointer; border: 0.5px solid; font-weight: 500; }
+.eval-ok { background: var(--color-background-success); border-color: var(--color-border-success); color: var(--color-text-success); }
+.eval-partial { background: var(--color-background-warning); border-color: var(--color-border-warning); color: var(--color-text-warning); }
+.eval-no { background: var(--color-background-danger); border-color: var(--color-border-danger); color: var(--color-text-danger); }
+
+.score-bar { display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.score-chip { font-size: 12px; padding: 4px 12px; border-radius: var(--border-radius-md); border: 0.5px solid; }
+.sc-ok { background: var(--color-background-success); border-color: var(--color-border-success); color: var(--color-text-success); }
+.sc-partial { background: var(--color-background-warning); border-color: var(--color-border-warning); color: var(--color-text-warning); }
+.sc-no { background: var(--color-background-danger); border-color: var(--color-border-danger); color: var(--color-text-danger); }
+
+.nav-q { display: flex; gap: 8px; align-items: center; margin-top: 4px; }
+.nav-q button { border: 0.5px solid var(--color-border-secondary); border-radius: var(--border-radius-md); padding: 7px 16px; font-size: 13px; cursor: pointer; background: transparent; color: var(--color-text-primary); }
+.nav-q button:hover { background: var(--color-background-secondary); }
+.nav-q .q-pos { font-size: 13px; color: var(--color-text-secondary); }
+</style>
+
+<div id="app">
+  <div class="header-area">
+    <h2>Verificación de comprensión — EGEL ISOFT 2026</h2>
+    <p>Elige un tema, responde en voz alta o mentalmente, luego verifica. Sin opciones múltiples.</p>
+  </div>
+
+  <div id="topic-view">
+    <div class="score-bar" id="score-bar"></div>
+    <div class="topic-grid" id="topic-grid"></div>
+  </div>
+
+  <div class="quiz-section" id="quiz-view">
+    <div class="q-header">
+      <span class="q-breadcrumb" id="q-breadcrumb"></span>
+      <button class="q-back" onclick="backToTopics()">← Temas</button>
+    </div>
+    <div class="question-card">
+      <div class="q-num" id="q-num"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-hint" id="q-hint"></div>
+      <div class="q-actions">
+        <button class="btn btn-primary" onclick="showAnswer()">Ver respuesta</button>
+        <button class="btn" onclick="toggleHint()">Pista</button>
+      </div>
+    </div>
+    <div class="answer-card" id="answer-card">
+      <div class="answer-label">Respuesta esperada</div>
+      <div class="answer-text" id="answer-text"></div>
+      <div class="self-eval" id="self-eval">
+        <p>¿Qué tan bien respondiste?</p>
+        <div class="eval-btns">
+          <button class="eval-btn eval-ok" onclick="rate('ok')">Lo supe</button>
+          <button class="eval-btn eval-partial" onclick="rate('partial')">Parcial</button>
+          <button class="eval-btn eval-no" onclick="rate('no')">No lo sabía</button>
+        </div>
+      </div>
+    </div>
+    <div class="nav-q">
+      <button onclick="prevQ()">← Anterior</button>
+      <span class="q-pos" id="q-pos"></span>
+      <button onclick="nextQ()">Siguiente →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const topics = [
+  {
+    id:"req", area:"Área 1 — Análisis", name:"Requerimientos", color:"info",
+    qs:[
+      {q:"¿Cuál es la diferencia entre un requerimiento funcional y uno no funcional? Da un ejemplo de cada uno.",
+       hint:"Piensa en QUÉ hace el sistema vs CÓMO lo hace.",
+       a:"<strong>Funcional:</strong> describe una acción o comportamiento específico que el sistema debe ejecutar. Ej: 'El sistema debe permitir al usuario iniciar sesión con correo y contraseña.'<br><br><strong>No funcional:</strong> describe un atributo de calidad o restricción. Ej: 'El sistema debe responder en menos de 2 segundos el 95% del tiempo.' Incluye rendimiento, seguridad, disponibilidad, usabilidad."},
+      {q:"¿Qué es la relación «include» en un diagrama de casos de uso y cuándo se usa? ¿En qué se diferencia de «extend»?",
+       hint:"¿Cuál es obligatorio y cuál es opcional?",
+       a:"<strong>Include:</strong> el caso de uso base SIEMPRE ejecuta el caso incluido; es obligatorio. Ej: 'Procesar pago' siempre incluye 'Registrar en bitácora'.<br><br><strong>Extend:</strong> el caso de uso base puede opcionalmente ejecutar el extensor, bajo cierta condición. Ej: 'Iniciar sesión' puede extenderse con 'Enviar código 2FA' solo si el usuario tiene 2FA activado."},
+      {q:"Menciona tres técnicas para elicitar (obtener) requerimientos y explica cuándo conviene usar cada una.",
+       hint:"Entrevistas, observación, talleres...",
+       a:"<strong>Entrevistas:</strong> ideales para entender el dominio de expertos clave. Buenas cuando hay pocos stakeholders con mucho conocimiento.<br><strong>Talleres (workshops/JAD):</strong> reúnen múltiples stakeholders. Sirven para resolver conflictos y obtener consenso rápidamente.<br><strong>Observación (etnografía):</strong> ver al usuario trabajar en su contexto real. Revela requerimientos implícitos que el usuario no sabría verbalizar.<br><strong>Prototipos:</strong> útiles cuando los requerimientos son vagos; el prototipo dispara retroalimentación concreta."},
+      {q:"¿Qué es un caso de uso y cuáles son sus elementos principales?",
+       hint:"Actor, flujo principal, flujos alternativos...",
+       a:"Un caso de uso describe una interacción entre un actor y el sistema para lograr un objetivo. Elementos: <strong>Actor</strong> (quién inicia), <strong>precondiciones</strong> (estado previo necesario), <strong>flujo principal</strong> (secuencia normal de pasos), <strong>flujos alternativos</strong> (variaciones o errores), <strong>postcondiciones</strong> (estado final del sistema). Se documentan en formato de texto estructurado o en diagramas UML."}
+    ]
+  },
+  {
+    id:"arch", area:"Área 2 — Diseño", name:"Arquitectura de Software", color:"purple",
+    qs:[
+      {q:"Describe los estilos arquitectónicos Capas (Layered) y Microservicios. ¿Cuándo elegiría uno sobre el otro?",
+       hint:"Piensa en acoplamiento, escalabilidad y equipo.",
+       a:"<strong>Capas:</strong> organiza el sistema en niveles (presentación, lógica, datos). Simple de entender, buen punto de partida. Escala mal horizontalmente porque las capas están acopladas. Ideal para apps monolíticas pequeñas-medianas.<br><br><strong>Microservicios:</strong> servicios independientes, cada uno con su propia base de datos y desplegable por separado. Alta escalabilidad y resiliencia. Alta complejidad operacional (red, consistencia eventual). Ideal para equipos grandes con dominios bien definidos."},
+      {q:"¿Qué es el patrón MVC? Describe la responsabilidad de cada componente.",
+       hint:"Model, View, Controller...",
+       a:"<strong>Model:</strong> contiene los datos y la lógica de negocio. No sabe nada de la UI.<br><strong>View:</strong> presenta los datos al usuario. Solo muestra, no procesa lógica.<br><strong>Controller:</strong> recibe las entradas del usuario, invoca al modelo y selecciona la vista a mostrar. Actúa de intermediario.<br><br>Beneficio: separación de responsabilidades que facilita el mantenimiento y las pruebas."},
+      {q:"¿Qué es el patrón Observer y en qué escenario lo aplicarías?",
+       hint:"Publisher - Subscriber, eventos...",
+       a:"Observer define una relación uno-a-muchos: cuando un objeto (<strong>Subject</strong>) cambia de estado, todos sus <strong>Observers</strong> son notificados automáticamente. El Subject no necesita conocer a sus observers directamente (bajo acoplamiento).<br><br>Escenarios típicos: sistemas de notificaciones, actualizaciones de UI en tiempo real (MVC), mensajería de eventos, funcionalidad tipo 'seguir' en redes sociales."},
+      {q:"Explica los principios SOLID. ¿Cuál crees que es el más difícil de aplicar y por qué?",
+       hint:"S-R-P, O-C-P, Liskov, Interface Segregation, Dependency Inversion",
+       a:"<strong>S</strong> — Single Responsibility: una clase, una sola razón para cambiar.<br><strong>O</strong> — Open/Closed: abierto para extensión, cerrado para modificación.<br><strong>L</strong> — Liskov Substitution: las subclases deben poder reemplazar a su clase padre sin romper el programa.<br><strong>I</strong> — Interface Segregation: preferir interfaces específicas a una interfaz general.<br><strong>D</strong> — Dependency Inversion: depender de abstracciones, no de implementaciones concretas."}
+    ]
+  },
+  {
+    id:"db", area:"Área 2 — Diseño", name:"Bases de Datos", color:"teal",
+    qs:[
+      {q:"¿Qué son las propiedades ACID? Explica cada una con tus propias palabras.",
+       hint:"Atomicidad, Consistencia, Aislamiento, Durabilidad",
+       a:"<strong>Atomicidad:</strong> la transacción es todo o nada. Si una parte falla, todo se revierte (rollback).<br><strong>Consistencia:</strong> la BD pasa de un estado válido a otro válido; ninguna restricción de integridad se viola.<br><strong>Aislamiento:</strong> las transacciones concurrentes se ejecutan como si fueran secuenciales; no se ven afectadas entre sí.<br><strong>Durabilidad:</strong> una vez confirmada (commit), la transacción persiste aunque ocurra un fallo del sistema."},
+      {q:"¿Qué es la normalización de bases de datos? Describe 1FN, 2FN y 3FN.",
+       hint:"Dependencias funcionales, grupos repetidos, dependencias transitivas...",
+       a:"<strong>1FN:</strong> eliminar grupos repetidos; cada columna debe tener valores atómicos (indivisibles) y cada fila debe ser única.<br><strong>2FN:</strong> cumple 1FN + eliminar dependencias parciales; todo atributo no clave depende de la clave primaria completa (importante cuando la PK es compuesta).<br><strong>3FN:</strong> cumple 2FN + eliminar dependencias transitivas; los atributos no clave no deben depender de otros atributos no clave."},
+      {q:"¿Cuál es la diferencia entre una base de datos SQL y NoSQL? Menciona un tipo de NoSQL y un caso de uso para él.",
+       hint:"Esquema fijo vs flexible, escalabilidad...",
+       a:"<strong>SQL (relacional):</strong> esquema fijo, ACID, relaciones entre tablas, escala verticalmente. Ideal para datos estructurados con relaciones complejas.<br><strong>NoSQL:</strong> esquema flexible, escala horizontalmente, mayor disponibilidad, consistencia eventual.<br><br>Tipos: <em>Documental</em> (MongoDB) — ideal para catálogos de productos con atributos variables. <em>Clave-valor</em> (Redis) — sesiones, caché. <em>Grafos</em> (Neo4j) — redes sociales. <em>Columnar</em> (Cassandra) — series de tiempo, logs."}
+    ]
+  },
+  {
+    id:"testing", area:"Área 3 — Desarrollo", name:"Pruebas de Software", color:"coral",
+    qs:[
+      {q:"¿Cuál es la diferencia entre pruebas de caja blanca y caja negra? ¿Cuándo usarías cada una?",
+       hint:"¿Tienes acceso al código o no?",
+       a:"<strong>Caja negra:</strong> prueba el comportamiento externo sin ver el código. Se basa en especificaciones. Técnicas: partición equivalente, valores límite. Usa: pruebas de aceptación, cuando el tester no programa.<br><br><strong>Caja blanca:</strong> prueba la estructura interna del código. Requiere acceso al código fuente. Técnicas: cobertura de sentencias, ramas, caminos. Usa: pruebas unitarias, detectar código muerto o caminos no probados."},
+      {q:"Explica los niveles de pruebas: unitarias, integración, sistema y aceptación. ¿Cuál es el objetivo de cada uno?",
+       hint:"De lo más pequeño a lo más grande...",
+       a:"<strong>Unitarias:</strong> prueban una unidad mínima (función/método) de forma aislada. Objetivo: verificar lógica individual.<br><strong>Integración:</strong> prueban cómo interactúan dos o más módulos. Objetivo: detectar fallos en interfaces y comunicación.<br><strong>Sistema:</strong> prueban el sistema completo contra los requerimientos. Objetivo: validar funcionalidad end-to-end.<br><strong>Aceptación (UAT):</strong> realizadas por el cliente/usuario final. Objetivo: confirmar que el sistema cumple los criterios de aceptación del negocio."},
+      {q:"¿Qué es TDD (Test Driven Development)? Describe el ciclo Red-Green-Refactor.",
+       hint:"Las pruebas se escriben ANTES del código...",
+       a:"TDD es una práctica donde se escribe la prueba antes que el código de producción.<br><br><strong>Red:</strong> escribe una prueba que falla (porque la funcionalidad aún no existe).<br><strong>Green:</strong> escribe el código mínimo necesario para que la prueba pase.<br><strong>Refactor:</strong> mejora el código manteniendo todas las pruebas verdes.<br><br>Beneficios: diseño más limpio, alta cobertura de pruebas, documentación viva del comportamiento esperado."}
+    ]
+  },
+  {
+    id:"agile", area:"Área 4 — Gestión", name:"Metodologías Ágiles", color:"amber",
+    qs:[
+      {q:"Describe los tres roles principales de Scrum y las responsabilidades de cada uno.",
+       hint:"Product Owner, Scrum Master, Development Team...",
+       a:"<strong>Product Owner:</strong> responsable del backlog del producto. Prioriza las historias de usuario según valor de negocio. Representa al cliente y toma decisiones sobre qué se construye.<br><strong>Scrum Master:</strong> facilita el proceso, elimina impedimentos, protege al equipo de interrupciones. No asigna tareas ni gestiona el presupuesto.<br><strong>Development Team:</strong> equipo auto-organizado (3-9 personas) responsable de entregar incrementos de software funcional. Define cómo se hace el trabajo."},
+      {q:"¿Cuáles son los 4 valores y 12 principios del Manifiesto Ágil? Menciona al menos 3 principios.",
+       hint:"Individuos, software funcionando, colaboración, respuesta al cambio...",
+       a:"<strong>4 valores:</strong> Individuos e interacciones sobre procesos y herramientas. Software funcionando sobre documentación exhaustiva. Colaboración con el cliente sobre negociación de contratos. Respuesta al cambio sobre seguir un plan.<br><br><strong>Principios clave:</strong> entregar software funcional frecuentemente; los requisitos cambiantes son bienvenidos incluso al final; personas de negocio y desarrolladores trabajan juntos diariamente; el software funcionando es la medida principal de progreso; atención continua a la excelencia técnica."},
+      {q:"¿Qué es un Sprint en Scrum? ¿Qué pasa si el trabajo no se termina al final del Sprint?",
+       hint:"Time-box, Sprint Goal...",
+       a:"Un Sprint es una iteración de duración fija (generalmente 1-4 semanas) en la que el equipo trabaja para lograr un <strong>Sprint Goal</strong>. Al finalizar debe entregarse un <strong>incremento potencialmente desplegable</strong>.<br><br>Si el trabajo no se termina: las historias incompletas regresan al Product Backlog; el sprint NO se extiende. El equipo inspecciona en la retrospectiva qué impidió completar el trabajo y mejora su estimación futura. El Sprint Goal debe haberse cumplido; si no, se considera un sprint fallido."}
+    ]
+  },
+  {
+    id:"devops", area:"Área 3 — Desarrollo", name:"DevOps y Calidad", color:"green",
+    qs:[
+      {q:"¿Cuál es la diferencia entre Continuous Integration, Continuous Delivery y Continuous Deployment?",
+       hint:"CI → CD (Delivery) → CD (Deployment): ¿dónde termina la automatización?",
+       a:"<strong>CI (Continuous Integration):</strong> los desarrolladores integran cambios frecuentemente al repositorio; cada integración dispara compilación + pruebas automatizadas. Objetivo: detectar errores rápido.<br><strong>Continuous Delivery:</strong> el código siempre está en estado desplegable, pero el despliegue a producción requiere aprobación manual.<br><strong>Continuous Deployment:</strong> todo commit que pase el pipeline se despliega automáticamente a producción sin intervención humana."},
+      {q:"¿Qué es Docker y cuál problema resuelve? ¿En qué se diferencia de una máquina virtual?",
+       hint:"'En mi máquina funciona...'",
+       a:"<strong>Docker</strong> es una plataforma de contenedores que empaqueta una aplicación con todas sus dependencias en una imagen portátil. Resuelve el problema de inconsistencia entre entornos ('funciona en dev pero no en prod').<br><br><strong>vs VM:</strong> una VM virtualiza el hardware completo incluyendo SO (pesada, GB). Un contenedor comparte el kernel del SO anfitrión, solo aísla el proceso (ligero, MB). Los contenedores arrancan en segundos; las VM en minutos."},
+      {q:"¿Qué es un modelo de calidad como ISO 25010? Menciona 4 características de calidad que evalúa.",
+       hint:"Funcionalidad, rendimiento, seguridad, mantenibilidad...",
+       a:"ISO 25010 define un modelo de calidad de producto software con 8 características principales:<br><strong>Funcionalidad:</strong> correctitud, completitud.<br><strong>Eficiencia de rendimiento:</strong> comportamiento temporal, uso de recursos.<br><strong>Compatibilidad:</strong> coexistencia, interoperabilidad.<br><strong>Usabilidad:</strong> reconocimiento de idoneidad, aprendizaje.<br><strong>Confiabilidad:</strong> madurez, disponibilidad, tolerancia a fallos.<br><strong>Seguridad:</strong> confidencialidad, integridad.<br><strong>Mantenibilidad:</strong> modularidad, reusabilidad, analizabilidad.<br><strong>Portabilidad:</strong> adaptabilidad, instalabilidad."}
+    ]
+  },
+  {
+    id:"pm", area:"Área 4 — Gestión", name:"Gestión de Proyectos", color:"gray",
+    qs:[
+      {q:"¿Qué es el Valor Ganado (Earned Value Management)? Explica SPI y CPI.",
+       hint:"¿Qué tanto hemos avanzado vs lo planeado vs lo gastado?",
+       a:"EVM es una técnica que integra alcance, tiempo y costo para medir el desempeño del proyecto.<br><br><strong>SPI (Schedule Performance Index) = EV / PV:</strong> si > 1, adelantado; si < 1, retrasado. EV = valor del trabajo realizado; PV = valor planificado.<br><strong>CPI (Cost Performance Index) = EV / AC:</strong> si > 1, bajo presupuesto; si < 1, con sobrecosto. AC = costo real incurrido.<br><br>Ej: SPI=0.85, CPI=1.10 → retrasado pero eficiente en costo."},
+      {q:"¿Cuáles son los niveles de madurez del modelo CMMI? Describe brevemente el nivel 1 y el nivel 3.",
+       hint:"Inicial, Gestionado, Definido, Cuantitativamente Gestionado, Optimizado",
+       a:"<strong>Nivel 1 — Inicial:</strong> procesos caóticos e impredecibles. El éxito depende de habilidades individuales ('héroes'). No hay procesos formales.<br><strong>Nivel 2 — Gestionado:</strong> proyectos tienen procesos básicos documentados. El éxito es repetible a nivel de proyecto.<br><strong>Nivel 3 — Definido:</strong> procesos estandarizados para toda la organización, documentados y mejorados. Los proyectos adaptan el proceso organizacional.<br><strong>Nivel 4:</strong> procesos controlados cuantitativamente.<br><strong>Nivel 5 — Optimizado:</strong> mejora continua basada en datos."},
+      {q:"¿Qué es la gestión de riesgos en un proyecto de software? Menciona las 4 estrategias principales para responder a un riesgo.",
+       hint:"Evitar, transferir, mitigar, aceptar...",
+       a:"La gestión de riesgos identifica, analiza y planifica respuestas a eventos inciertos que podrían afectar el proyecto.<br><br><strong>Evitar:</strong> cambiar el plan para eliminar el riesgo o sus condiciones.<br><strong>Transferir:</strong> trasladar el impacto a un tercero (seguros, contratos, outsourcing).<br><strong>Mitigar:</strong> reducir la probabilidad o el impacto del riesgo (pruebas adicionales, redundancia).<br><strong>Aceptar:</strong> no hacer nada proactivamente; solo crear un plan de contingencia si el riesgo ocurre."}
+    ]
+  },
+  {
+    id:"oop", area:"Área 3 — Desarrollo", name:"Programación OOP", color:"pink",
+    qs:[
+      {q:"Explica los 4 pilares de la Programación Orientada a Objetos.",
+       hint:"Encapsulamiento, Herencia, Polimorfismo, Abstracción",
+       a:"<strong>Encapsulamiento:</strong> agrupar datos y métodos en una clase, ocultando el estado interno. Solo se accede via métodos públicos.<br><strong>Herencia:</strong> una clase puede heredar atributos y comportamientos de otra. Promueve reutilización. Ej: Perro hereda de Animal.<br><strong>Polimorfismo:</strong> un mismo método puede comportarse diferente según el tipo del objeto. Ej: sonido() en Perro devuelve 'guau', en Gato devuelve 'miau'.<br><strong>Abstracción:</strong> exponer solo lo necesario, ocultar la complejidad. Las clases abstractas e interfaces definen contratos sin implementación."},
+      {q:"¿Cuál es la diferencia entre una clase abstracta y una interfaz? ¿Cuándo usarías cada una?",
+       hint:"Implementación parcial vs contrato puro...",
+       a:"<strong>Clase abstracta:</strong> puede tener métodos con implementación y atributos. Una clase solo puede heredar de una clase abstracta (en Java/C#). Úsala cuando clases hijas comparten código común.<br><strong>Interfaz:</strong> solo define el contrato (qué métodos deben existir), sin implementación. Una clase puede implementar múltiples interfaces. Úsala para definir capacidades que clases no relacionadas pueden compartir.<br><br>Regla: 'es un tipo de' → clase abstracta. 'puede hacer' → interfaz."}
+    ]
+  }
+];
+
+let currentTopic = null;
+let currentQ = 0;
+let scores = {};
+topics.forEach(t => scores[t.id] = {ok:0, partial:0, no:0});
+
+function renderTopics() {
+  const grid = document.getElementById('topic-grid');
+  grid.innerHTML = '';
+  topics.forEach(t => {
+    const total = t.qs.length;
+    const done = scores[t.id].ok + scores[t.id].partial + scores[t.id].no;
+    const div = document.createElement('div');
+    div.className = 'topic-card';
+    div.onclick = () => startTopic(t);
+    div.innerHTML = `<div class="topic-area">${t.area}</div>
+      <div class="topic-name">${t.name}</div>
+      <div class="topic-count">${done}/${total} respondidas</div>`;
+    grid.appendChild(div);
+  });
+
+  const bar = document.getElementById('score-bar');
+  const totalOk = Object.values(scores).reduce((a,s)=>a+s.ok,0);
+  const totalPartial = Object.values(scores).reduce((a,s)=>a+s.partial,0);
+  const totalNo = Object.values(scores).reduce((a,s)=>a+s.no,0);
+  bar.innerHTML = totalOk || totalPartial || totalNo ? `
+    <span class="score-chip sc-ok">✓ Sabía: ${totalOk}</span>
+    <span class="score-chip sc-partial">~ Parcial: ${totalPartial}</span>
+    <span class="score-chip sc-no">✗ No sabía: ${totalNo}</span>
+  ` : '';
+}
+
+function startTopic(t) {
+  currentTopic = t;
+  currentQ = 0;
+  document.getElementById('topic-view').style.display = 'none';
+  document.getElementById('quiz-view').classList.add('active');
+  renderQuestion();
+}
+
+function backToTopics() {
+  document.getElementById('quiz-view').classList.remove('active');
+  document.getElementById('topic-view').style.display = 'block';
+  renderTopics();
+}
+
+function renderQuestion() {
+  const q = currentTopic.qs[currentQ];
+  document.getElementById('q-breadcrumb').textContent = currentTopic.name;
+  document.getElementById('q-num').textContent = `Pregunta ${currentQ+1} de ${currentTopic.qs.length}`;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-hint').textContent = '💡 ' + q.hint;
+  document.getElementById('q-hint').classList.remove('show');
+  document.getElementById('q-pos').textContent = `${currentQ+1} / ${currentTopic.qs.length}`;
+  const ac = document.getElementById('answer-card');
+  ac.classList.remove('show');
+  document.getElementById('self-eval').classList.remove('show');
+  document.getElementById('answer-text').innerHTML = '';
+}
+
+function toggleHint() {
+  document.getElementById('q-hint').classList.toggle('show');
+}
+
+function showAnswer() {
+  const q = currentTopic.qs[currentQ];
+  document.getElementById('answer-text').innerHTML = q.a;
+  document.getElementById('answer-card').classList.add('show');
+  document.getElementById('self-eval').classList.add('show');
+}
+
+function rate(level) {
+  scores[currentTopic.id][level]++;
+  document.getElementById('self-eval').innerHTML = level === 'ok'
+    ? '<p style="color:var(--color-text-success);font-size:13px;font-weight:500;">¡Excelente! Registrado.</p>'
+    : level === 'partial'
+    ? '<p style="color:var(--color-text-warning);font-size:13px;font-weight:500;">Parcial — repasa los puntos que te faltaron.</p>'
+    : '<p style="color:var(--color-text-danger);font-size:13px;font-weight:500;">Registrado. Vuelve a este tema después de repasar.</p>';
+}
+
+function nextQ() {
+  if(currentQ < currentTopic.qs.length-1) { currentQ++; renderQuestion(); }
+  else backToTopics();
+}
+function prevQ() {
+  if(currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+renderTopics();
+</script>
