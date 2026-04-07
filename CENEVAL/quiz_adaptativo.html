@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz CENEVAL Adaptativo - ITC</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:system-ui,sans-serif;background:#f9f9f7;color:#1a1a18;padding:1.5rem;}
+#app{max-width:680px;margin:0 auto;padding:1rem 0;}
+h1{font-size:18px;font-weight:500;margin-bottom:1.5rem;color:#1a1a18;}
+.stats-row{display:flex;gap:10px;margin-bottom:1.25rem;}
+.stat-card{flex:1;background:#f1efe8;border-radius:8px;padding:10px 12px;}
+.stat-num{font-size:20px;font-weight:500;color:#1a1a18;}
+.stat-lbl{font-size:11px;color:#5f5e5a;margin-top:2px;}
+.progress-bar{background:#f1efe8;border-radius:4px;height:4px;margin-bottom:1.25rem;}
+.progress-fill{background:#534AB7;height:4px;border-radius:4px;transition:width 0.4s;}
+.q-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;}
+.tag{font-size:12px;padding:3px 10px;border-radius:8px;border:0.5px solid #d3d1c7;color:#5f5e5a;}
+.weak-tag{font-size:11px;padding:2px 8px;border-radius:8px;background:#FAEEDA;color:#633806;border:0.5px solid #EF9F27;margin-left:6px;}
+.q-text{font-size:15px;line-height:1.7;color:#1a1a18;margin-bottom:1.25rem;font-weight:500;}
+.options{display:flex;flex-direction:column;gap:9px;}
+.opt{text-align:left;padding:11px 15px;border-radius:8px;border:0.5px solid #b4b2a9;background:#fff;cursor:pointer;font-size:14px;line-height:1.5;color:#1a1a18;}
+.opt:hover:not(:disabled){background:#f1efe8;}
+.opt.correct{border-color:#3B6D11;background:#EAF3DE;color:#27500A;}
+.opt.wrong{border-color:#A32D2D;background:#FCEBEB;color:#791F1F;}
+.feedback{margin-top:1rem;padding:11px 15px;border-radius:8px;font-size:13px;line-height:1.6;display:none;}
+.feedback.show{display:block;}
+.fb-ok{background:#EAF3DE;color:#27500A;border:0.5px solid #639922;}
+.fb-err{background:#FCEBEB;color:#791F1F;border:0.5px solid #E24B4A;}
+.next-btn{margin-top:1.25rem;padding:10px 22px;border-radius:8px;border:0.5px solid #b4b2a9;background:#fff;cursor:pointer;font-size:14px;color:#1a1a18;display:none;}
+.next-btn.show{display:inline-block;}
+.loading-state{text-align:center;padding:3rem 0;}
+.spinner{width:30px;height:30px;border:2px solid #d3d1c7;border-top-color:#534AB7;border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1rem;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.load-txt{font-size:14px;color:#5f5e5a;}
+.score-card{padding:1.5rem 0;}
+.score-top{display:flex;align-items:baseline;gap:12px;margin-bottom:1.5rem;}
+.score-big{font-size:42px;font-weight:500;color:#1a1a18;}
+.score-lbl{font-size:14px;color:#5f5e5a;}
+.section-title{font-size:12px;font-weight:500;color:#5f5e5a;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;}
+.area-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid #d3d1c7;font-size:13px;gap:8px;}
+.area-name{flex:1;color:#1a1a18;}
+.area-bar-wrap{width:80px;height:5px;background:#f1efe8;border-radius:3px;}
+.area-bar-fill{height:5px;border-radius:3px;}
+.area-pct{font-size:12px;font-weight:500;min-width:36px;text-align:right;}
+.btn-row{display:flex;gap:8px;margin-top:1.5rem;flex-wrap:wrap;}
+.action-btn{padding:10px 18px;border-radius:8px;border:0.5px solid #b4b2a9;background:#fff;cursor:pointer;font-size:13px;color:#1a1a18;}
+.history-note{font-size:12px;color:#888780;margin-top:12px;}
+.badge-weak{display:inline-block;background:#FAEEDA;color:#633806;font-size:11px;padding:2px 7px;border-radius:8px;margin-left:4px;}
+.badge-strong{display:inline-block;background:#EAF3DE;color:#3B6D11;font-size:11px;padding:2px 7px;border-radius:8px;margin-left:4px;}
+.api-note{font-size:12px;color:#854F0B;background:#FAEEDA;border:0.5px solid #EF9F27;border-radius:8px;padding:10px 14px;margin-bottom:1.5rem;}
+</style>
+</head>
+<body>
+<div id="app">
+  <h1>Quiz CENEVAL Adaptativo — ITC</h1>
+  <div class="api-note">
+    Este quiz usa la API de Claude para generar preguntas nuevas cada sesión. Requiere conexión a internet y que el navegador permita llamadas a <strong>api.anthropic.com</strong>. El historial se guarda en localStorage.
+  </div>
+  <div id="loading-view" class="loading-state">
+    <div class="spinner"></div>
+    <div class="load-txt" id="load-txt">Cargando tu historial...</div>
+  </div>
+  <div id="quiz-view" style="display:none;">
+    <div class="stats-row">
+      <div class="stat-card"><div class="stat-num" id="s-ok">0</div><div class="stat-lbl">Correctas</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-bad">0</div><div class="stat-lbl">Incorrectas</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-rem">10</div><div class="stat-lbl">Restantes</div></div>
+      <div class="stat-card"><div class="stat-num" id="s-total">0</div><div class="stat-lbl">Total histórico</div></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    <div class="q-header">
+      <div style="display:flex;align-items:center;">
+        <span class="tag" id="area-tag">Área</span>
+        <span class="weak-tag" id="weak-label" style="display:none;">área débil</span>
+      </div>
+      <span style="font-size:12px;color:#5f5e5a;" id="q-cnt">1 / 10</span>
+    </div>
+    <div class="q-text" id="q-text"></div>
+    <div class="options" id="options"></div>
+    <div class="feedback" id="feedback"></div>
+    <button class="next-btn" id="next-btn" onclick="nextQ()">Siguiente →</button>
+  </div>
+  <div id="score-view" style="display:none;">
+    <div class="score-card">
+      <div class="score-top">
+        <div class="score-big" id="final-score"></div>
+        <div class="score-lbl">en esta sesión</div>
+      </div>
+      <div class="section-title" style="margin-bottom:10px;">Rendimiento acumulado por área</div>
+      <div id="area-summary"></div>
+      <div class="history-note" id="history-note"></div>
+      <div class="btn-row">
+        <button class="action-btn" onclick="startQuiz()">Nuevas preguntas ↺</button>
+        <button class="action-btn" onclick="resetHistory()">Borrar historial</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const ALL_TOPICS = [
+  {key:"lenguajes", label:"Lenguajes de programación", desc:"criterios de diseño: legibilidad, ortogonalidad, fiabilidad, simplicidad, expresividad, uniformidad, generalidad"},
+  {key:"paradigmas", label:"Paradigmas de programación", desc:"imperativo (C, Java), funcional (Haskell, Lisp), declarativo/lógico (Prolog), diferencias y ejemplos"},
+  {key:"ide", label:"Entornos de desarrollo (IDE)", desc:"componentes: editor, compilador, intérprete, depurador, control de versiones; niveles: desarrollo, integración, producción"},
+  {key:"plataformas", label:"Plataformas de desarrollo", desc:"tipos: SO (Linux, Windows), lenguaje (Java JDK, .NET), nube (Azure, AWS, Heroku); módulos: captura, almacenamiento, presentación"},
+  {key:"gestion", label:"Gestión de proyectos", desc:"WBS, Gantt, milestones, ruta crítica, análisis de riesgos (probabilidad × impacto), cierre de proyecto"},
+  {key:"cocomo", label:"Modelo COCOMO", desc:"básico e intermedio, variables KLDC/esfuerzo/tiempo/personal, multiplicadores de esfuerzo (RELY, AEXP)"},
+  {key:"calidad", label:"Normas de calidad", desc:"ISO 9000, ISO 12207, ISO/IEC 9126, ISO/IEC 25000 SQuaRE, ISO/IEC 15504 SPICE, CMMI niveles, MoProSoft, ISO/IEC 29110"},
+  {key:"clasicas", label:"Metodologías clásicas", desc:"cascada (Royce 1970), prototipado, incremental, RAD; características y diferencias"},
+  {key:"scrum", label:"Scrum", desc:"roles: Product Owner, Scrum Master, Developers; eventos: Sprint, Planning, Daily (15min), Review, Retrospective; artefactos: Product Backlog, Sprint Backlog, Increment"},
+  {key:"agiles", label:"Metodologías ágiles", desc:"Manifiesto Ágil 4 valores y principios, XP, Kanban, FDD (De Luca 1997), Crystal, ASD, Lean, RUP (IBM 4 fases), OpenUp"}
+];
+
+const STORAGE_KEY = 'ceneval_history_v2';
+let history = {};
+let questions = [], current = 0, correct = 0, wrong = 0, sessionStats = {}, answered = false;
+
+function loadHistory() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) history = JSON.parse(raw);
+  } catch(e) { history = {}; }
+  ALL_TOPICS.forEach(t => { if(!history[t.key]) history[t.key] = {c:0, t:0}; });
+}
+
+function saveHistory() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(history)); } catch(e){}
+}
+
+function resetHistory() {
+  history = {};
+  ALL_TOPICS.forEach(t => { history[t.key] = {c:0, t:0}; });
+  saveHistory();
+  startQuiz();
+}
+
+function getWeakTopics() {
+  const withData = ALL_TOPICS.filter(t => history[t.key] && history[t.key].t > 0);
+  const untested = ALL_TOPICS.filter(t => !history[t.key] || history[t.key].t === 0);
+  const scored = withData.map(t => ({...t, pct: history[t.key].c / history[t.key].t})).sort((a,b) => a.pct - b.pct);
+  return { weak: scored.slice(0,4), untested };
+}
+
+function pickTopicsForSession() {
+  const {weak, untested} = getWeakTopics();
+  let chosen = [...weak.slice(0,3)];
+  const weakKeys = weak.map(t=>t.key);
+  const remaining = ALL_TOPICS.filter(t => !weakKeys.includes(t.key));
+  const shuffle = arr => [...arr].sort(()=>Math.random()-0.5);
+  const extra = shuffle([...untested, ...remaining.filter(t=>!untested.includes(t))]);
+  while(chosen.length < 5) chosen.push(extra.shift() || chosen[0]);
+  return chosen.slice(0,5);
+}
+
+async function generateQuestions(topics) {
+  const seed = Math.floor(Math.random()*99999);
+  const topicLines = topics.map((t,i)=>`${i+1}. ${t.label}: ${t.desc}`).join('\n');
+  const weakInfo = topics.slice(0,3).map(t => {
+    const h = history[t.key];
+    if(h && h.t > 0) return `${t.label}: ${Math.round(h.c/h.t*100)}% correcto (${h.t} preguntas respondidas)`;
+    return `${t.label}: sin datos aún`;
+  }).join('\n');
+
+  const prompt = `Eres experto en el examen CENEVAL de Ingeniería en Tecnologías Computacionales (ITC).
+El estudiante tiene el siguiente historial de rendimiento (áreas priorizadas):
+${weakInfo}
+
+Genera exactamente 10 preguntas de opción múltiple NUEVAS (semilla: ${seed}) sobre estos temas:
+${topicLines}
+
+Genera 2 preguntas por tema. En los temas con bajo rendimiento, haz preguntas que refuercen los conceptos donde más se equivoca. Usa distractores plausibles y variados. La respuesta correcta debe estar en posiciones variadas (0,1,2,3).
+
+Responde SOLO con JSON válido, sin markdown ni texto extra:
+[{"area":"nombre del área","q":"pregunta","opts":["A","B","C","D"],"ans":0,"exp":"explicación breve"}]`;
+
+  const res = await fetch("https://api.anthropic.com/v1/messages", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({model:"claude-sonnet-4-20250514", max_tokens:4000, messages:[{role:"user",content:prompt}]})
+  });
+  const data = await res.json();
+  const text = data.content.map(b=>b.text||"").join("").trim().replace(/```json|```/g,"").trim();
+  return JSON.parse(text);
+}
+
+function getTopicKeyForArea(areaLabel) {
+  const found = ALL_TOPICS.find(t =>
+    areaLabel.toLowerCase().includes(t.label.toLowerCase().split(' ')[0].toLowerCase()) ||
+    t.label.toLowerCase().includes(areaLabel.toLowerCase().split(' ')[0].toLowerCase())
+  );
+  return found ? found.key : null;
+}
+
+async function startQuiz() {
+  current=0; correct=0; wrong=0; sessionStats={}; answered=false;
+  document.getElementById('score-view').style.display='none';
+  document.getElementById('quiz-view').style.display='none';
+  document.getElementById('loading-view').style.display='block';
+  const topics = pickTopicsForSession();
+  const weakKeys = topics.slice(0,3).map(t=>t.key);
+  document.getElementById('load-txt').textContent='Generando preguntas adaptadas a tu historial...';
+  try {
+    questions = await generateQuestions(topics);
+    questions = questions.map(q=>({...q, isWeak: weakKeys.some(k=>q.area.toLowerCase().includes(ALL_TOPICS.find(t=>t.key===k)?.label.toLowerCase().split(' ')[0]||'___'))}));
+    document.getElementById('s-rem').textContent=questions.length;
+    document.getElementById('loading-view').style.display='none';
+    document.getElementById('quiz-view').style.display='block';
+    updateStats(); renderQ();
+  } catch(e) {
+    document.getElementById('load-txt').textContent='Error al generar preguntas. Verifica tu conexión e intenta de nuevo.';
+    const btn=document.createElement('button');btn.className='action-btn';btn.textContent='Reintentar';btn.style.marginTop='1rem';btn.onclick=startQuiz;
+    document.getElementById('loading-view').appendChild(btn);
+  }
+}
+
+function getTotalHistoric(){return Object.values(history).reduce((s,v)=>s+v.t,0);}
+
+function updateStats(){
+  document.getElementById('s-ok').textContent=correct;
+  document.getElementById('s-bad').textContent=wrong;
+  document.getElementById('s-rem').textContent=questions.length-current;
+  document.getElementById('s-total').textContent=getTotalHistoric();
+  document.getElementById('prog').style.width=Math.round(current/questions.length*100)+'%';
+}
+
+function renderQ(){
+  answered=false;
+  const q=questions[current];
+  document.getElementById('area-tag').textContent=q.area;
+  document.getElementById('q-cnt').textContent=(current+1)+' / '+questions.length;
+  document.getElementById('q-text').textContent=q.q;
+  document.getElementById('feedback').className='feedback';
+  document.getElementById('next-btn').className='next-btn';
+  document.getElementById('weak-label').style.display=q.isWeak?'inline-block':'none';
+  const opts=document.getElementById('options');
+  opts.innerHTML='';
+  q.opts.forEach((o,i)=>{
+    const b=document.createElement('button');b.className='opt';b.textContent=o;
+    b.onclick=()=>selectAns(i);opts.appendChild(b);
+  });
+}
+
+function selectAns(idx){
+  if(answered) return;
+  answered=true;
+  const q=questions[current];
+  document.querySelectorAll('.opt').forEach((b,i)=>{
+    b.disabled=true;
+    if(i===q.ans) b.classList.add('correct');
+    else if(i===idx&&idx!==q.ans) b.classList.add('wrong');
+  });
+  const isOk=idx===q.ans;
+  const fb=document.getElementById('feedback');
+  fb.className='feedback '+(isOk?'fb-ok':'fb-err')+' show';
+  fb.textContent=(isOk?'Correcto. ':'Incorrecto. ')+q.exp;
+  if(isOk) correct++; else wrong++;
+  if(!sessionStats[q.area]) sessionStats[q.area]={c:0,t:0};
+  sessionStats[q.area].t++;if(isOk)sessionStats[q.area].c++;
+  const key=getTopicKeyForArea(q.area);
+  if(key&&history[key]){history[key].t++;if(isOk)history[key].c++;}
+  saveHistory();updateStats();
+  document.getElementById('next-btn').className='next-btn show';
+}
+
+function nextQ(){current++;if(current>=questions.length)showScore();else renderQ();}
+
+function showScore(){
+  document.getElementById('quiz-view').style.display='none';
+  document.getElementById('score-view').style.display='block';
+  document.getElementById('final-score').textContent=correct+'/'+questions.length;
+  const total=getTotalHistoric();
+  document.getElementById('history-note').textContent=`Historial acumulado: ${total} preguntas respondidas en total.`;
+  let html='';
+  ALL_TOPICS.forEach(t=>{
+    const h=history[t.key];if(!h||h.t===0) return;
+    const pct=Math.round(h.c/h.t*100);
+    const col=pct>=70?'#3B6D11':pct>=40?'#854F0B':'#A32D2D';
+    const fillCol=pct>=70?'#639922':pct>=40?'#EF9F27':'#E24B4A';
+    const badge=pct<50?'<span class="badge-weak">débil</span>':pct>=80?'<span class="badge-strong">fuerte</span>':'';
+    html+=`<div class="area-row"><span class="area-name">${t.label}${badge}</span><div class="area-bar-wrap"><div class="area-bar-fill" style="width:${pct}%;background:${fillCol};"></div></div><span class="area-pct" style="color:${col};">${pct}%</span></div>`;
+  });
+  if(!html) html='<div style="font-size:13px;color:#5f5e5a;padding:1rem 0;">Completa más sesiones para ver tu historial acumulado.</div>';
+  document.getElementById('area-summary').innerHTML=html;
+}
+
+loadHistory();
+startQuiz();
+</script>
+</body>
+</html>
