@@ -1,0 +1,126 @@
+TRANSITION TABLE — C-- Lexical Analyzer
+================================================================================
+
+TOKEN LEGEND
+----------------------------------------
+  KW_INT               = 1
+  KW_FLOAT             = 2
+  KW_STRING            = 3
+  KW_RETURN            = 4
+  KW_IF                = 5
+  KW_ELSE              = 6
+  KW_WHILE             = 7
+  KW_READ              = 8
+  KW_WRITE             = 9
+  KW_VOID              = 10
+  TK_PLUS              = 11
+  TK_MINUS             = 12
+  TK_MULT              = 13
+  TK_DIV               = 14
+  TK_LT                = 15
+  TK_LEQ               = 16
+  TK_GT                = 17
+  TK_GEQ               = 18
+  TK_EQ                = 19
+  TK_NEQ               = 20
+  TK_ASSIGN            = 21
+  TK_SEMI              = 22
+  TK_COMMA             = 23
+  TK_DQUOTE            = 24
+  TK_LPAREN            = 25
+  TK_RPAREN            = 26
+  TK_LBRACKET          = 27
+  TK_RBRACKET          = 28
+  TK_LCURLY            = 29
+  TK_RCURLY            = 30
+  TK_ID                = 31
+  TK_INT_NUM           = 32
+  TK_FLOAT_NUM         = 33
+  TK_STRING_LIT        = 34
+  ERROR                = 35
+  COMMENT              = 36
+
+FINAL / ACCEPTANCE STATES
+----------------------------------------
+  q1     label=31    token=TK_ID
+  q3     label=31    token=TK_ID
+  q4     label=14    token=TK_DIV
+  q7     label=36    token=COMMENT
+  q9     label=32    token=TK_INT_NUM
+  q11    label=33    token=TK_FLOAT_NUM
+  q12    label=15    token=TK_LT
+  q13    label=16    token=TK_LEQ
+  q14    label=17    token=TK_GT
+  q15    label=18    token=TK_GEQ
+  q16    label=21    token=TK_ASSIGN
+  q17    label=19    token=TK_EQ
+  q19    label=20    token=TK_NEQ
+  q20    label=35    token=ERROR
+  q23    label=34    token=TK_STRING_LIT
+  q24    label=11    token=TK_PLUS
+  q25    label=12    token=TK_MINUS
+  q26    label=13    token=TK_MULT
+  q27    label=22    token=TK_SEMI
+  q28    label=23    token=TK_COMMA
+  q29    label=25    token=TK_LPAREN
+  q30    label=26    token=TK_RPAREN
+  q31    label=27    token=TK_LBRACKET
+  q32    label=28    token=TK_RBRACKET
+  q33    label=29    token=TK_LCURLY
+  q34    label=30    token=TK_RCURLY
+  q35    label=—     token=—
+  q36    label=35    token=ERROR
+  q37    label=35    token=ERROR
+  q38    label=35    token=ERROR
+  q39    label=35    token=ERROR
+  q40    label=35    token=ERROR
+  q41    label=35    token=ERROR
+  q42    label=35    token=ERROR
+  q43    label=35    token=ERROR
+
+State       letter        digit           _             +             -             *             /             <             >             =             !             "             .             ;             ,             (             )             [             ]             {             }           space          tab            \n          other     
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+q0         q1/TK_ID   q9/TK_INT_NUM       q2      q9/TK_INT_NUM q9/TK_INT_NUM  q26/TK_MULT    q4/TK_DIV     q12/TK_LT     q14/TK_GT   q16/TK_ASSIGN      q18           q21            —        q27/TK_SEMI   q28/TK_COMMA q29/TK_LPAREN q30/TK_RPAREN q31/TK_LBRACKETq32/TK_RBRACKETq33/TK_LCURLY q34/TK_RCURLY      q35           q35           q35        q41/ERROR   
+q1*TK_ID   q1/TK_ID      q1/TK_ID      q1/TK_ID         —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q2         q3/TK_ID      q3/TK_ID      q3/TK_ID         —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q3*TK_ID   q3/TK_ID      q3/TK_ID      q3/TK_ID         —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q4*TK_DIV      —             —             —             —             —             q5            —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q5            —             —             —             —             —             q6            —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             q8      
+q6            —             —             —             —             —             —         q7/COMMENT        —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q7*COMMENT      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q8            —             —             —             —             —             q6            —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q9*TK_INT_NUM      —       q9/TK_INT_NUM       —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —            q10      
+q10           —       q11/TK_FLOAT_NUM      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —         q38/ERROR   
+q11*TK_FLOAT_NUM      —       q11/TK_FLOAT_NUM      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q12*TK_LT      —             —             —             —             —             —             —             —             —         q13/TK_LEQ        —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q13*TK_LEQ      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q14*TK_GT      —             —             —             —             —             —             —             —             —         q15/TK_GEQ        —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q15*TK_GEQ      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q16*TK_ASSIGN      —             —             —             —             —             —             —             —             —         q17/TK_EQ         —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q17*TK_EQ      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q18           —             —             —             —             —             —             —             —             —         q19/TK_NEQ        —             —             —             —             —             —             —             —             —             —             —             —             —             —         q20/ERROR   
+q19*TK_NEQ      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q20*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q21           —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —            q22      
+q22           —             —             —             —             —             —             —             —             —             —             —       q23/TK_STRING_LIT      —             —             —             —             —             —             —             —             —             —             —         q39/ERROR         —       
+q23*TK_STRING_LIT      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q24*TK_PLUS      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —         q40/ERROR   
+q25*TK_MINUS      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —         q40/ERROR   
+q26*TK_MULT      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q27*TK_SEMI      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q28*TK_COMMA      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q29*TK_LPAREN      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q30*TK_RPAREN      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q31*TK_LBRACKET      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q32*TK_RBRACKET      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q33*TK_LCURLY      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q34*TK_RCURLY      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q35*          —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q36*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q37*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q38*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q39*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q40*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q41*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q42*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
+q43*ERROR      —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —             —       
