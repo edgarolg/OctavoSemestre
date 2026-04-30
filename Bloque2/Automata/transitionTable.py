@@ -540,9 +540,9 @@ if __name__ == "__main__":
 
     table, col_order = build_grouped_table(states, transitions, final_states, states_label)
 
-    write_txt( states, table, col_order, final_states, states_label, "./transition_table2.txt")
-    write_html(states, table, col_order, final_states, states_label, "./transition_table2.html")
-    write_xlsx(states, table, col_order, final_states, states_label, "./transition_table2.xlsx")
+    #write_txt( states, table, col_order, final_states, states_label, "./transition_table3.txt")
+    #write_html(states, table, col_order, final_states, states_label, "./transition_table3.html")
+    write_xlsx(states, table, col_order, final_states, states_label, "./transition_table3.xlsx")
 
     print(f"\nStates : {len(states)}")
     print(f"Finals : {len(final_states)}")
