@@ -1,9 +1,4 @@
-/* Program that reads a 10 element array of 
-integers, and then multiply each element of 
-the array by a float, stores the result into an 
-array of floats. Subsequently, the array of 
-floats is sorted and display it into standard 
-output.*/
+/* Program that reads a 10 element array of integers, and then multiply each element of the array by a float, stores the result into an array of floats. Subsequently, the array of floats is sorted and display it into standard output.*/
 
 int x[10];
 string s;
@@ -23,7 +18,7 @@ int miniloc(float a[], int low, int high){
         i = i + 1;
     }
     return k;
-}/* END of miniloc() */
+}
 
 void sort(float a[], int low, int high){
     int i; int k;
@@ -37,7 +32,7 @@ void sort(float a[], int low, int high){
         i = i + 1;
     }
     return;
-}/* END of sort() */
+}
 
 void readArray(void){
     int i;
@@ -52,7 +47,7 @@ void readArray(void){
         i = i + 1;
     }
     return;
-}/* END of readArray() */
+}
 
 void writeArray(void){
     int i;
@@ -62,7 +57,7 @@ void writeArray(void){
         i = i + 1;
     }
     return;
-}/* END of writeArray() */
+}
 
 void main(void){
     s = "Reading Information.....";
@@ -75,4 +70,4 @@ void main(void){
     write s;
     writeArray();
     return;
-}/* END of main() */
+}
