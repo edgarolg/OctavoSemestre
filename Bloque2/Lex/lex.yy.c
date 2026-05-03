@@ -1983,20 +1983,18 @@ void print_error(char *msg, int linea, char *lexeme) {
     error_count++;
 }
 
-
-/* ── token_name ────────────────────────────────
- * Convierte un token ID a su nombre legible.    */
+/* convertir a tokens correctos */
 char *token_name(int id) {
     switch(id) {
-        case TK_INT:        return "KW_INT";
-        case TK_FLOAT:      return "KW_FLOAT";
-        case TK_STRING:     return "KW_STRING";
-        case TK_RETURN:     return "KW_RETURN";
-        case TK_IF:         return "KW_IF";
-        case TK_ELSE:       return "KW_ELSE";
-        case TK_WHILE:      return "KW_WHILE";
-        case TK_READ:       return "KW_READ";
-        case TK_WRITE:      return "KW_WRITE";
+        case TK_INT: return "KW_INT";
+        case TK_FLOAT: return "KW_FLOAT";
+        case TK_STRING: return "KW_STRING";
+        case TK_RETURN: return "KW_RETURN";
+        case TK_IF: return "KW_IF";
+        case TK_ELSE: return "KW_ELSE";
+        case TK_WHILE: return "KW_WHILE";
+        case TK_READ: return "KW_READ";
+        case TK_WRITE: return "KW_WRITE";
         case TK_VOID: return "KW_VOID";
         case TK_PLUS: return "TK_PLUS";
         case TK_MINUS: return "TK_MINUS";
@@ -2025,16 +2023,13 @@ char *token_name(int id) {
     }
 }
 
-/* ── print_token_list ──────────────────────────
- * Imprime la secuencia completa de tokens.      */
+/* imprimir todos los tokens */
 void print_token_list(void) {
     printf("\n");
     printf("=============================================================\n");
     printf("  TOKEN LIST\n");
-    printf("=============================================================\n");
     printf("  %-4s  %-15s  %-4s  %-5s  %s\n",
            "No.", "Token", "ID", "Line", "Lexeme");
-    printf("-------------------------------------------------------------\n");
     int i;
     for (i = 0; i < count_tokens; i++) {
         printf("  %-4d  %-15s  %-4d  %-5d  %s\n",
@@ -2044,21 +2039,16 @@ void print_token_list(void) {
                token_list[i].linea,
                token_list[i].lexeme);
     }
-    printf("=============================================================\n");
     printf("  Total tokens: %d\n", count_tokens);
     printf("=============================================================\n");
 }
 
-/* ── print_table_ids ───────────────────────────
- * Imprime la tabla de identificadores.
- * Recorre la linked list de idSymTbl.           */
+/* imprime todos los tokens  */
 void print_table_ids(void) {
     printf("\n");
     printf("=============================================================\n");
-    printf("  SYMBOL TABLE — IDENTIFIERS\n");
-    printf("=============================================================\n");
+    printf("  SYMBOL TABLE: IDENTIFIERS\n");
     printf("  %-6s  %-30s  %s\n", "Index", "Lexeme", "First Line");
-    printf("-------------------------------------------------------------\n");
     struct ID *tp = idSymTbl;
     int i = 0;
     while (tp) {
@@ -2066,21 +2056,17 @@ void print_table_ids(void) {
         tp = tp->next;
         i++;
     }
-    printf("=============================================================\n");
     printf("  Total identifiers: %d\n", i);
     printf("=============================================================\n");
 }
 
-/* ── print_table_nums ──────────────────────────
- * Imprime la tabla de números.                  */
+/* imprime todos los numeros  */
 void print_table_nums(void) {
     printf("\n");
     printf("=============================================================\n");
-    printf("  SYMBOL TABLE — NUMBERS\n");
-    printf("=============================================================\n");
+    printf("  SYMBOL TABLE: NUMBERS\n");
     printf("  %-6s  %-15s  %-12s  %s\n",
            "Index", "Lexeme", "Type", "Line");
-    printf("-------------------------------------------------------------\n");
     int i;
     for ( i = 0; i < count_nums; i++) {
         printf("  %-6d  %-15s  %-12s  %d\n",
@@ -2089,20 +2075,16 @@ void print_table_nums(void) {
                tabla_nums[i].token_type == TK_INT_NUM ? "INTEGER" : "FLOAT",
                tabla_nums[i].linea);
     }
-    printf("=============================================================\n");
     printf("  Total numbers: %d\n", count_nums);
     printf("=============================================================\n");
 }
 
-/* ── print_table_strings ───────────────────────
- * Imprime la tabla de strings.                  */
+/* imprime los strings encontrados */
 void print_table_strings(void) {
     printf("\n");
     printf("=============================================================\n");
-    printf("  SYMBOL TABLE — STRINGS\n");
-    printf("=============================================================\n");
+    printf("  SYMBOL TABLE: STRINGS\n");
     printf("  %-6s  %-40s  %s\n", "Index", "Content", "Line");
-    printf("-------------------------------------------------------------\n");
     int i;
     for (i = 0; i < count_strings; i++) {
         printf("  %-6d  %-40s  %d\n",
@@ -2110,14 +2092,11 @@ void print_table_strings(void) {
                tabla_strings[i].lexeme,
                tabla_strings[i].linea);
     }
-    printf("=============================================================\n");
     printf("  Total strings: %d\n", count_strings);
     printf("=============================================================\n");
 }
 
-/* ── main ──────────────────────────────────────
- * Abre el archivo pasado como argumento,
- * corre el scanner y muestra los resultados.    */
+/* archivo principal */
 int main(int argc, char *argv[]) {
     if (argc < 2) {
         fprintf(stderr, "Usage: %s <archivo.cm>\n", argv[0]);
@@ -2133,7 +2112,6 @@ int main(int argc, char *argv[]) {
     printf("=============================================================\n");
     printf("  C-- Lexical Analyzer\n");
     printf("  File: %s\n", argv[1]);
-    printf("=============================================================\n");
 
     /* apuntar lex al archivo de entrada */
     yyin = fp;
@@ -2159,7 +2137,6 @@ int main(int argc, char *argv[]) {
     printf("  Numbers  : %d\n", count_nums);
     printf("  Strings  : %d\n", count_strings);
     printf("  Errors   : %d\n", error_count);
-    printf("=============================================================\n");
 
     return (error_count > 0) ? 1 : 0;
 }
