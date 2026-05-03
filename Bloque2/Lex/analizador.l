@@ -1,7 +1,4 @@
 %{
-
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -56,17 +53,17 @@
 
 
 /*  Tables structures */
-
 #define MAX_LEXEME   256
 #define MAX_NUMS     500
 #define MAX_STRINGS  500
 
 struct ID {
-    char      lexeme[MAX_LEXEME];  /* también cambia *name por array */
+    /* esto es la variable   */
+    char      lexeme[MAX_LEXEME];
     int       linea;
     struct ID *next;
 };
-
+/*  para iniciar en 0 */
 struct ID *idSymTbl = NULL;
 
 /* Tablas de números int o float */
@@ -92,7 +89,7 @@ EntryString tabla_strings[MAX_STRINGS];
 int count_strings = 0;
 
 
-/* lista de tokens */
+/* lista de tokens, si es token de numero, pues pone cual es */
 typedef struct {
     int  token_id;
     int  table_index;   /* índice en su tabla, -1 si no aplica */
@@ -104,7 +101,7 @@ TokenEntry token_list[5000];
 int count_tokens = 0;
 int error_count  = 0;
 
-/* ── Lookup table de keywords ───────────────── */
+/* tabla para buscar los key words */
 typedef struct {
     char *word;
     int   token;
@@ -125,9 +122,11 @@ Keyword keywords[] = {
 };
 
 
-/* ── Prototipos ─────────────────────────────── */
-/* es un aviso sobre lo que se va a declarar despues y e l como */
+/* Prototipos  */
+/* es un aviso sobre lo que se va a declarar despues y el como */
 int lookup_keyword (char *word);
+
+/* es al id, se va a buscar vual es */
 struct ID*  lookUp_ID (char *lexeme, int linea);
 int  insert_num (char *lexeme, int tipo, int linea);
 int  insert_string (char *lexeme, int linea);
@@ -168,17 +167,22 @@ BLANK       [ \t\n]
 %%
 
 
-{COMMENT}  {   }
+{COMMENT}  { /* se ignora completamente los comentarios */  }
 
 
 "/*"[^*]* { 
+  /* se inicio pero no se cerro */
   print_error("Unterminated comment", yylineno, yytext);
 }
 
 
-{BLANK}+  {  }
+{BLANK}+  { /* se ignoran los espacios en blanco */ }
 
 {STRING_LIT}   {
+  /* para obtener lo que contiene el string literalmente
+  * se saca el contenido, se le quitan las dobles comillas, se pone en minuscula y de ahi se inserta el contenido y la linea 
+  * luego se agrega el token, si es con lista, el id, linea y texto 
+  */
   char content[MAX_LEXEME];
   strncpy(content, yytext + 1, yyleng - 2);
   content[yyleng - 2] = '\0';
@@ -189,6 +193,7 @@ BLANK       [ \t\n]
 }
 
 \"[^\"\n]*\n   {
+  /* si el estring no se cerro totalmente, se pone el error */
  print_error("Unterminated string literal", yylineno, yytext);
 }
 
@@ -198,12 +203,13 @@ BLANK       [ \t\n]
 "=="    { add_token(TK_EQUAL,  -1, yylineno, yytext); return TK_EQUAL;  }
 "!="    { add_token(TK_DIF, -1, yylineno, yytext); return TK_DIF; }
 
-{ID}                {
+{ID} {
+  /* copia el codigo para guardarlo y se asegure que sea solo la parte del id, tambien lo pasa a minuscula */
   char lower[MAX_LEXEME];
   strncpy(lower, yytext, MAX_LEXEME - 1);
   lower[MAX_LEXEME - 1] = '\0';
   to_lower(lower);
-
+  /* buscar si es palabra reservada */
   int kw = lookup_keyword(lower);
   if (kw != 0) {
   /* es keyword */
@@ -212,6 +218,7 @@ BLANK       [ \t\n]
   } else {
   /* es identificador */
   struct ID *entry = lookUp_ID(lower, yylineno);
+  /*busca y asigna el indice*/
   int idx = 0;
   struct ID *tp = idSymTbl;
   while (tp != entry) { tp = tp->next; idx++; }
@@ -221,53 +228,61 @@ BLANK       [ \t\n]
 }
 
 "__"[a-zA-Z0-9_]*  {
- print_error("Invalid identifier: double underscore", yylineno, yytext);
+  /* error de doble guion bajo*/
+  print_error("Invalid identifier: double underscore", yylineno, yytext);
 }
-"_"                 { 
+"_" {
+  /* error de solo un guion bajo*/ 
   print_error("Invalid identifier: underscore alone", yylineno, yytext);
 }
+
+
 {FLOAT_NUM} {
-int idx = insert_num(yytext, TK_FLOAT_NUM, yylineno);
-add_token(TK_FLOAT_NUM, idx, yylineno, yytext);
-return TK_FLOAT_NUM;
+  /* le asigna un indice en la tabla de numero, de ahi mete el indice que obtuvo con la informacion en la tabla general de tokens */
+  int idx = insert_num(yytext, TK_FLOAT_NUM, yylineno);
+  add_token(TK_FLOAT_NUM, idx, yylineno, yytext);
+  return TK_FLOAT_NUM;
 }
 
 {SIGN}?{DIGIT}+"."  {
-print_error("Invalid real: missing decimal part", yylineno, yytext);
+  /* error de digito con punto al final  */
+  print_error("Invalid real: missing decimal part", yylineno, yytext);
 }
 
 {INT_NUM} {
-int idx = insert_num(yytext, TK_INT_NUM, yylineno);
-add_token(TK_INT_NUM, idx, yylineno, yytext);
-return TK_INT_NUM;
+  /* inserta el numero (el numero en si, el id de numero int, y la linea), de ahi mete el toquen con el indice que se genero, y la misma info a la de tokens generales */
+  int idx = insert_num(yytext, TK_INT_NUM, yylineno);
+  /* si no quisiera guardar otra vez el lexema (lo que es la palabrta o numero) se pone un null en el yytext */
+  add_token(TK_INT_NUM, idx, yylineno, yytext);
+  return TK_INT_NUM;
 }
 
-"+"     { add_token(TK_PLUS,   -1, yylineno, yytext); return TK_PLUS;   }
-"-"     { add_token(TK_MINUS,  -1, yylineno, yytext); return TK_MINUS;  }
-"*"     { add_token(TK_MULT,   -1, yylineno, yytext); return TK_MULT;   }
-"/"     { add_token(TK_DIVISION,    -1, yylineno, yytext); return TK_DIVISION;    }
-"<"     { add_token(TK_LESSTHAN,     -1, yylineno, yytext); return TK_LESSTHAN;     }
-">"     { add_token(TK_MORETHAN,     -1, yylineno, yytext); return TK_MORETHAN;     }
-"="     { add_token(TK_ASSIGN, -1, yylineno, yytext); return TK_ASSIGN; }
+"+" { add_token(TK_PLUS, -1, yylineno, yytext); return TK_PLUS; }
+"-" { add_token(TK_MINUS, -1, yylineno, yytext); return TK_MINUS; }
+"*" { add_token(TK_MULT, -1, yylineno, yytext); return TK_MULT; }
+"/" { add_token(TK_DIVISION, -1, yylineno, yytext); return TK_DIVISION; }
+"<" { add_token(TK_LESSTHAN, -1, yylineno, yytext); return TK_LESSTHAN; }
+">" { add_token(TK_MORETHAN, -1, yylineno, yytext); return TK_MORETHAN; }
+"=" { add_token(TK_ASSIGN, -1, yylineno, yytext); return TK_ASSIGN; }
 
-"!"     { print_error("Invalid character: '!' without '='", yylineno, yytext); }
+"!" { print_error("Invalid character: '!' without '='", yylineno, yytext); }
 
-";"     { add_token(TK_SEMICOLON,     -1, yylineno, yytext); return TK_SEMICOLON;     }
-","     { add_token(TK_COMMA,    -1, yylineno, yytext); return TK_COMMA;    }
-"("     { add_token(TK_OPAREN,   -1, yylineno, yytext); return TK_OPAREN;   }
-")"     { add_token(TK_CPAREN,   -1, yylineno, yytext); return TK_CPAREN;   }
-"["     { add_token(TK_OBRACKET, -1, yylineno, yytext); return TK_OBRACKET; }
-"]"     { add_token(TK_CBRACKET, -1, yylineno, yytext); return TK_CBRACKET; }
-"{"     { add_token(TK_OCURLY,   -1, yylineno, yytext); return TK_OCURLY;   }
-"}"     { add_token(TK_CCURLY,   -1, yylineno, yytext); return TK_CCURLY;   }
+";" { add_token(TK_SEMICOLON, -1, yylineno, yytext); return TK_SEMICOLON; }
+"," { add_token(TK_COMMA, -1, yylineno, yytext); return TK_COMMA; }
+"(" { add_token(TK_OPAREN, -1, yylineno, yytext); return TK_OPAREN; }
+")" { add_token(TK_CPAREN, -1, yylineno, yytext); return TK_CPAREN; }
+"[" { add_token(TK_OBRACKET, -1, yylineno, yytext); return TK_OBRACKET; }
+"]" { add_token(TK_CBRACKET, -1, yylineno, yytext); return TK_CBRACKET; }
+"{" { add_token(TK_OCURLY, -1, yylineno, yytext); return TK_OCURLY; }
+"}" { add_token(TK_CCURLY, -1, yylineno, yytext); return TK_CCURLY; }
 
-<<EOF>> { return 0; }
+<<EOF>> { /*regresa 0 para que el while acabe */  return 0; }
 .       { print_error("Invalid character", yylineno, yytext); }
 
 %%
 
 /* ── to_lower: convierte string a minúsculas ── */
-/* verificar si esto es necesario pq si habia algo sobre las mayu y muinus */
+/* TODO: verificar si esto es necesario pq si habia algo sobre las mayu y muinus */
 void to_lower(char *str) {
     int i;
     for ( i = 0; str[i]; i++)
@@ -283,19 +298,21 @@ int lookup_keyword(char *word) {
 }
 
 
-/* buscar o agregar el id */
+/* buscar o agregar la variabel */
 struct ID* lookUp_ID(char *lexeme, int linea) {
   struct ID *tp = idSymTbl;
 
   /* buscar si ya existe */
   while (tp) {
-      if (strcmp(tp->lexeme, lexeme) == 0)
-          return tp;
-      tp = tp->next;
+    if (strcmp(tp->lexeme, lexeme) == 0)
+      return tp;
+    tp = tp->next;
   }
 
   /* no existe — agregar al inicio de la lista */
+  /*guarda espacio para este */
   tp = (struct ID*) malloc(sizeof(struct ID));
+  /* coppia la palabra */
   strncpy(tp->lexeme, lexeme, MAX_LEXEME - 1);
   tp->lexeme[MAX_LEXEME - 1] = '\0';
   tp->linea  = linea;
@@ -306,6 +323,7 @@ struct ID* lookUp_ID(char *lexeme, int linea) {
 
 /* insertar numero */
 int insert_num(char *lexeme, int tipo, int linea) {
+  /* copia el texto dentro de la tabla, e indica la posicion de este*/
   strncpy(tabla_nums[count_nums].lexeme, lexeme, MAX_LEXEME - 1);
   tabla_nums[count_nums].token_type = tipo;
   tabla_nums[count_nums].linea = linea;
@@ -313,7 +331,6 @@ int insert_num(char *lexeme, int tipo, int linea) {
 }
 
 /* insertar string */
-
 int insert_string(char *lexeme, int linea) {
   strncpy(tabla_strings[count_strings].lexeme, lexeme, MAX_LEXEME - 1);
   tabla_strings[count_strings].linea = linea;
@@ -396,7 +413,7 @@ void print_token_list(void) {
     printf("=============================================================\n");
 }
 
-/* imprime todos los tokens  */
+/* imprime todas las variables o identificadores  */
 void print_table_ids(void) {
     printf("\n");
     printf("=============================================================\n");
@@ -405,6 +422,7 @@ void print_table_ids(void) {
     struct ID *tp = idSymTbl;
     int i = 0;
     while (tp) {
+        /* formato de impresion */
         printf("  %-6d  %-30s  %d\n", i, tp->lexeme, tp->linea);
         tp = tp->next;
         i++;
