@@ -167,7 +167,6 @@ BLANK       [ \t\n]
 /*REGLAAAAAS */
 %%
 
-/* comentarios */
 
 {COMMENT}  {   }
 
@@ -176,11 +175,9 @@ BLANK       [ \t\n]
   print_error("Unterminated comment", yylineno, yytext);
 }
 
-/* blancos */
 
 {BLANK}+  {  }
 
-/* string */
 {STRING_LIT}   {
   char content[MAX_LEXEME];
   strncpy(content, yytext + 1, yyleng - 2);
@@ -191,19 +188,16 @@ BLANK       [ \t\n]
   return TK_STRING_LIT;
 }
 
-/* string sin cerrar — llegó newline antes de " */
 \"[^\"\n]*\n   {
  print_error("Unterminated string literal", yylineno, yytext);
 }
 
 
-/* Operadores dobles  */
 "<="    { add_token(TK_LESSEQ, -1, yylineno, yytext); return TK_LESSEQ; }
 ">="    { add_token(TK_MOREEQ, -1, yylineno, yytext); return TK_MOREEQ; }
 "=="    { add_token(TK_EQUAL,  -1, yylineno, yytext); return TK_EQUAL;  }
 "!="    { add_token(TK_DIF, -1, yylineno, yytext); return TK_DIF; }
 
-/* ── 5. Keywords e Identificadores ─────────── */
 {ID}                {
   char lower[MAX_LEXEME];
   strncpy(lower, yytext, MAX_LEXEME - 1);
@@ -226,16 +220,12 @@ BLANK       [ \t\n]
   }
 }
 
-/* identificador inválido: doble underscore */
 "__"[a-zA-Z0-9_]*  {
  print_error("Invalid identifier: double underscore", yylineno, yytext);
 }
-/* de este tengo duda, pq si puede ser un identificador en base al doc, pero no es algo que se use */
-/* underscore solo */
 "_"                 { 
   print_error("Invalid identifier: underscore alone", yylineno, yytext);
 }
-/* numeros */
 {FLOAT_NUM} {
 int idx = insert_num(yytext, TK_FLOAT_NUM, yylineno);
 add_token(TK_FLOAT_NUM, idx, yylineno, yytext);
@@ -252,20 +242,17 @@ add_token(TK_INT_NUM, idx, yylineno, yytext);
 return TK_INT_NUM;
 }
 
-/* operadores */
 "+"     { add_token(TK_PLUS,   -1, yylineno, yytext); return TK_PLUS;   }
 "-"     { add_token(TK_MINUS,  -1, yylineno, yytext); return TK_MINUS;  }
 "*"     { add_token(TK_MULT,   -1, yylineno, yytext); return TK_MULT;   }
-"/"     { add_token(TK_DIV,    -1, yylineno, yytext); return TK_DIV;    }
+"/"     { add_token(TK_DIVISION,    -1, yylineno, yytext); return TK_DIVISION;    }
 "<"     { add_token(TK_LESSTHAN,     -1, yylineno, yytext); return TK_LESSTHAN;     }
 ">"     { add_token(TK_MORETHAN,     -1, yylineno, yytext); return TK_MORETHAN;     }
 "="     { add_token(TK_ASSIGN, -1, yylineno, yytext); return TK_ASSIGN; }
 
-/* ! solo es inválido en C-- */
 "!"     { print_error("Invalid character: '!' without '='", yylineno, yytext); }
 
-/* simbolos */
-";"     { add_token(TK_SEMI,     -1, yylineno, yytext); return TK_SEMI;     }
+";"     { add_token(TK_SEMICOLON,     -1, yylineno, yytext); return TK_SEMICOLON;     }
 ","     { add_token(TK_COMMA,    -1, yylineno, yytext); return TK_COMMA;    }
 "("     { add_token(TK_OPAREN,   -1, yylineno, yytext); return TK_OPAREN;   }
 ")"     { add_token(TK_CPAREN,   -1, yylineno, yytext); return TK_CPAREN;   }
@@ -274,7 +261,6 @@ return TK_INT_NUM;
 "{"     { add_token(TK_OCURLY,   -1, yylineno, yytext); return TK_OCURLY;   }
 "}"     { add_token(TK_CCURLY,   -1, yylineno, yytext); return TK_CCURLY;   }
 
-/* errores */
 <<EOF>> { return 0; }
 .       { print_error("Invalid character", yylineno, yytext); }
 
@@ -283,12 +269,14 @@ return TK_INT_NUM;
 /* ── to_lower: convierte string a minúsculas ── */
 /* verificar si esto es necesario pq si habia algo sobre las mayu y muinus */
 void to_lower(char *str) {
-    for (int i = 0; str[i]; i++)
+    int i;
+    for ( i = 0; str[i]; i++)
         str[i] = tolower((unsigned char)str[i]);
 }
 /* buscar key word */
 int lookup_keyword(char *word) {
-    for (int i = 0; keywords[i].word != NULL; i++)
+    int i;
+    for (i = 0; keywords[i].word != NULL; i++)
         if (strcmp(keywords[i].word, word) == 0)
             return keywords[i].token;
     return 0;
@@ -362,31 +350,31 @@ char *token_name(int id) {
         case TK_WHILE:      return "KW_WHILE";
         case TK_READ:       return "KW_READ";
         case TK_WRITE:      return "KW_WRITE";
-        case TK_VOID:       return "KW_VOID";
-        case TK_PLUS:       return "TK_PLUS";
-        case TK_MINUS:      return "TK_MINUS";
-        case TK_MULT:       return "TK_MULT";
-        case TK_DIV:        return "TK_DIV";
-        case TK_LT:         return "TK_LT";
-        case TK_LEQ:        return "TK_LEQ";
-        case TK_GT:         return "TK_GT";
-        case TK_GEQ:        return "TK_GEQ";
-        case TK_EQ:         return "TK_EQ";
-        case TK_NEQ:        return "TK_NEQ";
-        case TK_ASSIGN:     return "TK_ASSIGN";
-        case TK_SEMI:       return "TK_SEMI";
-        case TK_COMMA:      return "TK_COMMA";
-        case TK_LPAREN:     return "TK_LPAREN";
-        case TK_RPAREN:     return "TK_RPAREN";
-        case TK_LBRACKET:   return "TK_LBRACKET";
-        case TK_RBRACKET:   return "TK_RBRACKET";
-        case TK_LCURLY:     return "TK_LCURLY";
-        case TK_RCURLY:     return "TK_RCURLY";
-        case TK_ID:         return "TK_ID";
-        case TK_INT_NUM:    return "TK_INT_NUM";
-        case TK_FLOAT_NUM:  return "TK_FLOAT_NUM";
+        case TK_VOID: return "KW_VOID";
+        case TK_PLUS: return "TK_PLUS";
+        case TK_MINUS: return "TK_MINUS";
+        case TK_MULT: return "TK_MULT";
+        case TK_DIVISION: return "TK_DIVISION";
+        case TK_LESSTHAN: return "TK_LT";
+        case TK_LESSEQ: return "TK_LESSEQ";
+        case TK_MORETHAN: return "TK_MORETHAN";
+        case TK_MOREEQ: return "TK_MOREEQ";
+        case TK_EQUAL: return "TK_EQUAL";
+        case TK_DIF: return "TK_DIF";
+        case TK_ASSIGN: return "TK_ASSIGN";
+        case TK_SEMICOLON: return "TK_SEMICOLON";
+        case TK_COMMA: return "TK_COMMA";
+        case TK_OPAREN: return "TK_OPAREN";
+        case TK_CPAREN: return "TK_CPAREN";
+        case TK_OBRACKET: return "TK_OBRACKET";
+        case TK_CBRACKET: return "TK_CBRACKET";
+        case TK_OCURLY: return "TK_OCURLY";
+        case TK_CCURLY: return "TK_CCURLY";
+        case TK_ID: return "TK_ID";
+        case TK_INT_NUM: return "TK_INT_NUM";
+        case TK_FLOAT_NUM: return "TK_FLOAT_NUM";
         case TK_STRING_LIT: return "TK_STRING_LIT";
-        default:            return "UNKNOWN";
+        default: return "UNKNOWN";
     }
 }
 
@@ -400,7 +388,8 @@ void print_token_list(void) {
     printf("  %-4s  %-15s  %-4s  %-5s  %s\n",
            "No.", "Token", "ID", "Line", "Lexeme");
     printf("-------------------------------------------------------------\n");
-    for (int i = 0; i < count_tokens; i++) {
+    int i;
+    for (i = 0; i < count_tokens; i++) {
         printf("  %-4d  %-15s  %-4d  %-5d  %s\n",
                i + 1,
                token_name(token_list[i].token_id),
@@ -445,7 +434,8 @@ void print_table_nums(void) {
     printf("  %-6s  %-15s  %-12s  %s\n",
            "Index", "Lexeme", "Type", "Line");
     printf("-------------------------------------------------------------\n");
-    for (int i = 0; i < count_nums; i++) {
+    int i;
+    for ( i = 0; i < count_nums; i++) {
         printf("  %-6d  %-15s  %-12s  %d\n",
                i,
                tabla_nums[i].lexeme,
@@ -466,7 +456,8 @@ void print_table_strings(void) {
     printf("=============================================================\n");
     printf("  %-6s  %-40s  %s\n", "Index", "Content", "Line");
     printf("-------------------------------------------------------------\n");
-    for (int i = 0; i < count_strings; i++) {
+    int i;
+    for (i = 0; i < count_strings; i++) {
         printf("  %-6d  %-40s  %d\n",
                i,
                tabla_strings[i].lexeme,
