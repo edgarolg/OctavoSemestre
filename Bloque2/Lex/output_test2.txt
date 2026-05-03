@@ -1,0 +1,169 @@
+=============================================================
+  C-- Lexical Analyzer
+  File: test2_errors.cm
+
+=============================================================
+  TOKEN LIST
+  No.   Token            ID    Line   Lexeme
+  1     KW_INT           1     5      int
+  2     TK_ID            31    5      x
+  3     TK_SEMICOLON     22    5      ;
+  4     KW_FLOAT         2     6      float
+  5     TK_ID            31    6      y
+  6     TK_SEMICOLON     22    6      ;
+  7     KW_STRING        3     7      string
+  8     TK_ID            31    7      s
+  9     TK_SEMICOLON     22    7      ;
+  10    TK_ID            31    9      x
+  11    TK_ASSIGN        21    9      =
+  12    TK_INT_NUM       32    9      10
+  13    TK_SEMICOLON     22    9      ;
+  14    TK_ID            31    10     y
+  15    TK_ASSIGN        21    10     =
+  16    TK_FLOAT_NUM     33    10     3.14
+  17    TK_SEMICOLON     22    10     ;
+  18    TK_ID            31    11     s
+  19    TK_ASSIGN        21    11     =
+  20    TK_STRING_LIT    34    11     "hola mundo"
+  21    TK_SEMICOLON     22    11     ;
+  22    KW_IF            5     13     if
+  23    TK_OPAREN        25    13     (
+  24    TK_ID            31    13     x
+  25    TK_LESSEQ        16    13     <=
+  26    TK_INT_NUM       32    13     10
+  27    TK_CPAREN        26    13     )
+  28    TK_OCURLY        29    13     {
+  29    TK_ID            31    14     x
+  30    TK_ASSIGN        21    14     =
+  31    TK_ID            31    14     x
+  32    TK_PLUS          11    14     +
+  33    TK_INT_NUM       32    14     1
+  34    TK_SEMICOLON     22    14     ;
+  35    TK_CCURLY        30    15     }
+  36    KW_WHILE         7     17     while
+  37    TK_OPAREN        25    17     (
+  38    TK_ID            31    17     x
+  39    TK_MORETHAN      17    17     >
+  40    TK_INT_NUM       32    17     0
+  41    TK_CPAREN        26    17     )
+  42    TK_OCURLY        29    17     {
+  43    TK_ID            31    18     x
+  44    TK_ASSIGN        21    18     =
+  45    TK_ID            31    18     x
+  46    TK_MINUS         12    18     -
+  47    TK_INT_NUM       32    18     1
+  48    TK_SEMICOLON     22    18     ;
+  49    TK_CCURLY        30    19     }
+  50    KW_IF            5     22     if
+  51    TK_OPAREN        25    22     (
+  52    TK_ID            31    22     x
+  53    TK_EQUAL         19    22     ==
+  54    TK_INT_NUM       32    22     0
+  55    TK_CPAREN        26    22     )
+  56    TK_OCURLY        29    22     {
+  57    KW_RETURN        4     22     return
+  58    TK_SEMICOLON     22    22     ;
+  59    TK_CCURLY        30    22     }
+  60    KW_IF            5     23     if
+  61    TK_OPAREN        25    23     (
+  62    TK_ID            31    23     x
+  63    TK_DIF           20    23     !=
+  64    TK_INT_NUM       32    23     5
+  65    TK_CPAREN        26    23     )
+  66    TK_OCURLY        29    23     {
+  67    KW_RETURN        4     23     return
+  68    TK_SEMICOLON     22    23     ;
+  69    TK_CCURLY        30    23     }
+  70    KW_IF            5     24     if
+  71    TK_OPAREN        25    24     (
+  72    TK_ID            31    24     y
+  73    TK_MOREEQ        18    24     >=
+  74    TK_FLOAT_NUM     33    24     1.5
+  75    TK_CPAREN        26    24     )
+  76    TK_OCURLY        29    24     {
+  77    KW_RETURN        4     24     return
+  78    TK_SEMICOLON     22    24     ;
+  79    TK_CCURLY        30    24     }
+  80    KW_INT           1     27     int
+  81    TK_ID            31    27     _a123
+  82    TK_SEMICOLON     22    27     ;
+  83    KW_INT           1     28     int
+  84    TK_ID            31    28     abc_123
+  85    TK_SEMICOLON     22    28     ;
+  86    KW_INT           1     29     int
+  87    TK_ID            31    29     ABC
+  88    TK_SEMICOLON     22    29     ;
+  89    KW_INT           1     34     int
+  90    TK_SEMICOLON     22    34     ;
+  91    KW_INT           1     37     int
+  92    TK_SEMICOLON     22    37     ;
+  93    KW_FLOAT         2     40     float
+  94    TK_ID            31    40     z
+  95    TK_SEMICOLON     22    40     ;
+  96    TK_ID            31    41     z
+  97    TK_ASSIGN        21    41     =
+  98    TK_SEMICOLON     22    41     ;
+  99    KW_INT           1     44     int
+  100   TK_ID            31    44     var
+  101   TK_SEMICOLON     22    44     ;
+  102   KW_IF            5     47     if
+  103   TK_OPAREN        25    47     (
+[LEXICAL ERROR] Line 34: Invalid identifier: underscore alone -> '_'
+  104   TK_ID            31    47     x
+  105   TK_INT_NUM       32    47     5
+  106   TK_CPAREN        26    47     )
+[LEXICAL ERROR] Line 37: Invalid identifier: double underscore -> '__abc'
+  107   TK_OCURLY        29    47     {
+  108   KW_RETURN        4     47     return
+[LEXICAL ERROR] Line 41: Invalid real: missing decimal part -> '5.'
+  109   TK_SEMICOLON     22    47     ;
+  110   TK_CCURLY        30    47     }
+[LEXICAL ERROR] Line 44: Invalid character -> '@'
+  Total tokens: 110
+[LEXICAL ERROR] Line 47: Invalid character: '!' without '=' -> '!'
+=============================================================
+
+=============================================================
+  SYMBOL TABLE: IDENTIFIERS
+  Index   Lexeme                          First Line
+  0       var                             44
+  1       z                               40
+  2       abc                             29
+  3       abc_123                         28
+  4       _a123                           27
+  5       s                               7
+  6       y                               6
+  7       x                               5
+  Total identifiers: 8
+=============================================================
+
+=============================================================
+  SYMBOL TABLE: NUMBERS
+  Index   Lexeme           Type          Line
+  0       10               INTEGER       9
+  1       3.14             FLOAT         10
+  2       10               INTEGER       13
+  3       1                INTEGER       14
+  4       0                INTEGER       17
+  5       1                INTEGER       18
+  6       0                INTEGER       22
+  7       5                INTEGER       23
+  8       1.5              FLOAT         24
+  9       5                INTEGER       47
+  Total numbers: 10
+=============================================================
+
+=============================================================
+  SYMBOL TABLE: STRINGS
+  Index   Content                                   Line
+  0       hola mundo                                11
+  Total strings: 1
+=============================================================
+
+=============================================================
+  SCAN COMPLETE
+  Tokens   : 110
+  IDs      : 8
+  Numbers  : 10
+  Strings  : 1
+  Errors   : 5
