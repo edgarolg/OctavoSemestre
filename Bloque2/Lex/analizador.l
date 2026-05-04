@@ -1,4 +1,10 @@
 %{
+
+
+/* Compilador para el lenguaje de C--
+* Author: Edgar Aviles
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +39,7 @@
 #define TK_EQUAL 19
 #define TK_DIF 20
 
-/* others */
+/* Others */
 #define TK_ASSIGN 21
 #define TK_SEMICOLON 22
 #define TK_COMMA 23
@@ -58,15 +64,15 @@
 #define MAX_STRINGS  500
 
 struct ID {
-    /* esto es la variable   */
+    /* Esta es la variable como tal   */
     char      lexeme[MAX_LEXEME];
     int       linea;
     struct ID *next;
 };
-/*  para iniciar en 0 */
+/*  Se inicia en 0 la tabla /lista enlazada */
 struct ID *idSymTbl = NULL;
 
-/* Tablas de números int o float */
+/* Tablas de números para int o float */
 typedef struct {
     char lexeme[256];
     int  token_type;  /* TK_INT_NUM o TK_FLOAT_NUM */
@@ -74,7 +80,7 @@ typedef struct {
 } EntryNum;
 
 EntryNum tabla_nums[MAX_NUMS];
-/* donde inicia la tabla */
+/* Se inicia la tabla en 0 */
 int count_nums = 0;
 
 
@@ -85,11 +91,11 @@ typedef struct {
 } EntryString;
 
 EntryString tabla_strings[MAX_STRINGS];
-/* donde inicia la tabla */
+/* Se inicia la tabla en 0 */
 int count_strings = 0;
 
 
-/* lista de tokens, si es token de numero, pues pone cual es */
+/* Lista de tokens */
 typedef struct {
     int  token_id;
     int  table_index;   /* índice en su tabla, -1 si no aplica */
@@ -126,7 +132,7 @@ Keyword keywords[] = {
 /* es un aviso sobre lo que se va a declarar despues y el como */
 int lookup_keyword (char *word);
 
-/* es al id, se va a buscar vual es */
+/* es al id, se va a buscar cual es */
 struct ID*  lookUp_ID (char *lexeme, int linea);
 int  insert_num (char *lexeme, int tipo, int linea);
 int  insert_string (char *lexeme, int linea);
@@ -156,8 +162,8 @@ LETTER      [a-zA-Z]
 DIGIT       [0-9]
 SIGN        [+\-]
 ID          ({LETTER}(({LETTER}|{DIGIT}|_)*))|(_({LETTER}|{DIGIT})({LETTER}|{DIGIT}|_)*)
-INT_NUM     {SIGN}?{DIGIT}+
-FLOAT_NUM   {SIGN}?{DIGIT}+"."{DIGIT}+
+INT_NUM     {DIGIT}+
+FLOAT_NUM   {DIGIT}+"."{DIGIT}+
 STRING_LIT  \"[^\"\n]*\"
 COMMENT     "/*"([^*]|\*+[^*/])*\*+"/"
 BLANK       [ \t\n]
@@ -165,7 +171,6 @@ BLANK       [ \t\n]
 
 /*REGLAAAAAS */
 %%
-
 
 {COMMENT}  { /* se ignora completamente los comentarios */  }
 
@@ -282,7 +287,6 @@ BLANK       [ \t\n]
 %%
 
 /* ── to_lower: convierte string a minúsculas ── */
-/* TODO: verificar si esto es necesario pq si habia algo sobre las mayu y muinus */
 void to_lower(char *str) {
     int i;
     for ( i = 0; str[i]; i++)
