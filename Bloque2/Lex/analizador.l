@@ -164,7 +164,9 @@ SIGN        [+\-]
 ID          ({LETTER}(({LETTER}|{DIGIT}|_)*))|(_({LETTER}|{DIGIT})({LETTER}|{DIGIT}|_)*)
 INT_NUM     {DIGIT}+
 FLOAT_NUM   {DIGIT}+"."{DIGIT}+
+/* primero la comilla doble, luego cualquier cosa excepto comillas o salto de linea, al final otra comilla doble */
 STRING_LIT  \"[^\"\n]*\"
+/* inicia el comentarios, cualquier cosa que no sea asterisco, siendo que uno o mas asteriscos no cierran el comentario, luego ya el asterisco mas la diagonal, cierra el comentario */
 COMMENT     "/*"([^*]|\*+[^*/])*\*+"/"
 BLANK       [ \t\n]
 
@@ -491,7 +493,7 @@ int main(int argc, char *argv[]) {
     /* apuntar lex al archivo de entrada */
     yyin = fp;
 
-    /* correr el scanner */
+    /* correr el scanner, hace el bucle hasta que el EOF regrese un 0 */
     while (yylex() != 0);
 
     fclose(fp);

@@ -1,0 +1,44 @@
+=============================================================
+  C-- Lexical Analyzer
+  File: test.cm
+
+=============================================================
+  TOKEN LIST
+  No.   Token            ID    Line   Lexeme
+  1     KW_INT           1     1      int
+  2     TK_ID            31    1      x
+  3     TK_SEMICOLON     22    1      ;
+  4     TK_ID            31    2      x
+  5     TK_ASSIGN        21    2      =
+  6     TK_INT_NUM       32    2      5
+  7     TK_SEMICOLON     22    2      ;
+  Total tokens: 7
+=============================================================
+
+=============================================================
+  SYMBOL TABLE: IDENTIFIERS
+  Index   Lexeme                          First Line
+  0       x                               1
+  Total identifiers: 1
+=============================================================
+
+=============================================================
+  SYMBOL TABLE: NUMBERS
+  Index   Lexeme           Type          Line
+  0       5                INTEGER       2
+  Total numbers: 1
+=============================================================
+
+=============================================================
+  SYMBOL TABLE: STRINGS
+  Index   Content                                   Line
+  Total strings: 0
+=============================================================
+
+=============================================================
+  SCAN COMPLETE
+  Tokens   : 7
+  IDs      : 1
+  Numbers  : 1
+  Strings  : 0
+  Errors   : 0
