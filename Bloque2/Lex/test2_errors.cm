@@ -5,6 +5,7 @@
 int x;
 float y;
 string s;
+string b;
 
 x = 10;
 y = 3.14;
@@ -45,3 +46,10 @@ int @var;
 
 /* ! solo */
 if (x ! 5){ return; }
+
+
+/* String sin cerrar  */
+b = "adios mundo
+
+
+/* comentaro sin cerrar *

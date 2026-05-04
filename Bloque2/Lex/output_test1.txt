@@ -5,383 +5,383 @@
 =============================================================
   TOKEN LIST
   No.   Token            ID    Line   Lexeme
-  1     KW_INT           1     3      int
-  2     TK_ID            31    3      x
-  3     TK_OBRACKET      27    3      [
-  4     TK_INT_NUM       32    3      10
-  5     TK_CBRACKET      28    3      ]
-  6     TK_SEMICOLON     22    3      ;
-  7     KW_STRING        3     4      string
-  8     TK_ID            31    4      s
-  9     TK_SEMICOLON     22    4      ;
-  10    KW_FLOAT         2     5      float
-  11    TK_ID            31    5      f1
-  12    TK_SEMICOLON     22    5      ;
-  13    KW_FLOAT         2     6      float
-  14    TK_ID            31    6      f2
-  15    TK_OBRACKET      27    6      [
-  16    TK_INT_NUM       32    6      10
-  17    TK_CBRACKET      28    6      ]
-  18    TK_SEMICOLON     22    6      ;
-  19    KW_INT           1     8      int
-  20    TK_ID            31    8      miniloc
-  21    TK_OPAREN        25    8      (
-  22    KW_FLOAT         2     8      float
-  23    TK_ID            31    8      a
-  24    TK_OBRACKET      27    8      [
-  25    TK_CBRACKET      28    8      ]
-  26    TK_COMMA         23    8      ,
-  27    KW_INT           1     8      int
-  28    TK_ID            31    8      low
-  29    TK_COMMA         23    8      ,
-  30    KW_INT           1     8      int
-  31    TK_ID            31    8      high
-  32    TK_CPAREN        26    8      )
-  33    TK_OCURLY        29    8      {
-  34    KW_INT           1     9      int
-  35    TK_ID            31    9      i
-  36    TK_SEMICOLON     22    9      ;
-  37    KW_FLOAT         2     9      float
-  38    TK_ID            31    9      y
-  39    TK_SEMICOLON     22    9      ;
-  40    KW_INT           1     9      int
-  41    TK_ID            31    9      k
-  42    TK_SEMICOLON     22    9      ;
-  43    TK_ID            31    10     k
-  44    TK_ASSIGN        21    10     =
-  45    TK_ID            31    10     low
-  46    TK_SEMICOLON     22    10     ;
-  47    TK_ID            31    11     y
-  48    TK_ASSIGN        21    11     =
-  49    TK_ID            31    11     a
-  50    TK_OBRACKET      27    11     [
-  51    TK_ID            31    11     low
-  52    TK_CBRACKET      28    11     ]
-  53    TK_SEMICOLON     22    11     ;
-  54    TK_ID            31    12     i
-  55    TK_ASSIGN        21    12     =
-  56    TK_ID            31    12     low
-  57    TK_PLUS          11    12     +
-  58    TK_INT_NUM       32    12     1
-  59    TK_SEMICOLON     22    12     ;
-  60    KW_WHILE         7     13     while
-  61    TK_OPAREN        25    13     (
-  62    TK_ID            31    13     i
-  63    TK_LT            15    13     <
-  64    TK_ID            31    13     high
-  65    TK_CPAREN        26    13     )
-  66    TK_OCURLY        29    13     {
-  67    KW_IF            5     14     if
-  68    TK_OPAREN        25    14     (
-  69    TK_ID            31    14     a
-  70    TK_OBRACKET      27    14     [
-  71    TK_ID            31    14     i
-  72    TK_CBRACKET      28    14     ]
-  73    TK_LT            15    14     <
-  74    TK_ID            31    14     x
-  75    TK_CPAREN        26    14     )
-  76    TK_OCURLY        29    14     {
-  77    TK_ID            31    15     y
-  78    TK_ASSIGN        21    15     =
-  79    TK_ID            31    15     a
-  80    TK_OBRACKET      27    15     [
-  81    TK_ID            31    15     i
-  82    TK_CBRACKET      28    15     ]
-  83    TK_SEMICOLON     22    15     ;
-  84    TK_ID            31    16     k
-  85    TK_ASSIGN        21    16     =
-  86    TK_ID            31    16     i
-  87    TK_SEMICOLON     22    16     ;
-  88    TK_CCURLY        30    17     }
-  89    TK_ID            31    18     i
-  90    TK_ASSIGN        21    18     =
-  91    TK_ID            31    18     i
-  92    TK_PLUS          11    18     +
-  93    TK_INT_NUM       32    18     1
-  94    TK_SEMICOLON     22    18     ;
-  95    TK_CCURLY        30    19     }
-  96    KW_RETURN        4     20     return
-  97    TK_ID            31    20     k
-  98    TK_SEMICOLON     22    20     ;
-  99    TK_CCURLY        30    21     }
-  100   KW_VOID          10    23     void
-  101   TK_ID            31    23     sort
-  102   TK_OPAREN        25    23     (
-  103   KW_FLOAT         2     23     float
-  104   TK_ID            31    23     a
-  105   TK_OBRACKET      27    23     [
-  106   TK_CBRACKET      28    23     ]
-  107   TK_COMMA         23    23     ,
-  108   KW_INT           1     23     int
-  109   TK_ID            31    23     low
-  110   TK_COMMA         23    23     ,
-  111   KW_INT           1     23     int
-  112   TK_ID            31    23     high
-  113   TK_CPAREN        26    23     )
-  114   TK_OCURLY        29    23     {
-  115   KW_INT           1     24     int
-  116   TK_ID            31    24     i
-  117   TK_SEMICOLON     22    24     ;
-  118   KW_INT           1     24     int
-  119   TK_ID            31    24     k
-  120   TK_SEMICOLON     22    24     ;
-  121   TK_ID            31    25     i
-  122   TK_ASSIGN        21    25     =
-  123   TK_ID            31    25     low
-  124   TK_SEMICOLON     22    25     ;
-  125   KW_WHILE         7     26     while
-  126   TK_OPAREN        25    26     (
-  127   TK_ID            31    26     i
-  128   TK_LT            15    26     <
-  129   TK_ID            31    26     high
-  130   TK_MINUS         12    26     -
-  131   TK_INT_NUM       32    26     1
-  132   TK_CPAREN        26    26     )
-  133   TK_OCURLY        29    26     {
-  134   KW_FLOAT         2     27     float
-  135   TK_ID            31    27     t
-  136   TK_SEMICOLON     22    27     ;
-  137   TK_ID            31    28     k
-  138   TK_ASSIGN        21    28     =
-  139   TK_ID            31    28     miniloc
-  140   TK_OPAREN        25    28     (
-  141   TK_ID            31    28     a
-  142   TK_COMMA         23    28     ,
-  143   TK_ID            31    28     i
-  144   TK_COMMA         23    28     ,
-  145   TK_ID            31    28     high
-  146   TK_CPAREN        26    28     )
-  147   TK_SEMICOLON     22    28     ;
-  148   TK_ID            31    29     t
-  149   TK_ASSIGN        21    29     =
-  150   TK_ID            31    29     a
-  151   TK_OBRACKET      27    29     [
-  152   TK_ID            31    29     k
-  153   TK_CBRACKET      28    29     ]
-  154   TK_SEMICOLON     22    29     ;
-  155   TK_ID            31    30     a
-  156   TK_OBRACKET      27    30     [
-  157   TK_ID            31    30     k
-  158   TK_CBRACKET      28    30     ]
-  159   TK_ASSIGN        21    30     =
-  160   TK_ID            31    30     a
-  161   TK_OBRACKET      27    30     [
-  162   TK_ID            31    30     i
-  163   TK_CBRACKET      28    30     ]
-  164   TK_SEMICOLON     22    30     ;
-  165   TK_ID            31    31     a
-  166   TK_OBRACKET      27    31     [
-  167   TK_ID            31    31     i
-  168   TK_CBRACKET      28    31     ]
-  169   TK_ASSIGN        21    31     =
-  170   TK_ID            31    31     t
-  171   TK_SEMICOLON     22    31     ;
-  172   TK_ID            31    32     i
-  173   TK_ASSIGN        21    32     =
-  174   TK_ID            31    32     i
-  175   TK_PLUS          11    32     +
-  176   TK_INT_NUM       32    32     1
-  177   TK_SEMICOLON     22    32     ;
-  178   TK_CCURLY        30    33     }
-  179   KW_RETURN        4     34     return
-  180   TK_SEMICOLON     22    34     ;
-  181   TK_CCURLY        30    35     }
-  182   KW_VOID          10    37     void
-  183   TK_ID            31    37     readArray
-  184   TK_OPAREN        25    37     (
-  185   KW_VOID          10    37     void
-  186   TK_CPAREN        26    37     )
-  187   TK_OCURLY        29    37     {
-  188   KW_INT           1     38     int
-  189   TK_ID            31    38     i
-  190   TK_SEMICOLON     22    38     ;
-  191   TK_ID            31    39     s
-  192   TK_ASSIGN        21    39     =
-  193   TK_STRING_LIT    34    39     "Enter a float number: "
-  194   TK_SEMICOLON     22    39     ;
-  195   KW_WRITE         9     40     write
-  196   TK_ID            31    40     s
-  197   TK_SEMICOLON     22    40     ;
-  198   KW_READ          8     41     read
-  199   TK_ID            31    41     f1
-  200   TK_SEMICOLON     22    41     ;
-  201   KW_WHILE         7     42     while
-  202   TK_OPAREN        25    42     (
-  203   TK_ID            31    42     i
-  204   TK_LT            15    42     <
-  205   TK_INT_NUM       32    42     10
-  206   TK_CPAREN        26    42     )
-  207   TK_OCURLY        29    42     {
-  208   TK_ID            31    43     s
-  209   TK_ASSIGN        21    43     =
-  210   TK_STRING_LIT    34    43     "Enter an integer number: "
-  211   TK_SEMICOLON     22    43     ;
-  212   KW_WRITE         9     44     write
-  213   TK_ID            31    44     s
-  214   TK_SEMICOLON     22    44     ;
-  215   KW_READ          8     45     read
-  216   TK_ID            31    45     x
-  217   TK_OBRACKET      27    45     [
-  218   TK_ID            31    45     i
-  219   TK_CBRACKET      28    45     ]
-  220   TK_SEMICOLON     22    45     ;
-  221   TK_ID            31    46     f2
-  222   TK_OBRACKET      27    46     [
-  223   TK_ID            31    46     i
-  224   TK_CBRACKET      28    46     ]
-  225   TK_ASSIGN        21    46     =
-  226   TK_ID            31    46     x
-  227   TK_OBRACKET      27    46     [
-  228   TK_ID            31    46     i
-  229   TK_CBRACKET      28    46     ]
-  230   TK_MULT          13    46     *
-  231   TK_ID            31    46     f1
-  232   TK_SEMICOLON     22    46     ;
-  233   TK_ID            31    47     i
-  234   TK_ASSIGN        21    47     =
-  235   TK_ID            31    47     i
-  236   TK_PLUS          11    47     +
-  237   TK_INT_NUM       32    47     1
-  238   TK_SEMICOLON     22    47     ;
-  239   TK_CCURLY        30    48     }
-  240   KW_RETURN        4     49     return
-  241   TK_SEMICOLON     22    49     ;
-  242   TK_CCURLY        30    50     }
-  243   KW_VOID          10    52     void
-  244   TK_ID            31    52     writeArray
-  245   TK_OPAREN        25    52     (
-  246   KW_VOID          10    52     void
-  247   TK_CPAREN        26    52     )
-  248   TK_OCURLY        29    52     {
-  249   KW_INT           1     53     int
-  250   TK_ID            31    53     i
-  251   TK_SEMICOLON     22    53     ;
-  252   TK_ID            31    54     i
-  253   TK_ASSIGN        21    54     =
-  254   TK_INT_NUM       32    54     0
-  255   TK_SEMICOLON     22    54     ;
-  256   KW_WHILE         7     55     while
-  257   TK_OPAREN        25    55     (
-  258   TK_ID            31    55     i
-  259   TK_LT            15    55     <
-  260   TK_INT_NUM       32    55     10
-  261   TK_CPAREN        26    55     )
-  262   TK_OCURLY        29    55     {
-  263   KW_WRITE         9     56     write
-  264   TK_ID            31    56     f2
-  265   TK_OBRACKET      27    56     [
-  266   TK_ID            31    56     i
-  267   TK_CBRACKET      28    56     ]
-  268   TK_SEMICOLON     22    56     ;
-  269   TK_ID            31    57     i
-  270   TK_ASSIGN        21    57     =
-  271   TK_ID            31    57     i
-  272   TK_PLUS          11    57     +
-  273   TK_INT_NUM       32    57     1
-  274   TK_SEMICOLON     22    57     ;
-  275   TK_CCURLY        30    58     }
-  276   KW_RETURN        4     59     return
-  277   TK_SEMICOLON     22    59     ;
-  278   TK_CCURLY        30    60     }
-  279   KW_VOID          10    62     void
-  280   TK_ID            31    62     main
-  281   TK_OPAREN        25    62     (
-  282   KW_VOID          10    62     void
-  283   TK_CPAREN        26    62     )
-  284   TK_OCURLY        29    62     {
-  285   TK_ID            31    63     s
-  286   TK_ASSIGN        21    63     =
-  287   TK_STRING_LIT    34    63     "Reading Information....."
-  288   TK_SEMICOLON     22    63     ;
-  289   KW_WRITE         9     64     write
-  290   TK_ID            31    64     s
-  291   TK_SEMICOLON     22    64     ;
-  292   TK_ID            31    65     readArray
-  293   TK_OPAREN        25    65     (
-  294   TK_CPAREN        26    65     )
-  295   TK_SEMICOLON     22    65     ;
-  296   TK_ID            31    66     s
-  297   TK_ASSIGN        21    66     =
-  298   TK_STRING_LIT    34    66     "Sorting....."
-  299   TK_SEMICOLON     22    66     ;
-  300   KW_WRITE         9     67     write
-  301   TK_ID            31    67     s
-  302   TK_SEMICOLON     22    67     ;
-  303   TK_ID            31    68     sort
-  304   TK_OPAREN        25    68     (
-  305   TK_ID            31    68     f2
-  306   TK_COMMA         23    68     ,
-  307   TK_INT_NUM       32    68     0
-  308   TK_COMMA         23    68     ,
-  309   TK_INT_NUM       32    68     10
-  310   TK_CPAREN        26    68     )
-  311   TK_SEMICOLON     22    68     ;
-  312   TK_ID            31    69     s
-  313   TK_ASSIGN        21    69     =
-  314   TK_STRING_LIT    34    69     "Sorted Array:"
-  315   TK_SEMICOLON     22    69     ;
-  316   KW_WRITE         9     70     write
-  317   TK_ID            31    70     s
-  318   TK_SEMICOLON     22    70     ;
-  319   TK_ID            31    71     writeArray
-  320   TK_OPAREN        25    71     (
-  321   TK_CPAREN        26    71     )
-  322   TK_SEMICOLON     22    71     ;
-  323   KW_RETURN        4     72     return
-  324   TK_SEMICOLON     22    72     ;
-  325   TK_CCURLY        30    73     }
+  1     KW_INT           1     6      int
+  2     TK_ID            31    6      x
+  3     TK_OBRACKET      27    6      [
+  4     TK_INT_NUM       32    6      10
+  5     TK_CBRACKET      28    6      ]
+  6     TK_SEMICOLON     22    6      ;
+  7     KW_STRING        3     7      string
+  8     TK_ID            31    7      s
+  9     TK_SEMICOLON     22    7      ;
+  10    KW_FLOAT         2     8      float
+  11    TK_ID            31    8      f1
+  12    TK_SEMICOLON     22    8      ;
+  13    KW_FLOAT         2     9      float
+  14    TK_ID            31    9      f2
+  15    TK_OBRACKET      27    9      [
+  16    TK_INT_NUM       32    9      10
+  17    TK_CBRACKET      28    9      ]
+  18    TK_SEMICOLON     22    9      ;
+  19    KW_INT           1     11     int
+  20    TK_ID            31    11     miniloc
+  21    TK_OPAREN        25    11     (
+  22    KW_FLOAT         2     11     float
+  23    TK_ID            31    11     a
+  24    TK_OBRACKET      27    11     [
+  25    TK_CBRACKET      28    11     ]
+  26    TK_COMMA         23    11     ,
+  27    KW_INT           1     11     int
+  28    TK_ID            31    11     low
+  29    TK_COMMA         23    11     ,
+  30    KW_INT           1     11     int
+  31    TK_ID            31    11     high
+  32    TK_CPAREN        26    11     )
+  33    TK_OCURLY        29    11     {
+  34    KW_INT           1     12     int
+  35    TK_ID            31    12     i
+  36    TK_SEMICOLON     22    12     ;
+  37    KW_FLOAT         2     12     float
+  38    TK_ID            31    12     y
+  39    TK_SEMICOLON     22    12     ;
+  40    KW_INT           1     12     int
+  41    TK_ID            31    12     k
+  42    TK_SEMICOLON     22    12     ;
+  43    TK_ID            31    13     k
+  44    TK_ASSIGN        21    13     =
+  45    TK_ID            31    13     low
+  46    TK_SEMICOLON     22    13     ;
+  47    TK_ID            31    14     y
+  48    TK_ASSIGN        21    14     =
+  49    TK_ID            31    14     a
+  50    TK_OBRACKET      27    14     [
+  51    TK_ID            31    14     low
+  52    TK_CBRACKET      28    14     ]
+  53    TK_SEMICOLON     22    14     ;
+  54    TK_ID            31    15     i
+  55    TK_ASSIGN        21    15     =
+  56    TK_ID            31    15     low
+  57    TK_PLUS          11    15     +
+  58    TK_INT_NUM       32    15     1
+  59    TK_SEMICOLON     22    15     ;
+  60    KW_WHILE         7     16     while
+  61    TK_OPAREN        25    16     (
+  62    TK_ID            31    16     i
+  63    TK_LT            15    16     <
+  64    TK_ID            31    16     high
+  65    TK_CPAREN        26    16     )
+  66    TK_OCURLY        29    16     {
+  67    KW_IF            5     17     if
+  68    TK_OPAREN        25    17     (
+  69    TK_ID            31    17     a
+  70    TK_OBRACKET      27    17     [
+  71    TK_ID            31    17     i
+  72    TK_CBRACKET      28    17     ]
+  73    TK_LT            15    17     <
+  74    TK_ID            31    17     x
+  75    TK_CPAREN        26    17     )
+  76    TK_OCURLY        29    17     {
+  77    TK_ID            31    18     y
+  78    TK_ASSIGN        21    18     =
+  79    TK_ID            31    18     a
+  80    TK_OBRACKET      27    18     [
+  81    TK_ID            31    18     i
+  82    TK_CBRACKET      28    18     ]
+  83    TK_SEMICOLON     22    18     ;
+  84    TK_ID            31    19     k
+  85    TK_ASSIGN        21    19     =
+  86    TK_ID            31    19     i
+  87    TK_SEMICOLON     22    19     ;
+  88    TK_CCURLY        30    20     }
+  89    TK_ID            31    21     i
+  90    TK_ASSIGN        21    21     =
+  91    TK_ID            31    21     i
+  92    TK_PLUS          11    21     +
+  93    TK_INT_NUM       32    21     1
+  94    TK_SEMICOLON     22    21     ;
+  95    TK_CCURLY        30    22     }
+  96    KW_RETURN        4     23     return
+  97    TK_ID            31    23     k
+  98    TK_SEMICOLON     22    23     ;
+  99    TK_CCURLY        30    24     }
+  100   KW_VOID          10    26     void
+  101   TK_ID            31    26     sort
+  102   TK_OPAREN        25    26     (
+  103   KW_FLOAT         2     26     float
+  104   TK_ID            31    26     a
+  105   TK_OBRACKET      27    26     [
+  106   TK_CBRACKET      28    26     ]
+  107   TK_COMMA         23    26     ,
+  108   KW_INT           1     26     int
+  109   TK_ID            31    26     low
+  110   TK_COMMA         23    26     ,
+  111   KW_INT           1     26     int
+  112   TK_ID            31    26     high
+  113   TK_CPAREN        26    26     )
+  114   TK_OCURLY        29    26     {
+  115   KW_INT           1     27     int
+  116   TK_ID            31    27     i
+  117   TK_SEMICOLON     22    27     ;
+  118   KW_INT           1     27     int
+  119   TK_ID            31    27     k
+  120   TK_SEMICOLON     22    27     ;
+  121   TK_ID            31    28     i
+  122   TK_ASSIGN        21    28     =
+  123   TK_ID            31    28     low
+  124   TK_SEMICOLON     22    28     ;
+  125   KW_WHILE         7     29     while
+  126   TK_OPAREN        25    29     (
+  127   TK_ID            31    29     i
+  128   TK_LT            15    29     <
+  129   TK_ID            31    29     high
+  130   TK_MINUS         12    29     -
+  131   TK_INT_NUM       32    29     1
+  132   TK_CPAREN        26    29     )
+  133   TK_OCURLY        29    29     {
+  134   KW_FLOAT         2     30     float
+  135   TK_ID            31    30     t
+  136   TK_SEMICOLON     22    30     ;
+  137   TK_ID            31    31     k
+  138   TK_ASSIGN        21    31     =
+  139   TK_ID            31    31     miniloc
+  140   TK_OPAREN        25    31     (
+  141   TK_ID            31    31     a
+  142   TK_COMMA         23    31     ,
+  143   TK_ID            31    31     i
+  144   TK_COMMA         23    31     ,
+  145   TK_ID            31    31     high
+  146   TK_CPAREN        26    31     )
+  147   TK_SEMICOLON     22    31     ;
+  148   TK_ID            31    32     t
+  149   TK_ASSIGN        21    32     =
+  150   TK_ID            31    32     a
+  151   TK_OBRACKET      27    32     [
+  152   TK_ID            31    32     k
+  153   TK_CBRACKET      28    32     ]
+  154   TK_SEMICOLON     22    32     ;
+  155   TK_ID            31    33     a
+  156   TK_OBRACKET      27    33     [
+  157   TK_ID            31    33     k
+  158   TK_CBRACKET      28    33     ]
+  159   TK_ASSIGN        21    33     =
+  160   TK_ID            31    33     a
+  161   TK_OBRACKET      27    33     [
+  162   TK_ID            31    33     i
+  163   TK_CBRACKET      28    33     ]
+  164   TK_SEMICOLON     22    33     ;
+  165   TK_ID            31    34     a
+  166   TK_OBRACKET      27    34     [
+  167   TK_ID            31    34     i
+  168   TK_CBRACKET      28    34     ]
+  169   TK_ASSIGN        21    34     =
+  170   TK_ID            31    34     t
+  171   TK_SEMICOLON     22    34     ;
+  172   TK_ID            31    35     i
+  173   TK_ASSIGN        21    35     =
+  174   TK_ID            31    35     i
+  175   TK_PLUS          11    35     +
+  176   TK_INT_NUM       32    35     1
+  177   TK_SEMICOLON     22    35     ;
+  178   TK_CCURLY        30    36     }
+  179   KW_RETURN        4     37     return
+  180   TK_SEMICOLON     22    37     ;
+  181   TK_CCURLY        30    38     }
+  182   KW_VOID          10    40     void
+  183   TK_ID            31    40     readArray
+  184   TK_OPAREN        25    40     (
+  185   KW_VOID          10    40     void
+  186   TK_CPAREN        26    40     )
+  187   TK_OCURLY        29    40     {
+  188   KW_INT           1     41     int
+  189   TK_ID            31    41     i
+  190   TK_SEMICOLON     22    41     ;
+  191   TK_ID            31    42     s
+  192   TK_ASSIGN        21    42     =
+  193   TK_STRING_LIT    34    42     "Enter a float number: "
+  194   TK_SEMICOLON     22    42     ;
+  195   KW_WRITE         9     43     write
+  196   TK_ID            31    43     s
+  197   TK_SEMICOLON     22    43     ;
+  198   KW_READ          8     44     read
+  199   TK_ID            31    44     f1
+  200   TK_SEMICOLON     22    44     ;
+  201   KW_WHILE         7     45     while
+  202   TK_OPAREN        25    45     (
+  203   TK_ID            31    45     i
+  204   TK_LT            15    45     <
+  205   TK_INT_NUM       32    45     10
+  206   TK_CPAREN        26    45     )
+  207   TK_OCURLY        29    45     {
+  208   TK_ID            31    46     s
+  209   TK_ASSIGN        21    46     =
+  210   TK_STRING_LIT    34    46     "Enter an integer number: "
+  211   TK_SEMICOLON     22    46     ;
+  212   KW_WRITE         9     47     write
+  213   TK_ID            31    47     s
+  214   TK_SEMICOLON     22    47     ;
+  215   KW_READ          8     48     read
+  216   TK_ID            31    48     x
+  217   TK_OBRACKET      27    48     [
+  218   TK_ID            31    48     i
+  219   TK_CBRACKET      28    48     ]
+  220   TK_SEMICOLON     22    48     ;
+  221   TK_ID            31    49     f2
+  222   TK_OBRACKET      27    49     [
+  223   TK_ID            31    49     i
+  224   TK_CBRACKET      28    49     ]
+  225   TK_ASSIGN        21    49     =
+  226   TK_ID            31    49     x
+  227   TK_OBRACKET      27    49     [
+  228   TK_ID            31    49     i
+  229   TK_CBRACKET      28    49     ]
+  230   TK_MULT          13    49     *
+  231   TK_ID            31    49     f1
+  232   TK_SEMICOLON     22    49     ;
+  233   TK_ID            31    50     i
+  234   TK_ASSIGN        21    50     =
+  235   TK_ID            31    50     i
+  236   TK_PLUS          11    50     +
+  237   TK_INT_NUM       32    50     1
+  238   TK_SEMICOLON     22    50     ;
+  239   TK_CCURLY        30    51     }
+  240   KW_RETURN        4     52     return
+  241   TK_SEMICOLON     22    52     ;
+  242   TK_CCURLY        30    53     }
+  243   KW_VOID          10    55     void
+  244   TK_ID            31    55     writeArray
+  245   TK_OPAREN        25    55     (
+  246   KW_VOID          10    55     void
+  247   TK_CPAREN        26    55     )
+  248   TK_OCURLY        29    55     {
+  249   KW_INT           1     56     int
+  250   TK_ID            31    56     i
+  251   TK_SEMICOLON     22    56     ;
+  252   TK_ID            31    57     i
+  253   TK_ASSIGN        21    57     =
+  254   TK_INT_NUM       32    57     0
+  255   TK_SEMICOLON     22    57     ;
+  256   KW_WHILE         7     58     while
+  257   TK_OPAREN        25    58     (
+  258   TK_ID            31    58     i
+  259   TK_LT            15    58     <
+  260   TK_INT_NUM       32    58     10
+  261   TK_CPAREN        26    58     )
+  262   TK_OCURLY        29    58     {
+  263   KW_WRITE         9     59     write
+  264   TK_ID            31    59     f2
+  265   TK_OBRACKET      27    59     [
+  266   TK_ID            31    59     i
+  267   TK_CBRACKET      28    59     ]
+  268   TK_SEMICOLON     22    59     ;
+  269   TK_ID            31    60     i
+  270   TK_ASSIGN        21    60     =
+  271   TK_ID            31    60     i
+  272   TK_PLUS          11    60     +
+  273   TK_INT_NUM       32    60     1
+  274   TK_SEMICOLON     22    60     ;
+  275   TK_CCURLY        30    61     }
+  276   KW_RETURN        4     62     return
+  277   TK_SEMICOLON     22    62     ;
+  278   TK_CCURLY        30    63     }
+  279   KW_VOID          10    65     void
+  280   TK_ID            31    65     main
+  281   TK_OPAREN        25    65     (
+  282   KW_VOID          10    65     void
+  283   TK_CPAREN        26    65     )
+  284   TK_OCURLY        29    65     {
+  285   TK_ID            31    66     s
+  286   TK_ASSIGN        21    66     =
+  287   TK_STRING_LIT    34    66     "Reading Information....."
+  288   TK_SEMICOLON     22    66     ;
+  289   KW_WRITE         9     67     write
+  290   TK_ID            31    67     s
+  291   TK_SEMICOLON     22    67     ;
+  292   TK_ID            31    68     readArray
+  293   TK_OPAREN        25    68     (
+  294   TK_CPAREN        26    68     )
+  295   TK_SEMICOLON     22    68     ;
+  296   TK_ID            31    69     s
+  297   TK_ASSIGN        21    69     =
+  298   TK_STRING_LIT    34    69     "Sorting....."
+  299   TK_SEMICOLON     22    69     ;
+  300   KW_WRITE         9     70     write
+  301   TK_ID            31    70     s
+  302   TK_SEMICOLON     22    70     ;
+  303   TK_ID            31    71     sort
+  304   TK_OPAREN        25    71     (
+  305   TK_ID            31    71     f2
+  306   TK_COMMA         23    71     ,
+  307   TK_INT_NUM       32    71     0
+  308   TK_COMMA         23    71     ,
+  309   TK_INT_NUM       32    71     10
+  310   TK_CPAREN        26    71     )
+  311   TK_SEMICOLON     22    71     ;
+  312   TK_ID            31    72     s
+  313   TK_ASSIGN        21    72     =
+  314   TK_STRING_LIT    34    72     "Sorted Array:"
+  315   TK_SEMICOLON     22    72     ;
+  316   KW_WRITE         9     73     write
+  317   TK_ID            31    73     s
+  318   TK_SEMICOLON     22    73     ;
+  319   TK_ID            31    74     writeArray
+  320   TK_OPAREN        25    74     (
+  321   TK_CPAREN        26    74     )
+  322   TK_SEMICOLON     22    74     ;
+  323   KW_RETURN        4     75     return
+  324   TK_SEMICOLON     22    75     ;
+  325   TK_CCURLY        30    76     }
   Total tokens: 325
 =============================================================
 
 =============================================================
   SYMBOL TABLE: IDENTIFIERS
   Index   Lexeme                          First Line
-  0       main                            62
-  1       writearray                      52
-  2       readarray                       37
-  3       t                               27
-  4       sort                            23
-  5       k                               9
-  6       y                               9
-  7       i                               9
-  8       high                            8
-  9       low                             8
-  10      a                               8
-  11      miniloc                         8
-  12      f2                              6
-  13      f1                              5
-  14      s                               4
-  15      x                               3
+  0       main                            65
+  1       writearray                      55
+  2       readarray                       40
+  3       t                               30
+  4       sort                            26
+  5       k                               12
+  6       y                               12
+  7       i                               12
+  8       high                            11
+  9       low                             11
+  10      a                               11
+  11      miniloc                         11
+  12      f2                              9
+  13      f1                              8
+  14      s                               7
+  15      x                               6
   Total identifiers: 16
 =============================================================
 
 =============================================================
   SYMBOL TABLE: NUMBERS
   Index   Lexeme           Type          Line
-  0       10               INTEGER       3
-  1       10               INTEGER       6
-  2       1                INTEGER       12
-  3       1                INTEGER       18
-  4       1                INTEGER       26
-  5       1                INTEGER       32
-  6       10               INTEGER       42
-  7       1                INTEGER       47
-  8       0                INTEGER       54
-  9       10               INTEGER       55
-  10      1                INTEGER       57
-  11      0                INTEGER       68
-  12      10               INTEGER       68
+  0       10               INTEGER       6
+  1       10               INTEGER       9
+  2       1                INTEGER       15
+  3       1                INTEGER       21
+  4       1                INTEGER       29
+  5       1                INTEGER       35
+  6       10               INTEGER       45
+  7       1                INTEGER       50
+  8       0                INTEGER       57
+  9       10               INTEGER       58
+  10      1                INTEGER       60
+  11      0                INTEGER       71
+  12      10               INTEGER       71
   Total numbers: 13
 =============================================================
 
 =============================================================
   SYMBOL TABLE: STRINGS
   Index   Content                                   Line
-  0       enter a float number:                     39
-  1       enter an integer number:                  43
-  2       reading information.....                  63
-  3       sorting.....                              66
-  4       sorted array:                             69
+  0       enter a float number:                     42
+  1       enter an integer number:                  46
+  2       reading information.....                  66
+  3       sorting.....                              69
+  4       sorted array:                             72
   Total strings: 5
 =============================================================
 
