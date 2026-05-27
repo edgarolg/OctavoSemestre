@@ -1,0 +1,13 @@
+/* comentario */
+
+void writeArray(void){
+    int i;
+    i = 0;
+    f2 = 10;
+    @
+    while (i < 10){
+        write f2[i];
+        i = i + 1;
+    }
+    return;
+}

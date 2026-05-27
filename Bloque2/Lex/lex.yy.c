@@ -2139,7 +2139,7 @@ int main(int argc, char *argv[]) {
     /* apuntar lex al archivo de entrada */
     yyin = fp;
 
-    /* correr el scanner */
+    /* correr el scanner, hace el bucle hasta que el EOF regrese un 0 */
     while (yylex() != 0);
 
     fclose(fp);
