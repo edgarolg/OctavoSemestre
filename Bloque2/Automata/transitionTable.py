@@ -532,7 +532,7 @@ def write_html(states, table, col_order, final_states, states_label, filename):
 # 6.  Main
 # ─────────────────────────────────────────────
 if __name__ == "__main__":
-    JFF_FILE = "./FullAutomaton.jff"
+    JFF_FILE = "OctavoSemestre\\Bloque2\\Automata\\AutomataAnalizadorLexico.jff"
 
     state_data, transition_data = extract_data(JFF_FILE)
     states, initial_state, final_states, states_label = parse_states(state_data)
