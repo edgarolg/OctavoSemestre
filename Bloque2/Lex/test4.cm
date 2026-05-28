@@ -2,9 +2,9 @@
 
 void writeArray(void){
     int i;
-    i = 0;
-    f2 = 10;
-    @
+    i = 10;
+    f2 = "hola";
+    x = "hola";
     while (i < 10){
         write f2[i];
         i = i + 1;
