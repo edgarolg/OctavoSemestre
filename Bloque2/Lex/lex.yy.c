@@ -1975,6 +1975,12 @@ struct ID* lookUp_ID(char *lexeme, int linea) {
 
 /* insertar numero */
 int insert_num(char *lexeme, int tipo, int linea) {
+  int i;
+  for (i = 0; i < count_nums; i++) {
+    if (strcmp(tabla_nums[i].lexeme, lexeme) == 0 && tabla_nums[i].token_type == tipo) {
+        return i;
+    }
+  }
   /* copia el texto dentro de la tabla, e indica la posicion de este*/
   strncpy(tabla_nums[count_nums].lexeme, lexeme, MAX_LEXEME - 1);
   tabla_nums[count_nums].token_type = tipo;
@@ -1984,6 +1990,12 @@ int insert_num(char *lexeme, int tipo, int linea) {
 
 /* insertar string */
 int insert_string(char *lexeme, int linea) {
+  int i;
+  for (i = 0; i < count_strings; i++) {
+    if (strcmp(tabla_strings[i].lexeme, lexeme) == 0) {
+      return i;
+    }
+  }
   strncpy(tabla_strings[count_strings].lexeme, lexeme, MAX_LEXEME - 1);
   tabla_strings[count_strings].linea = linea;
   return count_strings++;
