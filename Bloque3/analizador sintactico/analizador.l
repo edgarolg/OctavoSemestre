@@ -20,8 +20,6 @@
 #define CAT_VAR   1
 #define CAT_FUNC  2
 
-void print_error(char *msg, int linea, char *lexeme);
-
 
 struct ID {
     /* Esta es la variable como tal   */
@@ -67,7 +65,6 @@ typedef struct {
 
 TokenEntry token_list[5000];
 int count_tokens = 0;
-int error_count  = 0;
 
 
 
@@ -113,17 +110,8 @@ BLANK       [ \t\n]
 %%
 
 {COMMENT}  { /* se ignora completamente los comentarios */  }
-
-
-"/*"[^*]* { 
-  /* se inicio pero no se cerro */
-  print_error("Unterminated comment", yylineno, yytext);
-}
-
-
-
+"/*"[^*]* { }
 {BLANK}+  { /* se ignoran los espacios en blanco */ }
-
 {STRING_LIT}   {
   /* para obtener lo que contiene el string literalmente
   * se saca el contenido, se le quitan las dobles comillas, se pone en minuscula y de ahi se inserta el contenido y la linea 
@@ -139,10 +127,7 @@ BLANK       [ \t\n]
   return STRING_LIT;
 }
 
-\"[^\"\n]*\n   {
-  /* si el estring no se cerro totalmente, se pone el error */
- print_error("Unterminated string literal", yylineno, yytext);
-}
+\"[^\"\n]*\n   { }
 
 "int"         { add_token(INT, 0, yylineno, yytext); return INT; }
 "float"       { add_token(FLOAT, 0, yylineno, yytext); return FLOAT; }
@@ -155,9 +140,9 @@ BLANK       [ \t\n]
 "read"        { add_token(READ, 0, yylineno, yytext); return READ; }
 "write"       { add_token(WRITE, 0, yylineno, yytext); return WRITE; }
 "main"  { 
-    lookUp_ID(yytext, yylineno);
-    add_token(MAIN, 0, yylineno, yytext);  
-    return MAIN; 
+  lookUp_ID(yytext, yylineno);
+  add_token(MAIN, 0, yylineno, yytext);  
+  return MAIN; 
 }
 
 
@@ -167,20 +152,14 @@ BLANK       [ \t\n]
 "!="    { add_token(DIF, -1, yylineno, yytext); return DIF; }
 
 {ID} { 
-    yylval.cadena = strdup(yytext);
-    lookUp_ID(yytext, yylineno);
-    add_token(ID, 0, yylineno, yytext);
-    return ID; 
+  yylval.cadena = strdup(yytext);
+  lookUp_ID(yytext, yylineno);
+  add_token(ID, 0, yylineno, yytext);
+  return ID; 
 }
 
-"__"[a-zA-Z0-9_]*  {
-  /* error de doble guion bajo*/
-  print_error("Invalid identifier: double underscore", yylineno, yytext);
-}
-"_" {
-  /* error de solo un guion bajo*/ 
-  print_error("Invalid identifier: underscore alone", yylineno, yytext);
-}
+"__"[a-zA-Z0-9_]*  { }
+"_" { }
 
 
 {FLOAT_NUM} {
@@ -191,10 +170,7 @@ BLANK       [ \t\n]
   return NUMBER;
 }
 
-{SIGN}?{DIGIT}+"."  {
-  /* error de digito con punto al final  */
-  print_error("Invalid real: missing decimal part", yylineno, yytext);
-}
+{SIGN}?{DIGIT}+"."  { }
 
 {INT_NUM}     {
     int idx = insert_num(yytext, NUMBER, yylineno);
@@ -211,7 +187,7 @@ BLANK       [ \t\n]
 ">" { add_token('>', -1, yylineno, yytext); return '>'; }
 "=" { add_token('=', -1, yylineno, yytext); return '='; }
 
-"!" { print_error("Invalid character: '!' without '='", yylineno, yytext); }
+"!" {  }
 
 ";" { add_token(';', -1, yylineno, yytext); return ';'; }
 "," { add_token(',', -1, yylineno, yytext); return ','; }
@@ -223,7 +199,7 @@ BLANK       [ \t\n]
 "}" { add_token('}', -1, yylineno, yytext); return '}'; }
 
 <<EOF>> { /*regresa 0 para que el while acabe */  return 0; }
-.       { print_error("Invalid character", yylineno, yytext); }
+.       { }
 
 %%
 
@@ -265,7 +241,7 @@ int insert_num(char *lexeme, int tipo, int linea) {
   int i;
   for (i = 0; i < count_nums; i++) {
     if (strcmp(tabla_nums[i].lexeme, lexeme) == 0 && tabla_nums[i].token_type == tipo) {
-        return i;
+      return i;
     }
   }
   /* copia el texto dentro de la tabla, e indica la posicion de este*/
@@ -290,31 +266,25 @@ int insert_string(char *lexeme, int linea) {
 
 /* agregar token */
 void add_token(int token_id, int table_index, int linea, char *lexeme) {
-  token_list[count_tokens].token_id    = token_id;
+  token_list[count_tokens].token_id = token_id;
   token_list[count_tokens].table_index = table_index;
-  token_list[count_tokens].linea       = linea;
+  token_list[count_tokens].linea = linea;
   strncpy(token_list[count_tokens].lexeme, lexeme, MAX_LEXEME - 1);
   count_tokens++;
 }
 
 /* Devuelve la categoría del identificador (CAT_VAR o CAT_FUNC) o 0 si no existe */
 int obtener_categoria(char *nombre) {
-    struct ID *tp = idSymTbl;
-    while (tp != NULL) {
-        if (strcmp(tp->lexeme, nombre) == 0) {
-            return tp->categoria;
-        }
-        tp = tp->next;
-    }
-    return CAT_UNDEF;
+  struct ID *tp = idSymTbl;
+  while (tp != NULL) {
+      if (strcmp(tp->lexeme, nombre) == 0) {
+        return tp->categoria;
+      }
+    tp = tp->next;
+  }
+  return CAT_UNDEF;
 }
 
-/* errores */
-void print_error(char *msg, int linea, char *lexeme) {
-    fprintf(stderr, "[LEXICAL ERROR] Line %d: %s -> '%s'\n",
-            linea, msg, lexeme);
-    error_count++;
-}
 
 /* convertir a tokens correctos */
 char *token_name(int id) {

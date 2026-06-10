@@ -14,18 +14,18 @@ extern int obtener_categoria(char *nombre);
 
 
 struct ID {
-    char      lexeme[256];
-    int       linea;
-    int       tipo_dato;
-    int       categoria;
-    struct ID *next;
+    char lexeme[256];
+    int linea;
+    int tipo_dato;
+    int categoria;
+struct ID *next;
 };
 extern struct ID *idSymTbl;
 
 typedef struct {
-    int  token_id;
-    int  table_index;   
-    int  linea;
+    int token_id;
+    int table_index;   
+    int linea;
     char lexeme[256]; 
 } EntryToken;
 
@@ -35,15 +35,13 @@ extern char *token_name(int id);
 
 %}
 
-/* Usado para almacenar las cosa que manda el lexico */
+/* forma de almacenar las cosa que manda el lexico */
 %union {
-    char *cadena;  /* Para guardar los nombres de las variables/textos */
-    int  tipo_dato; /* Para guardar si es INT, FLOAT o STRING */
+    char *cadena;  /* guaradr nombres*/
+    int  tipo_dato; /* guardar int, float o string */
 }
 
-/* Ahora le decimos a Yacc qué tokens van a usar esa 'cadena' */
 %token <cadena> ID NUMBER STRING_LIT
-/* Y cuáles reglas van a usar el 'tipo_dato' */
 %type <tipo_dato> type_specifier
 %type <cadena> var
 
@@ -55,16 +53,15 @@ extern char *token_name(int id);
 %token EQUAL "=="
 %token DIF "!="
 
-/* Resolución del Dangling Else: 
-   Le decimos a Yacc que el IF sin else tiene menor prioridad que el ELSE.
-   Así, cuando vea un ELSE, forzará el emparejamiento con el IF más cercano. */
+
+/* TODO: ver si esto si se tiene que hacer, Resolución del Dangling Else */
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
 %%
-/* --- REGLAS GRAMATICALES --- */
 
-/* 1. Programa y Declaraciones */
+/* --- REGLAAAAAS--- */
+
 program
     : declaration_list void_fun_declaration
     | void_fun_declaration
@@ -77,10 +74,8 @@ declaration_list
     | fun_declaration
     ;
 
-/* 2. Variables y Tipos */
 var_declaration
     : type_specifier ID ';' {
-        /*  función de tu tabla de símbolos*/
         actualizar_tipo_y_cat($2, $1, CAT_VAR);
     }
     | type_specifier ID '[' NUMBER ']' ';' {
@@ -89,12 +84,11 @@ var_declaration
     ;
 
 type_specifier
-    : INT           { $$ = INT; }          /* Si veo 'int', devuelvo el token INT */
-    | FLOAT         { $$ = FLOAT; }        /* Si veo 'float', devuelvo FLOAT */
+    : INT           { $$ = INT; }
+    | FLOAT         { $$ = FLOAT; }
     | STRING_TYPE   { $$ = STRING_TYPE; }
     ;
 
-/* 3. Funciones y Parámetros */
 fun_declaration
     : type_specifier ID '(' param_list ')' compound_stmt { actualizar_tipo_y_cat($2, $1, CAT_FUNC); }
     | type_specifier ID '(' VOID ')' compound_stmt       { actualizar_tipo_y_cat($2, $1, CAT_FUNC); }
@@ -116,7 +110,6 @@ param
     | type_specifier ID '[' ']' { actualizar_tipo_y_cat($2, $1, CAT_VAR); }
     ;
 
-/* 4. Bloques de Código */
 compound_stmt
     : '{' local_declarations statement_list '}'
     | '{' local_declarations '}'
@@ -134,13 +127,12 @@ statement_list
     | statement
     ;
 
-/* 5. Sentencias */
 statement
     : var '=' expression ';'
     | var '=' STRING_LIT ';'
     | call ';'
     | compound_stmt
-    | IF '(' expression ')' statement %prec LOWER_THAN_ELSE  /* <- Magia del Dangling Else */
+    | IF '(' expression ')' statement %prec LOWER_THAN_ELSE  /* TODO: REVISAR ESTO TAMBIEN */
     | IF '(' expression ')' statement ELSE statement
     | WHILE '(' expression ')' statement
     | RETURN ';'
@@ -149,7 +141,6 @@ statement
     | WRITE expression ';'
     ;
 
-/* 6. Variables y Expresiones */
 var
     : ID {
         int cat = obtener_categoria($1);
@@ -166,6 +157,7 @@ var
         $$ = $1;
     }
     ;
+
 expression
     : arithmetic_expression relop arithmetic_expression
     | arithmetic_expression
@@ -180,7 +172,6 @@ relop
     | DIF
     ;
 
-/* 7. Matemáticas */
 arithmetic_expression
     : arithmetic_expression addop term
     | term
@@ -208,7 +199,6 @@ factor
     | NUMBER
     ;
 
-/* 9. Llamadas a Funciones */
 call
     : ID '(' args ')' {
         int cat = obtener_categoria($1);
@@ -233,6 +223,8 @@ arg_list
     | arithmetic_expression
     ;
 %%
+
+
 /* --- CÓDIGO C --- */
 
 extern FILE *yyin;
@@ -245,7 +237,6 @@ void actualizar_tipo_y_cat(char *nombre, int tipo, int categoria) {
     struct ID *tp = idSymTbl;
     while (tp != NULL) {
         if (strcmp(tp->lexeme, nombre) == 0) {
-            /* ¡Lo encontramos! Actualizamos su tipo y rol */
             tp->tipo_dato = tipo;
             tp->categoria = categoria;
             return;
@@ -284,7 +275,6 @@ int main(int argc, char *argv[]) {
     int i;
     for (i = 0; i < count_tokens; i++) {
         if (token_list[i].token_id == ID || token_list[i].token_id == MAIN) {
-            
             char *rol = "---";
             int cat = obtener_categoria(token_list[i].lexeme);
             
@@ -297,13 +287,10 @@ int main(int argc, char *argv[]) {
             }
 
             printf(" %-20s  %-10d  %-15s\n",
-                   token_list[i].lexeme,
-                   token_list[i].linea,
-                   rol);
-                   
+                token_list[i].lexeme,
+                token_list[i].linea,
+               rol);       
         }
     }
-
-
     return 0;
 }
