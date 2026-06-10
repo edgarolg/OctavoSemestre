@@ -11,18 +11,10 @@
 #include <ctype.h>
 #include "parser.tab.h"
 
-/* para saber que son los IDs */
-#define CAT_UNDEF 0
-#define CAT_VAR   1
-#define CAT_FUNC  2
-
-
 struct ID {
     /* Esta es la variable como tal   */
     char      lexeme[MAX_LEXEME];
     int       linea;
-    int       tipo_dato;
-    int       categoria;
     struct ID *next;
 };
 /*  Se inicia en 0 la tabla /lista enlazada */
@@ -80,7 +72,6 @@ Keyword keywords[] = {
     {"read",   READ},
     {"write",  WRITE},
     {"void",   VOID},
-    {"main",   MAIN},
     {NULL, 0}             /* centinela para saber dónde termina */
 };
 
@@ -90,8 +81,7 @@ Keyword keywords[] = {
 int lookup_keyword (char *word);
 
 /* es al id, se va a buscar cual es */
-struct ID*  lookUp_ID (char *lexeme, int linea);
-int obtener_categoria(char *nombre);
+struct ID*  lookUp_ID (char *lexeme, int linea, int tipo_dato;);
 int  insert_num (char *lexeme, int tipo, int linea);
 int  insert_string (char *lexeme, int linea);
 void add_token (int token_id, int table_index, int linea, char *lexeme);
@@ -277,8 +267,6 @@ struct ID* lookUp_ID(char *lexeme, int linea) {
   strncpy(tp->lexeme, lexeme, MAX_LEXEME - 1);
   tp->lexeme[MAX_LEXEME - 1] = '\0';
   tp->linea  = linea;
-  tp->tipo_dato = 0;
-  tp->categoria = CAT_UNDEF;
   tp->next   = idSymTbl;
   idSymTbl   = tp;
   return tp;
@@ -319,18 +307,6 @@ void add_token(int token_id, int table_index, int linea, char *lexeme) {
   token_list[count_tokens].linea       = linea;
   strncpy(token_list[count_tokens].lexeme, lexeme, MAX_LEXEME - 1);
   count_tokens++;
-}
-
-/* Devuelve la categoría del identificador (CAT_VAR o CAT_FUNC) o 0 si no existe */
-int obtener_categoria(char *nombre) {
-    struct ID *tp = idSymTbl;
-    while (tp != NULL) {
-        if (strcmp(tp->lexeme, nombre) == 0) {
-            return tp->categoria;
-        }
-        tp = tp->next;
-    }
-    return CAT_UNDEF;
 }
 
 /* errores */

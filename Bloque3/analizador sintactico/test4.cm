@@ -1,0 +1,14 @@
+int sumar;
+int x;
+
+int calcular(int a) {
+    return a + 10;
+}
+
+void main(void) {
+    /* ERROR 1: Llamar a una variable común 'x' como si fuera función */
+    x();
+
+    /* ERROR 2: Tratar de asignarle un valor a la función 'calcular' */
+    calcular = 5;
+}
