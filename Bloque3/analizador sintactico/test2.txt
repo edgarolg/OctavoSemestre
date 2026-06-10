@@ -1,0 +1,16 @@
+[SEMANTIC ERROR] Linea 10: El identificador 'x' es una variable y no puede ser invocado como funcion.
+Iniciando analisis
+[SEMANTIC ERROR] Linea 13: El identificador 'calcular' es una funcion y no puede usarse como variable.
+Analisis exitoso
+
+=================================================================
+TABLA DE SIMBOLOS (IDENTIFICADORES)
+Identificador         Linea       Rol Semantico  
+ sumar                 1           VARIABLE       
+ x                     2           VARIABLE       
+ calcular              4           FUNCTION       
+ a                     4           VARIABLE       
+ a                     5           VARIABLE       
+ main                  8           FUNCTION       
+ x                     10          VARIABLE       
+ calcular              13          FUNCTION       

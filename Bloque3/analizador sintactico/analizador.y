@@ -22,6 +22,16 @@ struct ID {
 };
 extern struct ID *idSymTbl;
 
+typedef struct {
+    int  token_id;
+    int  table_index;   
+    int  linea;
+    char lexeme[256]; 
+} EntryToken;
+
+extern EntryToken token_list[];
+extern int count_tokens;
+extern char *token_name(int id);
 
 %}
 
@@ -35,7 +45,7 @@ extern struct ID *idSymTbl;
 %token <cadena> ID NUMBER STRING_LIT
 /* Y cuáles reglas van a usar el 'tipo_dato' */
 %type <tipo_dato> type_specifier
-
+%type <cadena> var
 
 /* Declaración de Tokens */
 %token INT FLOAT STRING_TYPE VOID MAIN
@@ -70,12 +80,10 @@ declaration_list
 /* 2. Variables y Tipos */
 var_declaration
     : type_specifier ID ';' {
-        printf("DEBUG: Declarando variable '%s' de tipo %d\n", $2, $1);
         /*  función de tu tabla de símbolos*/
         actualizar_tipo_y_cat($2, $1, CAT_VAR);
     }
     | type_specifier ID '[' NUMBER ']' ';' {
-        printf("DEBUG: Declarando arreglo '%s' de tipo %d con tamaño %s\n", $2, $1, $4);
         actualizar_tipo_y_cat($2, $1, CAT_VAR);
     }
     ;
@@ -104,8 +112,8 @@ param_list
     ;
 
 param
-    : type_specifier ID
-    | type_specifier ID '[' ']'
+    : type_specifier ID { actualizar_tipo_y_cat($2, $1, CAT_VAR); }
+    | type_specifier ID '[' ']' { actualizar_tipo_y_cat($2, $1, CAT_VAR); }
     ;
 
 /* 4. Bloques de Código */
@@ -146,14 +154,14 @@ var
     : ID {
         int cat = obtener_categoria($1);
         if (cat == CAT_FUNC) {
-            fprintf(stderr, "[SEMANTIC ERROR] Línea %d: El identificador '%s' es una función y no puede usarse como variable.\n", yylineno, $1);
+            fprintf(stderr, "[SEMANTIC ERROR] Linea %d: El identificador '%s' es una funcion y no puede usarse como variable.\n", yylineno, $1);
         }
         $$ = $1;
     }
     | ID '[' arithmetic_expression ']' {
         int cat = obtener_categoria($1);
         if (cat == CAT_FUNC) {
-            fprintf(stderr, "[SEMANTIC ERROR] Línea %d: El identificador '%s' es una función y no puede de esta manera.\n", yylineno, $1);
+            fprintf(stderr, "[SEMANTIC ERROR] Linea %d: El identificador '%s' es una funcion y no puede de esta manera.\n", yylineno, $1);
         }
         $$ = $1;
     }
@@ -202,27 +210,35 @@ factor
 
 /* 9. Llamadas a Funciones */
 call
-    : ID '(' arg_list ')' {
+    : ID '(' args ')' {
         int cat = obtener_categoria($1);
         if (cat == CAT_VAR) {
-            fprintf(stderr, "[SEMANTIC ERROR] Línea %d: El identificador '%s' es una variable y no puede ser invocado como función.\n", yylineno, $1);
+            fprintf(stderr, "[SEMANTIC ERROR] Linea %d: El identificador '%s' es una variable y no puede ser invocado como funcion.\n", yylineno, $1);
         }
     }
     | ID '(' ')' {
         int cat = obtener_categoria($1);
         if (cat == CAT_VAR) {
-            fprintf(stderr, "[SEMANTIC ERROR] Línea %d: El identificador '%s' es una variable y no puede ser invocado como función.\n", yylineno, $1);
+            fprintf(stderr, "[SEMANTIC ERROR] Linea %d: El identificador '%s' es una variable y no puede ser invocado como funcion.\n", yylineno, $1);
         }
     }
     ;
 
+args
+    : arg_list
+    ;
+
+arg_list
+    : arg_list ',' arithmetic_expression
+    | arithmetic_expression
+    ;
 %%
 /* --- CÓDIGO C --- */
 
 extern FILE *yyin;
 
 void yyerror(const char *s) {
-    fprintf(stderr, "Error sintáctico en la línea %d: %s\n", yylineno, s);
+    fprintf(stderr, "Error sintactico en la linea %d: %s\n", yylineno, s);
 }
 
 void actualizar_tipo_y_cat(char *nombre, int tipo, int categoria) {
@@ -252,14 +268,42 @@ int main(int argc, char *argv[]) {
 
     yyin = archivo;
 
-    printf("Iniciando análisis sintáctico de %s...\n", argv[1]);
+    printf("Iniciando analisis\n");
     
     if (yyparse() == 0) {
-        printf("¡Análisis exitoso! El código es válido.\n");
+        printf("Analisis exitoso\n");
     } else {
-        printf("El análisis falló.\n");
+        printf("El analisis fallo.\n");
     }
     fclose(archivo);
+
+    printf("\n=================================================================\n");
+    printf("TABLA DE SIMBOLOS (IDENTIFICADORES)\n");
+    printf("%-20s  %-10s  %-15s\n", "Identificador", "Linea", "Rol Semantico");
+
+    int i;
+    for (i = 0; i < count_tokens; i++) {
+        if (token_list[i].token_id == ID || token_list[i].token_id == MAIN) {
+            
+            char *rol = "---";
+            int cat = obtener_categoria(token_list[i].lexeme);
+            
+            if (cat == CAT_VAR) {
+                rol = "VARIABLE";
+            } else if (cat == CAT_FUNC) {
+                rol = "FUNCTION";
+            } else {
+                rol = "OTHER";
+            }
+
+            printf(" %-20s  %-10d  %-15s\n",
+                   token_list[i].lexeme,
+                   token_list[i].linea,
+                   rol);
+                   
+        }
+    }
+
 
     return 0;
 }

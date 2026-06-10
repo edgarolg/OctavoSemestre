@@ -9,12 +9,18 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "parser.tab.h"
+#include "analizador.tab.h"
+
+#define MAX_LEXEME   256
+#define MAX_NUMS     500
+#define MAX_STRINGS  500
 
 /* para saber que son los IDs */
 #define CAT_UNDEF 0
 #define CAT_VAR   1
 #define CAT_FUNC  2
+
+void print_error(char *msg, int linea, char *lexeme);
 
 
 struct ID {
@@ -63,26 +69,6 @@ TokenEntry token_list[5000];
 int count_tokens = 0;
 int error_count  = 0;
 
-/* tabla para buscar los key words */
-typedef struct {
-    char *word;
-    int   token;
-} Keyword;
-
-Keyword keywords[] = {
-    {"int",    INT},
-    {"float",  FLOAT},
-    {"string", STRING_TYPE},
-    {"return", RETURN},
-    {"if",     IF},
-    {"else",   ELSE},
-    {"while",  WHILE},
-    {"read",   READ},
-    {"write",  WRITE},
-    {"void",   VOID},
-    {"main",   MAIN},
-    {NULL, 0}             /* centinela para saber dónde termina */
-};
 
 
 /* Prototipos  */
@@ -109,6 +95,7 @@ void to_lower (char *str);
 
 /* ── Regex con nombre ──────── */
 
+
 LETTER      [a-zA-Z]
 DIGIT       [0-9]
 SIGN        [+\-]
@@ -134,6 +121,7 @@ BLANK       [ \t\n]
 }
 
 
+
 {BLANK}+  { /* se ignoran los espacios en blanco */ }
 
 {STRING_LIT}   {
@@ -156,35 +144,33 @@ BLANK       [ \t\n]
  print_error("Unterminated string literal", yylineno, yytext);
 }
 
+"int"         { add_token(INT, 0, yylineno, yytext); return INT; }
+"float"       { add_token(FLOAT, 0, yylineno, yytext); return FLOAT; }
+"string"      { add_token(STRING_TYPE, 0, yylineno, yytext); return STRING_TYPE; }
+"void"        { add_token(VOID, 0, yylineno, yytext); return VOID; }
+"return"      { add_token(RETURN, 0, yylineno, yytext); return RETURN; }
+"if"          { add_token(IF, 0, yylineno, yytext); return IF; }
+"else"        { add_token(ELSE, 0, yylineno, yytext); return ELSE; }
+"while"       { add_token(WHILE, 0, yylineno, yytext); return WHILE; }
+"read"        { add_token(READ, 0, yylineno, yytext); return READ; }
+"write"       { add_token(WRITE, 0, yylineno, yytext); return WRITE; }
+"main"  { 
+    lookUp_ID(yytext, yylineno);
+    add_token(MAIN, 0, yylineno, yytext);  
+    return MAIN; 
+}
+
 
 "<="    { add_token(LESSEQUAL, -1, yylineno, yytext); return LESSEQUAL; }
 ">="    { add_token(MOREEQUAL, -1, yylineno, yytext); return MOREEQUAL; }
 "=="    { add_token(EQUAL,  -1, yylineno, yytext); return EQUAL;  }
 "!="    { add_token(DIF, -1, yylineno, yytext); return DIF; }
 
-{ID} {
-  /* copia el codigo para guardarlo y se asegure que sea solo la parte del id, tambien lo pasa a minuscula */
-  char lower[MAX_LEXEME];
-  strncpy(lower, yytext, MAX_LEXEME - 1);
-  lower[MAX_LEXEME - 1] = '\0';
-  to_lower(lower);
-  /* buscar si es palabra reservada */
-  int kw = lookup_keyword(lower);
-  if (kw != 0) {
-  /* es keyword */
-  add_token(kw, -1, yylineno, yytext);
-  return kw;
-  } else {
-  /* es identificador */
-  struct ID *entry = lookUp_ID(lower, yylineno);
-  yylval.cadena = strdup(lower);
-  /*busca y asigna el indice*/
-  int idx = 0;
-  struct ID *tp = idSymTbl;
-  while (tp != entry) { tp = tp->next; idx++; }
-  add_token(ID, idx, yylineno, yytext);
-  return ID;
-  }
+{ID} { 
+    yylval.cadena = strdup(yytext);
+    lookUp_ID(yytext, yylineno);
+    add_token(ID, 0, yylineno, yytext);
+    return ID; 
 }
 
 "__"[a-zA-Z0-9_]*  {
@@ -210,13 +196,11 @@ BLANK       [ \t\n]
   print_error("Invalid real: missing decimal part", yylineno, yytext);
 }
 
-{INT_NUM} {
-  /* inserta el numero (el numero en si, el id de numero int, y la linea), de ahi mete el toquen con el indice que se genero, y la misma info a la de tokens generales */
-  int idx = insert_num(yytext, NUMBER, yylineno);
-  yylval.cadena = strdup(yytext);
-  /* si no quisiera guardar otra vez el lexema (lo que es la palabrta o numero) se pone un null en el yytext */
-  add_token(NUMBER, idx, yylineno, yytext);
-  return NUMBER;
+{INT_NUM}     {
+    int idx = insert_num(yytext, NUMBER, yylineno);
+    yylval.cadena = strdup(yytext);
+    add_token(NUMBER, idx, yylineno, yytext);
+    return NUMBER;
 }
 
 "+" { add_token('+', -1, yylineno, yytext); return '+'; }
@@ -248,14 +232,6 @@ void to_lower(char *str) {
     int i;
     for ( i = 0; str[i]; i++)
         str[i] = tolower((unsigned char)str[i]);
-}
-/* buscar key word */
-int lookup_keyword(char *word) {
-    int i;
-    for (i = 0; keywords[i].word != NULL; i++)
-        if (strcmp(keywords[i].word, word) == 0)
-            return keywords[i].token;
-    return 0;
 }
 
 

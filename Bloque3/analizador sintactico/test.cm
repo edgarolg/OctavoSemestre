@@ -1,2 +1,5 @@
 int x;
-x = 5;
+
+void main(void) {
+    x = 5;
+}
