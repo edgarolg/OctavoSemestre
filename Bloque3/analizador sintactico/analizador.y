@@ -11,7 +11,7 @@ extern int yylineno;
 void yyerror(const char *s);
 void actualizar_tipo_y_cat(char *nombre, int tipo, int categoria);
 extern int obtener_categoria(char *nombre);
-
+/* TODO: HACER QUE NO SE REPITA EL SIMBOLO EN LA TABLA, VER SI ESTO HACERLO EN LA PARTE DE LEX O EN LA DE YAC */
 
 struct ID {
     char lexeme[256];
