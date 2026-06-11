@@ -11,7 +11,6 @@ extern int yylineno;
 void yyerror(const char *s);
 void actualizar_tipo_y_cat(char *nombre, int tipo, int categoria);
 extern int obtener_categoria(char *nombre);
-/* TODO: HACER QUE NO SE REPITA EL SIMBOLO EN LA TABLA, VER SI ESTO HACERLO EN LA PARTE DE LEX O EN LA DE YAC */
 
 struct ID {
     char lexeme[256];
@@ -54,7 +53,6 @@ extern char *token_name(int id);
 %token DIF "!="
 
 
-/* TODO: ver si esto si se tiene que hacer, Resolución del Dangling Else */
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 
@@ -132,7 +130,7 @@ statement
     | var '=' STRING_LIT ';'
     | call ';'
     | compound_stmt
-    | IF '(' expression ')' statement %prec LOWER_THAN_ELSE  /* TODO: REVISAR ESTO TAMBIEN */
+    | IF '(' expression ')' statement %prec LOWER_THAN_ELSE
     | IF '(' expression ')' statement ELSE statement
     | WHILE '(' expression ')' statement
     | RETURN ';'
@@ -272,25 +270,20 @@ int main(int argc, char *argv[]) {
     printf("TABLA DE SIMBOLOS (IDENTIFICADORES)\n");
     printf("%-20s  %-10s  %-15s\n", "Identificador", "Linea", "Rol Semantico");
 
-    int i;
-    for (i = 0; i < count_tokens; i++) {
-        if (token_list[i].token_id == ID || token_list[i].token_id == MAIN) {
-            char *rol = "---";
-            int cat = obtener_categoria(token_list[i].lexeme);
-            
-            if (cat == CAT_VAR) {
-                rol = "VARIABLE";
-            } else if (cat == CAT_FUNC) {
-                rol = "FUNCTION";
-            } else {
-                rol = "OTHER";
-            }
 
-            printf(" %-20s  %-10d  %-15s\n",
-                token_list[i].lexeme,
-                token_list[i].linea,
-               rol);       
+    struct ID *actual = idSymTbl;
+    while (actual != NULL) {
+        char *rol = "---";
+        if (actual->categoria == CAT_VAR) {
+            rol = "VARIABLE";
+        } else if (actual->categoria == CAT_FUNC) {
+            rol = "FUNCION";
         }
+
+        // Imprimir el lexeme único
+        printf("%-20s  %-10d  %-15s\n", actual->lexeme, actual->linea, rol);
+        actual = actual->next;
     }
+
     return 0;
 }
