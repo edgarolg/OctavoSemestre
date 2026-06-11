@@ -482,8 +482,6 @@ char *yytext;
 #define CAT_VAR   1
 #define CAT_FUNC  2
 
-void print_error(char *msg, int linea, char *lexeme);
-
 
 struct ID {
     /* Esta es la variable como tal   */
@@ -529,7 +527,6 @@ typedef struct {
 
 TokenEntry token_list[5000];
 int count_tokens = 0;
-int error_count  = 0;
 
 
 
@@ -551,7 +548,7 @@ void to_lower (char *str);
 /* primero la comilla doble, luego cualquier cosa excepto comillas o salto de linea, al final otra comilla doble */
 /* inicia el comentarios, cualquier cosa que no sea asterisco, siendo que uno o mas asteriscos no cierran el comentario, luego ya el asterisco mas la diagonal, cierra el comentario */
 /*REGLAAAAAS */
-#line 555 "lex.yy.c"
+#line 552 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -702,10 +699,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 113 "analizador.l"
+#line 110 "analizador.l"
 
 
-#line 709 "lex.yy.c"
+#line 706 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -798,25 +795,22 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 115 "analizador.l"
+#line 112 "analizador.l"
 { /* se ignora completamente los comentarios */  }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 118 "analizador.l"
-{ 
-  /* se inicio pero no se cerro */
-  print_error("Unterminated comment", yylineno, yytext);
-}
+#line 113 "analizador.l"
+{ }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 125 "analizador.l"
+#line 114 "analizador.l"
 { /* se ignoran los espacios en blanco */ }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 127 "analizador.l"
+#line 115 "analizador.l"
 {
   /* para obtener lo que contiene el string literalmente
   * se saca el contenido, se le quitan las dobles comillas, se pone en minuscula y de ahi se inserta el contenido y la linea 
@@ -834,120 +828,111 @@ YY_RULE_SETUP
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 142 "analizador.l"
-{
-  /* si el estring no se cerro totalmente, se pone el error */
- print_error("Unterminated string literal", yylineno, yytext);
-}
+#line 130 "analizador.l"
+{ }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 147 "analizador.l"
+#line 132 "analizador.l"
 { add_token(INT, 0, yylineno, yytext); return INT; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 148 "analizador.l"
+#line 133 "analizador.l"
 { add_token(FLOAT, 0, yylineno, yytext); return FLOAT; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 149 "analizador.l"
+#line 134 "analizador.l"
 { add_token(STRING_TYPE, 0, yylineno, yytext); return STRING_TYPE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 150 "analizador.l"
+#line 135 "analizador.l"
 { add_token(VOID, 0, yylineno, yytext); return VOID; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 151 "analizador.l"
+#line 136 "analizador.l"
 { add_token(RETURN, 0, yylineno, yytext); return RETURN; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 152 "analizador.l"
+#line 137 "analizador.l"
 { add_token(IF, 0, yylineno, yytext); return IF; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 153 "analizador.l"
+#line 138 "analizador.l"
 { add_token(ELSE, 0, yylineno, yytext); return ELSE; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 154 "analizador.l"
+#line 139 "analizador.l"
 { add_token(WHILE, 0, yylineno, yytext); return WHILE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 155 "analizador.l"
+#line 140 "analizador.l"
 { add_token(READ, 0, yylineno, yytext); return READ; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 156 "analizador.l"
+#line 141 "analizador.l"
 { add_token(WRITE, 0, yylineno, yytext); return WRITE; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 157 "analizador.l"
+#line 142 "analizador.l"
 { 
-    lookUp_ID(yytext, yylineno);
-    add_token(MAIN, 0, yylineno, yytext);  
-    return MAIN; 
+  lookUp_ID(yytext, yylineno);
+  add_token(MAIN, 0, yylineno, yytext);  
+  return MAIN; 
 }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 164 "analizador.l"
+#line 149 "analizador.l"
 { add_token(LESSEQUAL, -1, yylineno, yytext); return LESSEQUAL; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 165 "analizador.l"
+#line 150 "analizador.l"
 { add_token(MOREEQUAL, -1, yylineno, yytext); return MOREEQUAL; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 166 "analizador.l"
+#line 151 "analizador.l"
 { add_token(EQUAL,  -1, yylineno, yytext); return EQUAL;  }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 167 "analizador.l"
+#line 152 "analizador.l"
 { add_token(DIF, -1, yylineno, yytext); return DIF; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 169 "analizador.l"
+#line 154 "analizador.l"
 { 
-    yylval.cadena = strdup(yytext);
-    lookUp_ID(yytext, yylineno);
-    add_token(ID, 0, yylineno, yytext);
-    return ID; 
+  yylval.cadena = strdup(yytext);
+  lookUp_ID(yytext, yylineno);
+  add_token(ID, 0, yylineno, yytext);
+  return ID; 
 }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 176 "analizador.l"
-{
-  /* error de doble guion bajo*/
-  print_error("Invalid identifier: double underscore", yylineno, yytext);
-}
+#line 161 "analizador.l"
+{ }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 180 "analizador.l"
-{
-  /* error de solo un guion bajo*/ 
-  print_error("Invalid identifier: underscore alone", yylineno, yytext);
-}
+#line 162 "analizador.l"
+{ }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 186 "analizador.l"
+#line 165 "analizador.l"
 {
   /* le asigna un indice en la tabla de numero, de ahi mete el indice que obtuvo con la informacion en la tabla general de tokens */
   int idx = insert_num(yytext, NUMBER, yylineno);
@@ -958,15 +943,12 @@ YY_RULE_SETUP
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 194 "analizador.l"
-{
-  /* error de digito con punto al final  */
-  print_error("Invalid real: missing decimal part", yylineno, yytext);
-}
+#line 173 "analizador.l"
+{ }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 199 "analizador.l"
+#line 175 "analizador.l"
 {
     int idx = insert_num(yytext, NUMBER, yylineno);
     yylval.cadena = strdup(yytext);
@@ -976,99 +958,99 @@ YY_RULE_SETUP
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 206 "analizador.l"
+#line 182 "analizador.l"
 { add_token('+', -1, yylineno, yytext); return '+'; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 207 "analizador.l"
+#line 183 "analizador.l"
 { add_token('-', -1, yylineno, yytext); return '-'; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 208 "analizador.l"
+#line 184 "analizador.l"
 { add_token('*', -1, yylineno, yytext); return '*'; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 209 "analizador.l"
+#line 185 "analizador.l"
 { add_token('/', -1, yylineno, yytext); return '/'; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 210 "analizador.l"
+#line 186 "analizador.l"
 { add_token('<', -1, yylineno, yytext); return '<'; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 211 "analizador.l"
+#line 187 "analizador.l"
 { add_token('>', -1, yylineno, yytext); return '>'; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 212 "analizador.l"
+#line 188 "analizador.l"
 { add_token('=', -1, yylineno, yytext); return '='; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 214 "analizador.l"
-{ print_error("Invalid character: '!' without '='", yylineno, yytext); }
+#line 190 "analizador.l"
+{  }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 216 "analizador.l"
+#line 192 "analizador.l"
 { add_token(';', -1, yylineno, yytext); return ';'; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 217 "analizador.l"
+#line 193 "analizador.l"
 { add_token(',', -1, yylineno, yytext); return ','; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 218 "analizador.l"
+#line 194 "analizador.l"
 { add_token('(', -1, yylineno, yytext); return '('; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 219 "analizador.l"
+#line 195 "analizador.l"
 { add_token(')', -1, yylineno, yytext); return ')'; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 220 "analizador.l"
+#line 196 "analizador.l"
 { add_token('[', -1, yylineno, yytext); return '['; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 221 "analizador.l"
+#line 197 "analizador.l"
 { add_token(']', -1, yylineno, yytext); return ']'; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 222 "analizador.l"
+#line 198 "analizador.l"
 { add_token('{', -1, yylineno, yytext); return '{'; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 223 "analizador.l"
+#line 199 "analizador.l"
 { add_token('}', -1, yylineno, yytext); return '}'; }
 	YY_BREAK
 case YY_STATE_EOF(INITIAL):
-#line 225 "analizador.l"
+#line 201 "analizador.l"
 { /*regresa 0 para que el while acabe */  return 0; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 226 "analizador.l"
-{ print_error("Invalid character", yylineno, yytext); }
+#line 202 "analizador.l"
+{ }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 228 "analizador.l"
+#line 204 "analizador.l"
 ECHO;
 	YY_BREAK
-#line 1072 "lex.yy.c"
+#line 1054 "lex.yy.c"
 
 	case YY_END_OF_BUFFER:
 		{
@@ -1950,7 +1932,7 @@ int main()
 	return 0;
 	}
 #endif
-#line 228 "analizador.l"
+#line 204 "analizador.l"
 
 
 /* ── to_lower: convierte string a minúsculas ── */
@@ -1991,7 +1973,7 @@ int insert_num(char *lexeme, int tipo, int linea) {
   int i;
   for (i = 0; i < count_nums; i++) {
     if (strcmp(tabla_nums[i].lexeme, lexeme) == 0 && tabla_nums[i].token_type == tipo) {
-        return i;
+      return i;
     }
   }
   /* copia el texto dentro de la tabla, e indica la posicion de este*/
@@ -2016,31 +1998,25 @@ int insert_string(char *lexeme, int linea) {
 
 /* agregar token */
 void add_token(int token_id, int table_index, int linea, char *lexeme) {
-  token_list[count_tokens].token_id    = token_id;
+  token_list[count_tokens].token_id = token_id;
   token_list[count_tokens].table_index = table_index;
-  token_list[count_tokens].linea       = linea;
+  token_list[count_tokens].linea = linea;
   strncpy(token_list[count_tokens].lexeme, lexeme, MAX_LEXEME - 1);
   count_tokens++;
 }
 
 /* Devuelve la categoría del identificador (CAT_VAR o CAT_FUNC) o 0 si no existe */
 int obtener_categoria(char *nombre) {
-    struct ID *tp = idSymTbl;
-    while (tp != NULL) {
-        if (strcmp(tp->lexeme, nombre) == 0) {
-            return tp->categoria;
-        }
-        tp = tp->next;
-    }
-    return CAT_UNDEF;
+  struct ID *tp = idSymTbl;
+  while (tp != NULL) {
+      if (strcmp(tp->lexeme, nombre) == 0) {
+        return tp->categoria;
+      }
+    tp = tp->next;
+  }
+  return CAT_UNDEF;
 }
 
-/* errores */
-void print_error(char *msg, int linea, char *lexeme) {
-    fprintf(stderr, "[LEXICAL ERROR] Line %d: %s -> '%s'\n",
-            linea, msg, lexeme);
-    error_count++;
-}
 
 /* convertir a tokens correctos */
 char *token_name(int id) {

@@ -83,20 +83,19 @@ void yyerror(const char *s);
 void actualizar_tipo_y_cat(char *nombre, int tipo, int categoria);
 extern int obtener_categoria(char *nombre);
 
-
 struct ID {
-    char      lexeme[256];
-    int       linea;
-    int       tipo_dato;
-    int       categoria;
-    struct ID *next;
+    char lexeme[256];
+    int linea;
+    int tipo_dato;
+    int categoria;
+struct ID *next;
 };
 extern struct ID *idSymTbl;
 
 typedef struct {
-    int  token_id;
-    int  table_index;   
-    int  linea;
+    int token_id;
+    int table_index;   
+    int linea;
     char lexeme[256]; 
 } EntryToken;
 
@@ -107,7 +106,7 @@ extern char *token_name(int id);
 
 
 /* Line 189 of yacc.c  */
-#line 111 "analizador.tab.c"
+#line 110 "analizador.tab.c"
 
 /* Enabling traces.  */
 #ifndef YYDEBUG
@@ -163,15 +162,15 @@ typedef union YYSTYPE
 {
 
 /* Line 214 of yacc.c  */
-#line 39 "analizador.y"
+#line 38 "analizador.y"
 
-    char *cadena;  /* Para guardar los nombres de las variables/textos */
-    int  tipo_dato; /* Para guardar si es INT, FLOAT o STRING */
+    char *cadena;  /* guaradr nombres*/
+    int  tipo_dato; /* guardar int, float o string */
 
 
 
 /* Line 214 of yacc.c  */
-#line 175 "analizador.tab.c"
+#line 174 "analizador.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -183,7 +182,7 @@ typedef union YYSTYPE
 
 
 /* Line 264 of yacc.c  */
-#line 187 "analizador.tab.c"
+#line 186 "analizador.tab.c"
 
 #ifdef short
 # undef short
@@ -495,13 +494,13 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    69,    69,    70,    74,    75,    76,    77,    82,    86,
-      92,    93,    94,    99,   100,   101,   102,   106,   110,   111,
-     115,   116,   121,   122,   123,   124,   128,   129,   133,   134,
-     139,   140,   141,   142,   143,   144,   145,   146,   147,   148,
-     149,   154,   161,   170,   171,   175,   176,   177,   178,   179,
-     180,   185,   186,   190,   191,   195,   196,   200,   201,   205,
-     206,   207,   208,   213,   219,   228,   232,   233
+       0,    64,    64,    65,    69,    70,    71,    72,    76,    79,
+      85,    86,    87,    91,    92,    93,    94,    98,   102,   103,
+     107,   108,   112,   113,   114,   115,   119,   120,   124,   125,
+     129,   130,   131,   132,   133,   134,   135,   136,   137,   138,
+     139,   143,   150,   160,   161,   165,   166,   167,   168,   169,
+     170,   174,   175,   179,   180,   184,   185,   189,   190,   194,
+     195,   196,   197,   201,   207,   216,   220,   221
 };
 #endif
 
@@ -1499,9 +1498,8 @@ yyreduce:
         case 8:
 
 /* Line 1455 of yacc.c  */
-#line 82 "analizador.y"
+#line 76 "analizador.y"
     {
-        /*  función de tu tabla de símbolos*/
         actualizar_tipo_y_cat((yyvsp[(2) - (3)].cadena), (yyvsp[(1) - (3)].tipo_dato), CAT_VAR);
     ;}
     break;
@@ -1509,7 +1507,7 @@ yyreduce:
   case 9:
 
 /* Line 1455 of yacc.c  */
-#line 86 "analizador.y"
+#line 79 "analizador.y"
     {
         actualizar_tipo_y_cat((yyvsp[(2) - (6)].cadena), (yyvsp[(1) - (6)].tipo_dato), CAT_VAR);
     ;}
@@ -1518,77 +1516,77 @@ yyreduce:
   case 10:
 
 /* Line 1455 of yacc.c  */
-#line 92 "analizador.y"
+#line 85 "analizador.y"
     { (yyval.tipo_dato) = INT; ;}
     break;
 
   case 11:
 
 /* Line 1455 of yacc.c  */
-#line 93 "analizador.y"
+#line 86 "analizador.y"
     { (yyval.tipo_dato) = FLOAT; ;}
     break;
 
   case 12:
 
 /* Line 1455 of yacc.c  */
-#line 94 "analizador.y"
+#line 87 "analizador.y"
     { (yyval.tipo_dato) = STRING_TYPE; ;}
     break;
 
   case 13:
 
 /* Line 1455 of yacc.c  */
-#line 99 "analizador.y"
+#line 91 "analizador.y"
     { actualizar_tipo_y_cat((yyvsp[(2) - (6)].cadena), (yyvsp[(1) - (6)].tipo_dato), CAT_FUNC); ;}
     break;
 
   case 14:
 
 /* Line 1455 of yacc.c  */
-#line 100 "analizador.y"
+#line 92 "analizador.y"
     { actualizar_tipo_y_cat((yyvsp[(2) - (6)].cadena), (yyvsp[(1) - (6)].tipo_dato), CAT_FUNC); ;}
     break;
 
   case 15:
 
 /* Line 1455 of yacc.c  */
-#line 101 "analizador.y"
+#line 93 "analizador.y"
     { actualizar_tipo_y_cat((yyvsp[(2) - (6)].cadena), VOID, CAT_FUNC); ;}
     break;
 
   case 16:
 
 /* Line 1455 of yacc.c  */
-#line 102 "analizador.y"
+#line 94 "analizador.y"
     { actualizar_tipo_y_cat((yyvsp[(2) - (6)].cadena), VOID   , CAT_FUNC); ;}
     break;
 
   case 17:
 
 /* Line 1455 of yacc.c  */
-#line 106 "analizador.y"
+#line 98 "analizador.y"
     { actualizar_tipo_y_cat("main", VOID, CAT_FUNC); ;}
     break;
 
   case 20:
 
 /* Line 1455 of yacc.c  */
-#line 115 "analizador.y"
+#line 107 "analizador.y"
     { actualizar_tipo_y_cat((yyvsp[(2) - (2)].cadena), (yyvsp[(1) - (2)].tipo_dato), CAT_VAR); ;}
     break;
 
   case 21:
 
 /* Line 1455 of yacc.c  */
-#line 116 "analizador.y"
+#line 108 "analizador.y"
     { actualizar_tipo_y_cat((yyvsp[(2) - (4)].cadena), (yyvsp[(1) - (4)].tipo_dato), CAT_VAR); ;}
     break;
 
   case 41:
 
 /* Line 1455 of yacc.c  */
-#line 154 "analizador.y"
+#line 143 "analizador.y"
     {
         int cat = obtener_categoria((yyvsp[(1) - (1)].cadena));
         if (cat == CAT_FUNC) {
@@ -1601,7 +1599,7 @@ yyreduce:
   case 42:
 
 /* Line 1455 of yacc.c  */
-#line 161 "analizador.y"
+#line 150 "analizador.y"
     {
         int cat = obtener_categoria((yyvsp[(1) - (4)].cadena));
         if (cat == CAT_FUNC) {
@@ -1614,7 +1612,7 @@ yyreduce:
   case 63:
 
 /* Line 1455 of yacc.c  */
-#line 213 "analizador.y"
+#line 201 "analizador.y"
     {
         int cat = obtener_categoria((yyvsp[(1) - (4)].cadena));
         if (cat == CAT_VAR) {
@@ -1626,7 +1624,7 @@ yyreduce:
   case 64:
 
 /* Line 1455 of yacc.c  */
-#line 219 "analizador.y"
+#line 207 "analizador.y"
     {
         int cat = obtener_categoria((yyvsp[(1) - (3)].cadena));
         if (cat == CAT_VAR) {
@@ -1638,7 +1636,7 @@ yyreduce:
 
 
 /* Line 1455 of yacc.c  */
-#line 1642 "analizador.tab.c"
+#line 1640 "analizador.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1850,7 +1848,9 @@ yyreturn:
 
 
 /* Line 1675 of yacc.c  */
-#line 235 "analizador.y"
+#line 223 "analizador.y"
+
+
 
 /* --- CÓDIGO C --- */
 
@@ -1864,7 +1864,6 @@ void actualizar_tipo_y_cat(char *nombre, int tipo, int categoria) {
     struct ID *tp = idSymTbl;
     while (tp != NULL) {
         if (strcmp(tp->lexeme, nombre) == 0) {
-            /* ¡Lo encontramos! Actualizamos su tipo y rol */
             tp->tipo_dato = tipo;
             tp->categoria = categoria;
             return;
@@ -1900,29 +1899,20 @@ int main(int argc, char *argv[]) {
     printf("TABLA DE SIMBOLOS (IDENTIFICADORES)\n");
     printf("%-20s  %-10s  %-15s\n", "Identificador", "Linea", "Rol Semantico");
 
-    int i;
-    for (i = 0; i < count_tokens; i++) {
-        if (token_list[i].token_id == ID || token_list[i].token_id == MAIN) {
-            
-            char *rol = "---";
-            int cat = obtener_categoria(token_list[i].lexeme);
-            
-            if (cat == CAT_VAR) {
-                rol = "VARIABLE";
-            } else if (cat == CAT_FUNC) {
-                rol = "FUNCTION";
-            } else {
-                rol = "OTHER";
-            }
 
-            printf(" %-20s  %-10d  %-15s\n",
-                   token_list[i].lexeme,
-                   token_list[i].linea,
-                   rol);
-                   
+    struct ID *actual = idSymTbl;
+    while (actual != NULL) {
+        char *rol = "---";
+        if (actual->categoria == CAT_VAR) {
+            rol = "VARIABLE";
+        } else if (actual->categoria == CAT_FUNC) {
+            rol = "FUNCION";
         }
-    }
 
+        // Imprimir el lexeme único
+        printf("%-20s  %-10d  %-15s\n", actual->lexeme, actual->linea, rol);
+        actual = actual->next;
+    }
 
     return 0;
 }

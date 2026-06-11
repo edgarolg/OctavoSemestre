@@ -68,10 +68,10 @@ typedef union YYSTYPE
 {
 
 /* Line 1676 of yacc.c  */
-#line 39 "analizador.y"
+#line 38 "analizador.y"
 
-    char *cadena;  /* Para guardar los nombres de las variables/textos */
-    int  tipo_dato; /* Para guardar si es INT, FLOAT o STRING */
+    char *cadena;  /* guaradr nombres*/
+    int  tipo_dato; /* guardar int, float o string */
 
 
 

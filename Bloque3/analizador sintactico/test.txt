@@ -4,6 +4,5 @@ Analisis exitoso
 =================================================================
 TABLA DE SIMBOLOS (IDENTIFICADORES)
 Identificador         Linea       Rol Semantico  
- x                     1           VARIABLE       
- main                  3           FUNCTION       
- x                     4           VARIABLE       
+main                  3           FUNCION        
+x                     1           VARIABLE       

@@ -4,98 +4,19 @@ Analisis exitoso
 =================================================================
 TABLA DE SIMBOLOS (IDENTIFICADORES)
 Identificador         Linea       Rol Semantico  
- x                     6           VARIABLE       
- s                     7           VARIABLE       
- f1                    8           VARIABLE       
- f2                    9           VARIABLE       
- miniloc               11          FUNCTION       
- a                     11          VARIABLE       
- low                   11          VARIABLE       
- high                  11          VARIABLE       
- i                     12          VARIABLE       
- y                     12          VARIABLE       
- k                     12          VARIABLE       
- k                     13          VARIABLE       
- low                   13          VARIABLE       
- y                     14          VARIABLE       
- a                     14          VARIABLE       
- low                   14          VARIABLE       
- i                     15          VARIABLE       
- low                   15          VARIABLE       
- i                     16          VARIABLE       
- high                  16          VARIABLE       
- a                     17          VARIABLE       
- i                     17          VARIABLE       
- x                     17          VARIABLE       
- y                     18          VARIABLE       
- a                     18          VARIABLE       
- i                     18          VARIABLE       
- k                     19          VARIABLE       
- i                     19          VARIABLE       
- i                     21          VARIABLE       
- i                     21          VARIABLE       
- k                     23          VARIABLE       
- sort                  26          FUNCTION       
- a                     26          VARIABLE       
- low                   26          VARIABLE       
- high                  26          VARIABLE       
- i                     27          VARIABLE       
- k                     27          VARIABLE       
- i                     28          VARIABLE       
- low                   28          VARIABLE       
- i                     29          VARIABLE       
- high                  29          VARIABLE       
- t                     30          VARIABLE       
- k                     31          VARIABLE       
- miniloc               31          FUNCTION       
- a                     31          VARIABLE       
- i                     31          VARIABLE       
- high                  31          VARIABLE       
- t                     32          VARIABLE       
- a                     32          VARIABLE       
- k                     32          VARIABLE       
- a                     33          VARIABLE       
- k                     33          VARIABLE       
- a                     33          VARIABLE       
- i                     33          VARIABLE       
- a                     34          VARIABLE       
- i                     34          VARIABLE       
- t                     34          VARIABLE       
- i                     35          VARIABLE       
- i                     35          VARIABLE       
- readArray             40          FUNCTION       
- i                     41          VARIABLE       
- s                     42          VARIABLE       
- s                     43          VARIABLE       
- f1                    44          VARIABLE       
- i                     45          VARIABLE       
- s                     46          VARIABLE       
- s                     47          VARIABLE       
- x                     48          VARIABLE       
- i                     48          VARIABLE       
- f2                    49          VARIABLE       
- i                     49          VARIABLE       
- x                     49          VARIABLE       
- i                     49          VARIABLE       
- f1                    49          VARIABLE       
- i                     50          VARIABLE       
- i                     50          VARIABLE       
- writeArray            55          FUNCTION       
- i                     56          VARIABLE       
- i                     57          VARIABLE       
- i                     58          VARIABLE       
- f2                    59          VARIABLE       
- i                     59          VARIABLE       
- i                     60          VARIABLE       
- i                     60          VARIABLE       
- main                  65          FUNCTION       
- s                     66          VARIABLE       
- s                     67          VARIABLE       
- readArray             68          FUNCTION       
- s                     69          VARIABLE       
- s                     70          VARIABLE       
- sort                  71          FUNCTION       
- f2                    71          VARIABLE       
- s                     72          VARIABLE       
- s                     73          VARIABLE       
- writeArray            74          FUNCTION       
+main                  65          FUNCION        
+writeArray            55          FUNCION        
+readArray             40          FUNCION        
+t                     30          VARIABLE       
+sort                  26          FUNCION        
+k                     12          VARIABLE       
+y                     12          VARIABLE       
+i                     12          VARIABLE       
+high                  11          VARIABLE       
+low                   11          VARIABLE       
+a                     11          VARIABLE       
+miniloc               11          FUNCION        
+f2                    9           VARIABLE       
+f1                    8           VARIABLE       
+s                     7           VARIABLE       
+x                     6           VARIABLE       
